@@ -1,0 +1,7 @@
+v0.0.3
+-Bug fix and and Sokrostream source
+v0.0.2
+-Bugs fix on some streaming sources
+-Update library
+v0.0.1
+- Initial version

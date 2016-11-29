@@ -1,0 +1,157 @@
+# {{subst:Name}} XBMC language file
+# Addon Name: Seko Downloader
+# Addon id: script.module.seko.downloader
+# Addon Provider: Seko
+
+msgid ""
+msgstr ""
+"Project-Id-Version: {{subst:Name}} Addons\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: {{subst:Provider}}\n"
+"Language-Team: French (http://www.transifex.com/projects/p/xbmc-addons/language/en/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: en\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+
+msgctxt "#33200"
+msgid "Download Settings"
+msgstr "Parametres de telechargement"
+
+msgctxt "#33201"
+msgid "Hide progress during playback"
+msgstr "Cacher la progression durant un visionnage"
+
+msgctxt "#33202"
+msgid "Download Manager"
+msgstr "Download Manager"
+
+msgctxt "#33203"
+msgid "Start downloads"
+msgstr "Lancer les telechargements"
+
+msgctxt "#33204"
+msgid "Stop downloads"
+msgstr "Stopper les telechargements"
+
+msgctxt "#33205"
+msgid "Show current download"
+msgstr "Afficher le telechargement en cours"
+
+msgctxt "#33206"
+msgid " Added to the download queue"
+msgstr " : Ajouter a la liste des telechargements"
+
+msgctxt "#33207"
+msgid "Do you want to resume download ?"
+msgstr "Voulez-vous reprendre le telechargement ?"
+
+msgctxt "#33208"
+msgid "File name : "
+msgstr "Nom du fichier : "
+
+msgctxt "#33209"
+msgid "Delete an element of the list"
+msgstr "Supprimer un fichier de la liste"
+
+msgctxt "#33209"
+msgid "List of download"
+msgstr "Liste des telechargements"
+
+msgctxt "#33210"
+msgid "Delete an element of the list"
+msgstr "Supprimer un element de la liste"
+
+msgctxt "#33211"
+msgid "No elements in the download queue"
+msgstr "Aucun element dans la liste de telechargement"
+
+
+
+msgctxt "#33250"
+msgid "Loadgin streaming ..."
+msgstr "Chargement du streaming ..."
+
+msgctxt "#33251"
+msgid "Starting ..."
+msgstr "Lancement ..."
+
+msgctxt "#33252"
+msgid "Initialize local path"
+msgstr "Initialisation du chemin local"
+
+msgctxt "#33253"
+msgid "Initialize the download"
+msgstr "Initialisation du telechargement"
+
+msgctxt "#33254"
+msgid "Starting the download"
+msgstr "Lancement du telechargement"
+
+msgctxt "#33255"
+msgid "Initialize cache"
+msgstr "Mise en cache"
+
+msgctxt "#33256"
+msgid "Pre-cache..."
+msgstr "Pre-cache..."
+
+msgctxt "#33257"
+msgid "Download complete"
+msgstr "Telechargement termine"
+
+msgctxt "#33258"
+msgid "Incomplete file"
+msgstr "Fichier incomplet"
+
+msgctxt "#33259"
+msgid "Complete file"
+msgstr "Fichier complet"
+
+msgctxt "#33260"
+msgid "Do you want to keep the file ?"
+msgstr "Voulez-vous conserver le fichier ?"
+
+msgctxt "#33261"
+msgid "Continue to watch ?"
+msgstr "Relancer la lecture ?"
+
+msgctxt "#33262"
+msgid "Do you want to continue the download ?"
+msgstr "Voulez-vous continuer le telechargement ?"
+
+msgctxt "#33263"
+msgid "Download in progress"
+msgstr "Telechargement en cours"
+
+msgctxt "#33264"
+msgid "If you cancel, the cache file will be deleted"
+msgstr "Si vous annulez, le fichier en cache sera supprime"
+
+msgctxt "#33265"
+msgid "Download complete"
+msgstr "Telechargement termine"
+
+msgctxt "#33266"
+msgid "Error during download \nThe cache file will be deleted"
+msgstr "Erreur pendant le telechargement\nLe Fichier en cache sera supprime"
+
+msgctxt "#33267"
+msgid "Error during download \nDo you want to try to continue the movie ?"
+msgstr "Erreur pendant le telechargement\nVoulez-vous essayer de reprendre le telechargement ?"
+
+msgctxt "#33268"
+msgid "Connexion error"
+msgstr "Erreur de connection"
+
+msgctxt "#33269"
+msgid "Error during connexion with MyJDownloader or with device name"
+msgstr "Erreur de connection avec MyJDownloader ou avec le nom du peripherique."
+
+msgctxt "#33270"
+msgid "Link successfully sent to MyJDownloader"
+msgstr "Lien envoye avec succes a MyJDownloader"

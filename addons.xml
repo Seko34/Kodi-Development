@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<addons>
+	<addon id="repository.seko" name="Seko Repository" version="1.0.0" provider-name="Seko">
+		<extension point="xbmc.addon.repository" name="Seko Repository">
+			<info compressed="false">https://raw.githubusercontent.com/Seko34/Kodi-Development/master/addons.xml</info>
+			<checksum>https://raw.githubusercontent.com/Seko34/Kodi-Development/master/addons.xml.md5</checksum>
+			<datadir zip="true">https://raw.githubusercontent.com/Seko34/Kodi-Development/master/zips</datadir>
+		</extension>
+		<extension point="xbmc.addon.metadata">
+			<summary lang="en">Seko repository for Kodi</summary>
+			<summary lang="fr">Seko repository pour Kodi</summary>
+			<description lang="en">Go though the addons and see what you like</description>
+			<description lang="fr">Repository pour les addons et modules Kodi.Le principal addon est "Ultrastream".</description>
+			<platform>all</platform>
+		</extension>
+	</addon>
+	<addon id="plugin.video.seko.ultrastream" name="UltraStream" version="0.1.0" provider-name="Seko">
+	  <requires>
+		<import addon="xbmc.python" version="2.7.0"/>
+		<import addon="script.module.core.ultrastream" version="0.0.1"/>
+		<import addon="script.service.seko.ultrastream" version="0.0.1"/>
+		<import addon="script.module.seko.common" version="0.1.0"/>
+		<import addon="script.module.seko.downloader" version="0.1.0"/>
+		<import addon="script.module.pyxbmct" version="1.2" /> 
+		<import addon="script.module.beautifulsoup" version="3.2.1"/> 
+		<import addon="script.module.urlresolver" version="3.0.25"/> 
+	  </requires>
+	  <extension point="xbmc.python.pluginsource" library="ultrastream_addon.py">
+		<provides>video</provides>
+	  </extension>
+	  <extension point="xbmc.addon.metadata">
+		<summary lang="en">UltraStream Addon allows to watch streaming videos. </summary>
+		<summary lang="fr">UltraStream permet de lire des videos en streaming. </summary>
+		<description lang="en">UltraStream Addon allows to watch streaming videos (Film, Series, Anime). In case
+		of the content could not be watch, you will be informed.
+		</description>
+		<description lang="fr">UltraStream permet de lire des videos(Film, Series, Anime) en streaming à partir de plusieurs annuaires de streaming. 
+		Vous aurez le choix de choisir quel est votre annuaire de streaming préféré.
+		Dans le cas où un contenu n'est plus disponible, vous serez informés.
+		</description>
+		<disclaimer lang="en">Feel free to use this addon.</disclaimer>
+		<disclaimer lang="fr">Cet addon est opensource.</disclaimer>
+		<language>en fr</language>
+		<platform>all</platform>
+		<license>GNU GENERAL PUBLIC LICENSE. Version 3, June 2007</license>
+		<forum></forum>
+		<website></website>
+		<email></email>
+		<source></source>
+	  </extension>
+	</addon>
+	<addon id="script.module.beautifulsoup" 
+		   name="BeautifulSoup"
+		   version="3.2.1"
+		   provider-name="Leonard Richardson (leonardr@segfault.org)">
+		<requires>
+			<import addon="xbmc.python" version="2.1.0"/>
+		</requires>
+		<extension point="xbmc.python.module" library="lib" />
+		<extension point="xbmc.addon.metadata">
+			<summary>HTML/XML parser for quick-turnaround applications like screen-scraping</summary>
+			<description>Beautiful Soup parses arbitrarily invalid SGML and provides a variety of methods and Pythonic idioms for iterating and searching the parse tree.</description>
+			<license>BSD</license>
+			<platform>all</platform>
+			<website>http://www.crummy.com/software/BeautifulSoup/</website>
+		</extension>
+	</addon>	
+	<addon id="script.module.urlresolver" name="URLResolver" version="3.0.25" provider-name="tvaddons.ag, Eldorado">
+		<requires>
+			<import addon="xbmc.python" version="2.1.0" />
+		</requires>
+		<extension point="xbmc.python.module" library="lib" />
+		<extension point="xbmc.python.pluginsource" library="lib/default.py" />
+		<extension point="xbmc.addon.metadata">
+			<platform>all</platform>
+			<summary lang="en">Resolve common video host URL's to be playable in XBMC/Kodi.</summary>
+			<description lang="en">Resolve common video host URL's to be playable in XBMC/Kodi, simplify addon development of video plugins requiring multi video hosts.</description>
+		</extension>
+	</addon>
+	
+	<addon id="script.module.core.ultrastream" name="UltraStream Core Library" version="0.0.1" provider-name="Seko">
+	  <requires>
+		<import addon="xbmc.python" version="2.6.0" />    
+		<import addon="script.module.seko.common" version="0.0.9"/>
+		<import addon="script.module.seko.downloader" version="0.0.10"/>
+		<import addon="script.module.seko.scraper" version="0.0.4"/>
+		<import addon="script.module.beautifulsoup" version="3.2.1"/> 
+		<import addon="script.module.urlresolver" version="3.0.25"/> 
+	  </requires>
+	  <extension point="xbmc.python.module" library="resources/lib" />
+	  <extension point="xbmc.python.library" library="default.py" />
+	  <extension point="xbmc.addon.metadata">
+		<platform>all</platform>
+		<summary lang="en">UltraStream Core Library</summary>
+		<summary lang="fr">Librairie central pour UltraStream</summary>
+	  </extension>
+	</addon>
+	<addon id="script.service.seko.ultrastream" name="Seko Ultrastream Service" version="0.0.1" provider-name="Seko">
+	  <requires>
+		<import addon="xbmc.python" version="2.6.0" />
+		<import addon="script.module.core.ultrastream" version="0.0.1"/>
+	  </requires>
+	  <extension point="xbmc.python.module" library="lib" />
+	  <extension point="xbmc.service"  library="default.py" />
+	  <extension point="xbmc.addon.metadata">
+		<platform>all</platform>
+		<summary lang="en">Seko Ultrastream Service</summary>
+		<summary lang="fr">Seko Ultrastream Service</summary>
+	  </extension>
+	</addon>
+	<addon id="script.module.seko.common" name="Seko Common Library" version="0.1.0" provider-name="Seko">
+	  <requires>
+		<import addon="xbmc.python" version="2.6.0" />    
+		<import addon="script.module.elementtree" version="1.2.8"/>
+	  </requires>
+	  <extension point="xbmc.python.module" library="lib" />
+	  <extension point="xbmc.python.library" library="default.py" />
+	  <extension point="xbmc.addon.metadata">
+		<platform>all</platform>
+		<summary lang="en">Seko Common Library</summary>
+        <summary lang="fr">Module avec des fonctions standards, réutilisables pour d'autres addons.</summary>
+	  </extension>
+	</addon>
+	<addon id="script.module.seko.downloader" name="Seko Downloader" version="0.1.0" provider-name="Seko">
+	  <requires>
+		<import addon="xbmc.python" version="2.6.0" />
+		<import addon="script.module.seko.common" version="0.1.0"/>
+		<!--  For Advanced Downloader --> 
+		<import addon="script.module.cryptopy" version="1.2.6"/>
+		<import addon="script.common.plugin.cache" version="2.5.8"/>
+	  </requires>
+	  <extension point="xbmc.python.module" library="lib" />
+	  <extension point="xbmc.python.library" library="default.py"  />
+	  <extension point="xbmc.addon.metadata">
+		<platform>all</platform>
+		<summary lang="en">Seko downloader allows to have the choice of how we want download a file with Kodi</summary>
+		<summary lang="fr">Seko downloader permet d'avoir le choix du type de téléchargement avec Kodi : Basic, Avancée, 
+		via MyJDownloader pour par le navigateur Web par défaut.s</summary>
+	  </extension>
+	</addon>
+	<addon id="script.module.seko.scraper" name="Seko Scraper Library" version="0.0.5" provider-name="Seko">
+	  <requires>
+		<import addon="xbmc.python" version="2.6.0" />    
+		<import addon="script.module.simplejson" version="3.4.0"/>
+		<import addon="script.module.elementtree" version="1.2.8"/>
+		<import addon="script.module.metahandler" version="2.9.0"/>
+	  </requires>
+	  <extension point="xbmc.python.module" library="lib" />
+	  <extension point="xbmc.python.library" library="default.py" />
+	  <extension point="xbmc.addon.metadata">
+		<platform>all</platform>
+		<summary lang="en">Seko Scraper Library</summary>
+		<summary lang="fr">Seko Scraper Library : Module de scapper.</summary>
+	  </extension>
+	</addon>
+	
+	
+	<addon id="script.module.cryptopy"   name="CryptoPy"   version="1.2.6"   provider-name="cryptopy.sourceforge.net">
+		<requires>
+			<import addon="xbmc.python" version="2.6.0"/>
+		</requires>
+		<extension point="xbmc.python.module"
+             library="lib" />
+		<extension point="xbmc.addon.metadata">
+			<platform>all</platform>
+		</extension>
+	</addon>
+
+	<addon id="script.module.addon.common"      name="Common addon methods"      version="2.0.1"      provider-name="Eldorado (original: t0mm0)">
+		<requires>
+			<import addon="xbmc.python" version="2.1.0" />
+		</requires>
+		<extension point="xbmc.python.module" library="lib" />
+		<extension point="xbmc.addon.metadata">
+			<platform>all</platform>
+			<summary lang="en">Collection of commonly used addon routines</summary>
+			<description lang="en">Collection of commonly used addon routines to simplify addon development.</description>
+			<disclaimer lang="en"/>
+			<language/>
+			<platform>all</platform>
+			<license>GNU GENERAL PUBLIC LICENSE. Version 2, June 1991</license>
+			<forum/>
+			<website/>
+			<email/>
+			<source/>  
+		</extension>
+	</addon>	
+	<addon id="script.module.elementtree" name="Elementtree XML parser" version="1.2.8" provider-name="http://effbot.org/zone/element-index.htm">
+		<requires>
+			<import addon="xbmc.python" version="2.1.0"/>
+		</requires>
+		<extension point="xbmc.python.module" library="lib" />
+		<extension point="xbmc.addon.metadata">
+			<platform>all</platform>
+		</extension>
+	</addon>
+	<addon id="script.module.simplejson"    name="simplejson"   version="3.4.0"    provider-name="Bob Ippolito">
+		<requires>
+			<import addon="xbmc.python" version="2.1.0"/>
+		</requires>
+		<extension point="xbmc.python.module"
+				 library="lib" />
+		<extension point="xbmc.addon.metadata">
+			<platform>all</platform>
+			<language/>
+			<summary lang="en">Simple, fast, extensible JSON encoder/decoder for Python</summary>
+			<description lang="en">Simple, fast, extensible JSON encoder/decoder for Python</description>
+			<disclaimer lang="en">Code taken from https://pypi.python.org/pypi/simplejson/</disclaimer>
+			<license>MIT License, Academic Free License v. 2.1</license>
+			<website>https://pypi.python.org/pypi/simplejson/</website>
+			<source>https://pypi.python.org/pypi/simplejson/</source>
+		</extension>
+	</addon>
+
+
+</addons>

@@ -1,0 +1,18 @@
+v0.0.9
+- Fix bugs for downloader modules.
+v0.0.8
+- Update dependencies
+- Add downloader module with : basic, advanced downloader, web browser downloader and MyJDownloader
+v0.0.6
+- Add StreamerV2 and custom player
+v0.0.5
+- Add history information (Next step is to use history for resuming a movie)
+v0.0.4
+- Update Streamer
+v0.0.3
+- Add downloader manager
+- Add Streamer
+v0.0.2
+- Clean and improve performances
+v0.0.1:
+-Initial version

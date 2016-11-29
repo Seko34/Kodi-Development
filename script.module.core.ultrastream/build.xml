@@ -1,0 +1,50 @@
+<project name="KODI Ultrastream Core Module" default="build-project"> 
+    
+	<!-- ########################################################################################### -->
+	<!-- 								Start - Property to change 									 -->
+	<!-- ########################################################################################### -->
+	<property name="version" value="0.0.1"/> 
+	<property name="projectName" value="script.module.core.ultrastream"/>
+	<property name="destination" value="${basedir}/../zips/${projectName}"/> 
+	<property name="xbmc_addon_dir" value="${user.home}/AppData/Roaming/Kodi/addons"/> 
+	<!-- ########################################################################################### -->
+	<!-- 								End   - Property to change 									 -->
+	<!-- ########################################################################################### -->	
+	
+	
+	<!-- Copy the project to the local XBMC add-on directory (For Test) -->	
+	<target name="copy-to-xbmc" description="Copy the project to the xbmc add-on directory">
+		<delete dir="${xbmc_addon_dir}/${projectName}"/>
+		<copy todir="${xbmc_addon_dir}/${projectName}" overwrite="true">
+			<fileset dir=".">
+			      <exclude name="build.xml"/>
+				  <exclude name=".settings/"/>
+			      <exclude name=".checkstyle"/>
+			      <exclude name=".project"/>
+			      <exclude name=".pydevproject"/>
+			      <exclude name="**/*.pyo"/>
+			      <exclude name="**/*.pyc"/>
+			      <exclude name="*.pyo"/>
+			      <exclude name="*.pyc"/>
+			</fileset>		
+		</copy>		
+	</target>	
+
+	<!-- Copy the project ressources into the repository "zips" dir -->	
+	<target name="copy-ressources" depends="copy-to-xbmc" description="Copy ressources">
+		<copy file="changelog.txt" tofile="changelog-${version}.txt" overwrite="true"/>
+		<copy file="changelog.txt" tofile="${destination}/changelog-${version}.txt" overwrite="true"/>
+		<copy file="changelog.txt" tofile="${destination}/changelog.txt" overwrite="true"/>
+		<!--copy file="icon.png" tofile="${destination}/icon.png" overwrite="true"/-->
+	</target>
+
+	<!-- Create the zip file od the project and copy it into the repository "zips" dir -->	
+	<target name="build-project" depends="copy-ressources" description="Build the project">		
+		<zip destfile="${destination}/${projectName}-${version}.zip"
+			 basedir="../"
+		     includes="${projectName},${projectName}/*,${projectName}/**"
+		     excludes="**/.settings/, **/.checkstyle, **/.project, **/.pydevproject, **/*.pyo, *.pyo, build.xml, **/*.pyc, *.pyc, **/test*"
+	         update="false"
+		  />
+	</target>
+</project>

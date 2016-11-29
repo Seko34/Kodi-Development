@@ -1,0 +1,16 @@
+V0.1.0
+-Add watamovie functionnality
+-Add Sokrostream
+-Add Ultrastream Service
+-User Core module for ultrastream
+-Add global search
+v0.0.4
+-Fix DPStream & Megastream
+-Add trailer function
+v0.0.3
+-Bug fix and and Sokrostream source
+v0.0.2
+-Bugs fix on some streaming sources
+-Update library
+v0.0.1
+- Initial version

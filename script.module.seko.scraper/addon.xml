@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<addon id="script.module.seko.scraper" name="Seko Scraper Library" version="0.0.5" provider-name="Seko">
+  <requires>
+    <import addon="xbmc.python" version="2.6.0" />    
+  	<import addon="script.module.simplejson" version="3.4.0"/>
+  	<import addon="script.module.elementtree" version="1.2.8"/>
+  	<import addon="script.module.metahandler" version="2.9.0"/>
+  </requires>
+  <extension point="xbmc.python.module" library="lib" />
+  <extension point="xbmc.python.library" library="default.py" />
+  <extension point="xbmc.addon.metadata">
+    <platform>all</platform>
+    <summary lang="en">Seko Scraper Library</summary>
+    <summary lang="fr">Seko Scraper Library : Module de scapper.</summary>
+  </extension>
+</addon>

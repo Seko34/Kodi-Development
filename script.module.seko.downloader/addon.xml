@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<addon id="script.module.seko.downloader" name="Seko Downloader" version="0.1.0" provider-name="Seko">
+  <requires>
+    <import addon="xbmc.python" version="2.6.0" />
+  	<import addon="script.module.seko.common" version="0.1.0"/>
+  	<!--  For Advanced Downloader --> 
+  	<import addon="script.module.cryptopy" version="1.2.6"/>
+  	<import addon="script.common.plugin.cache" version="2.5.8"/>
+  </requires>
+  <extension point="xbmc.python.module" library="lib" />
+  <extension point="xbmc.python.library" library="default.py"  />
+  <extension point="xbmc.addon.metadata">
+    <platform>all</platform>
+    <summary lang="en">Seko downloader allows to have the choice of how we want download a file with Kodi</summary>
+    <summary lang="fr">Seko downloader permet d'avoir le choix du type de téléchargement avec Kodi : Basic, Avancée, 
+    via MyJDownloader pour par le navigateur Web par défaut.s</summary>
+  </extension>
+</addon>

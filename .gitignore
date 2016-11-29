@@ -1,0 +1,15 @@
+*.pydevproject
+*.project
+*.checkstyle
+*.prefs
+*.git
+*.metadata
+.metadata
+*.settings
+settings
+test.py
+*.pyo
+*.pyc
+test.xml
+*xbmcstubs-master*
+*script.module.seko.test*

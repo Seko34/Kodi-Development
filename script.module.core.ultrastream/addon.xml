@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<addon id="script.module.core.ultrastream" name="UltraStream Core Library" version="0.0.1" provider-name="Seko">
+  <requires>
+    <import addon="xbmc.python" version="2.6.0" />    
+  	<import addon="script.module.seko.common" version="0.0.9"/>
+  	<import addon="script.module.seko.downloader" version="0.0.10"/>
+  	<import addon="script.module.seko.scraper" version="0.0.4"/>
+    <import addon="script.module.beautifulsoup" version="3.2.1"/> 
+    <import addon="script.module.urlresolver" version="3.0.25"/> 
+  </requires>
+  <extension point="xbmc.python.module" library="resources/lib" />
+  <extension point="xbmc.python.library" library="default.py" />
+  <extension point="xbmc.addon.metadata">
+    <platform>all</platform>
+    <summary lang="en">UltraStream Core Library</summary>
+    <summary lang="fr">Librairie central pour UltraStream</summary>
+  </extension>
+</addon>

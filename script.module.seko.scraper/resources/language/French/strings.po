@@ -1,0 +1,40 @@
+# {{subst:Name}} XBMC language file
+# Addon Name: Scraper module
+# Addon id: script.module.seko.scraper
+# Addon Provider: Seko
+
+
+msgid ""
+msgstr ""
+"Project-Id-Version: {{subst:Name}} Addons\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: {{subst:Provider}}\n"
+"Language-Team: French (http://www.transifex.com/projects/p/xbmc-addons/language/en/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: fr\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+
+
+msgctxt "#70001"
+msgid "Loading..."
+msgstr "Chargement..."
+
+msgctxt "#70002"
+msgid "Getting items..."
+msgstr "Recuperation des donnees..."
+
+msgctxt "#70003"
+msgid "Get metadata..."
+msgstr "Recuperation des metadonnees"
+
+msgctxt "#70004"
+msgid "Percent : "
+msgstr "Pourcentage : "
+
+
+

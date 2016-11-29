@@ -1,0 +1,7 @@
+v0.0.3
+- Add downloader manager
+- Add Streamer
+v0.0.2
+- Clean and improve performances
+v0.0.1:
+-Initial version

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<settings>
+    <category label="50000">   
+        <setting type="sep"/>
+        <setting id="default_stream_src" type="enum" label="50090" values="None|DPStream|DPStreaming|XStreaming|Fullmoviz|MegaStream|Sokrostream" default="1"/>  
+		<setting type="lsep" label="50010"/>
+		<setting id="android_web_browser" type="enum" label="50011" values="Android Browser|Firefox|Chrome|Opera|Opera for TV" default="0"/>  
+		<setting id="rd_web_browser" type="enum" label="50012" values="Android Browser|Firefox|Chrome|Opera|Opera for TV" default="0"/>  
+        <setting type="lsep" label="50040" />        
+        <setting id="getdetails" type="enum" label="50041" values="None|TheMovieDb.org|Metahandler" default="0"/>
+        <!--  <setting label="50050" type="action" action="Addon.OpenSettings(script.module.metahandler)" visible="eq(-1,3)" /> -->
+        <!--  <setting id="getseriresdetails" type="bool" label="50060" default="false" enable="gt(-1,0)" visible="gt(-1,0)" /> -->
+        <setting type="sep"/>
+        <setting id="nbthread" label="50070" type="number" default="1" visible="gt(-2,1)"/>
+        <setting type="lsep" label="50080" />
+        <setting id="historyModule" type="enum" label="50081" values="None|Xml|Sqllite" default="0"/>
+    </category>
+    <category label="51000">         	
+		<setting id="downloader_module" type="enum" label="51010" values="None|Basic|Asynchrone/Avance|Par navigateur|JDownloader" default="0"/> 
+        <setting type="sep"/>  
+        <setting id="dlfolder" label="51020" type="folder" source="auto" option="writeable" enable="lt(-2,3)+gt(-2,0)"  visible="lt(-2,3)+gt(-2,0)"/>        
+        <setting id="myjd_mail" label="51030" type="text" default="" enable="eq(-3,4)" visible="eq(-3,4)"/>
+        <setting id="myjd_pwd" label="51040" type="text" option="hidden" default="" enable="eq(-4,4)" visible="eq(-4,4)"/>
+        <setting id="myjd_device" label="51050" type="text" default="" enable="eq(-5,4)" visible="eq(-5,4)"/>
+        <setting id="advdl_temp_dir" label="51060" type="folder" source="auto" option="writeable" enable="eq(-7,2)" visible="eq(-7,2)"/>    
+	</category>
+	<category label="52010">
+		<setting type="lsep" label="52010"/>
+		<setting label="52011" type="bool" id="use_global_search" default="false"/>
+		<setting label="52012" type="bool" id="only_global_search" default="false" enable="eq(-1,true)" visible="eq(-1,true)"/>
+		<setting type="lsep" label="53000"/>
+		<setting label="53001" type="bool" id="use_watamovie" default="false"/>
+		<setting label="53002" type="bool" id="estuary_watamovie" default="true" enable="eq(-1,true)" visible="eq(-1,true)"/>
+	</category>
+	<category label="54000">
+		<setting label="54001" type="bool" id="activate_service" default="false"/>
+		<setting type="lsep" label="54006"/>
+		<setting label="54007" type="bool" id="activate_movie_service" default="false" enable="eq(-2,true)" visible="eq(-2,true)"/>
+		<setting label="54002" type="folder" id="service_movie_dir" default="false"  source="auto" option="writeable"  enable="eq(-1,true)" visible="eq(-1,true)"/>
+		<setting label="54008" type="bool" id="activate_tvshow_service" default="false" enable="eq(-4,true)" visible="eq(-4,true)"/>
+		<setting label="54003" type="folder" id="service_tvshow_dir" default="false"  source="auto" option="writeable"  enable="eq(-1,true)" visible="eq(-1,true)"/>
+	 </category>
+	<category label="52000">
+	</category>
+</settings>
+

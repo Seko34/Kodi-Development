@@ -1,0 +1,627 @@
+# {{subst:Name}} XBMC language file
+# Addon Name: UltraStream
+# Addon id: plugin.video.seko.ultrastream
+# Addon Provider: Seko
+
+
+msgid ""
+msgstr ""
+"Project-Id-Version: {{subst:Name}} Addons\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: {{subst:Provider}}\n"
+"Language-Team: French (http://www.transifex.com/projects/p/xbmc-addons/language/en/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: fr\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+
+##
+#	'-__	MENU	__-'
+##
+
+msgctxt "#40030"
+msgid "Movies HD"
+msgstr "Films HD"
+
+msgctxt "#40031"
+msgid "Movies"
+msgstr "Films"
+
+msgctxt "#40032"
+msgid "Series"
+msgstr "Series"
+
+msgctxt "#40033"
+msgid "Show"
+msgstr "Spectacles"
+
+msgctxt "#40034"
+msgid "Documentary"
+msgstr "Documentaires"
+
+msgctxt "#40035"
+msgid "Animes"
+msgstr "Animes"
+
+msgctxt "#40036"
+msgid "Purevid URL"
+msgstr "URL Purevid"
+
+msgctxt "#40037"
+msgid "Resolver Settings"
+msgstr "Parametres du Resolver"
+
+msgctxt "#40038"
+msgid "Download Manager"
+msgstr "Gestion des telechargements"
+
+msgctxt "#40039"
+msgid "Settings"
+msgstr "Parametres"
+
+msgctxt "#40040"
+msgid "Metahandler Settings"
+msgstr "Parametres de Metahandler"
+
+msgctxt "#40041"
+msgid "UltraStream Settings"
+msgstr "Parametres UltraStream"
+
+
+
+
+
+##
+#	'-__	SETTINGS	__-'
+##
+
+
+
+msgctxt "#50000"
+msgid "General"
+msgstr ""
+
+msgctxt "#50010"
+msgid "Android Web Browser (Android only)"
+msgstr "Navigateur WEB (Android seulement)"
+
+msgctxt "#50011"
+msgid "Android Browser to use"
+msgstr "Navigua	teur Web a utiliser pour android"
+
+msgctxt "#50012"
+msgid "Browser to use with real-debrid"
+msgstr "Naviguateur Web a utiliser pour Real-debrid"
+
+msgctxt "#50030"
+msgid "Use short list"
+msgstr "Utilisation des listes courtes (15 elements)"
+
+msgctxt "#50040"
+msgid "Metadata settings"
+msgstr "Parametres metadata"
+
+msgctxt "#50041"
+msgid "Get informations"
+msgstr "Recuperation des informations"
+
+msgctxt "#50050"
+msgid "Configure MetaHandler"
+msgstr "Configurer MetaHandler"
+
+msgctxt "#50060"
+msgid "Get series informations (Seasons and Episodes)"
+msgstr "Recuperation des informations des series (Saisons et Episodes)"
+
+msgctxt "#50070"
+msgid "Number of Thread for getting information (Default: 1)"
+msgstr "Nombre de thread pour recuperer les informations (Default: 1)"
+
+msgctxt "#50080"
+msgid "History settings"
+msgstr "Parametres historique"
+
+msgctxt "#50081"
+msgid "History type"
+msgstr "Type d historique"
+
+msgctxt "#50090"
+msgid "Streaming source"
+msgstr "Source principale"
+
+msgctxt "#51000"
+msgid "Download Settings"
+msgstr "Parametre de telechargement"
+
+msgctxt "#51010"
+msgid "Downloader module"
+msgstr "Module de telechargement"
+
+msgctxt "#51020"
+msgid "Download Folder"
+msgstr "Repertoire de telechargement"
+
+msgctxt "#51030"
+msgid "MyJD Mail"
+msgstr "MyJD Email"
+
+msgctxt "#51040"
+msgid "MyJD Password"
+msgstr "MyJD Mot de passe"
+
+msgctxt "#51050"
+msgid "MyJD Device"
+msgstr "MyJD Device"
+
+msgctxt "#51060"
+msgid "Temporary directory"
+msgstr "Repertoire temporaire"
+
+msgctxt "#52000"
+msgid "Streaming Sources"
+msgstr "Sources de Streaming"
+
+msgctxt "#52001"
+msgid "Enable"
+msgstr "Actif"
+
+msgctxt "#52002"
+msgid "Login"
+msgstr "Utilisateur"
+
+msgctxt "#52003"
+msgid "Password"
+msgstr "Mot de passe"
+
+msgctxt "#52010"
+msgid "Search"
+msgstr "Recherche"
+
+msgctxt "#52011"
+msgid "Use global search"
+msgstr "Utiliser la recherche globale"
+
+msgctxt "#52012"
+msgid "Use only global search"
+msgstr "Afficher seulement la recherche globale"
+
+msgctxt "#53000"
+msgid "Watamovie"
+msgstr "Watamovie"
+
+msgctxt "#53001"
+msgid "Activate Watamovie"
+msgstr "Activer la recherche Watamovie"
+
+msgctxt "#53002"
+msgid "Use Estuary skin"
+msgstr "Utiliser le skin Estuary"
+
+msgctxt "#54000"
+msgid "UltraStream Services"
+msgstr "UltraStream Services"
+
+msgctxt "#54001"
+msgid "Activate strm service"
+msgstr "Activer le service"
+
+msgctxt "#54002"
+msgid "Movie directory"
+msgstr "Repertoire des films"
+
+msgctxt "#54003"
+msgid "TvShow directory"
+msgstr "Repertoire des series"
+
+msgctxt "#54004"
+msgid "Movie module"
+msgstr "Module des films"
+
+msgctxt "#54005"
+msgid "TvShow module"
+msgstr "Module des series"
+
+msgctxt "#54006"
+msgid "Ultrastream service may slow down Kodi startup"
+msgstr "Le service Ultrastream peut ralentir le demarrage de Kodi"
+
+msgctxt "#54007"
+msgid "Activate for movie"
+msgstr "Actif pour les films"
+
+msgctxt "#54008"
+msgid "Activate for tvshow"
+msgstr "Actif pour les series"
+
+##
+#	'-__	MOVIE MENU	__-'
+##
+
+msgctxt "#60010"
+msgid "Last Movies"
+msgstr "Derniers films"
+
+msgctxt "#60020"
+msgid "Most Views Movies"
+msgstr "Films les plus vus"
+
+msgctxt "#60030"
+msgid "Top Week Movies"
+msgstr "Les films de la semaine"
+
+msgctxt "#60040"
+msgid "Top Rated Movies"
+msgstr "Les films les mieux notes"
+
+msgctxt "#60050"
+msgid "Movie HD List (Alphabetic)"
+msgstr "Liste de Films HD (Ordre Alphabetique)"
+
+msgctxt "#60051"
+msgid "Movie List (Alphabetic)"
+msgstr "Liste de Films (Ordre Alphabetique)"
+
+msgctxt "#60060"
+msgid "Search Movie HD"
+msgstr "Rechercher un film HD"
+
+msgctxt "#60061"
+msgid "Search Movie"
+msgstr "Rechercher un film"
+
+msgctxt "#60062"
+msgid "Search Movie (All sources)"
+msgstr "Rechercher un film (toutes sources)"
+
+msgctxt "#60070"
+msgid "By genre"
+msgstr "Par genre"
+
+msgctxt "#60080"
+msgid "Exclusivity"
+msgstr "Exclue"
+
+msgctxt "#60090"
+msgid "Movies List"
+msgstr "Liste de films"
+
+msgctxt "#60100"
+msgid "Watamovie search"
+msgstr "Recherche Watamovie"
+
+
+##
+#	'-__	TV SHOW MENU	__-'
+##
+
+msgctxt "#61010"
+msgid "Last TvShow"
+msgstr "Dernieres series"
+
+msgctxt "#61020"
+msgid "Most Views TvShow"
+msgstr "Series les plus vues"
+
+msgctxt "#61030"
+msgid "Top Week TvShow"
+msgstr "Les series de la semaine"
+
+msgctxt "#61040"
+msgid "TvShow List (Alphabetic)"
+msgstr "Liste de series (Ordre Alphabetique)"
+
+msgctxt "#61050"
+msgid "Search TvShow"
+msgstr "Rechercher une series"
+
+msgctxt "#61051"
+msgid "Search TvShow (All sources)"
+msgstr "Rechercher une series (toutes sources)"
+
+msgctxt "#61060"
+msgid "TvShow List"
+msgstr "Liste de Series"
+
+msgctxt "#61070"
+msgid "Top Rated TvShow"
+msgstr "Series les mieux notes"
+
+##
+#	'-__	ANIME	__-'
+##
+
+msgctxt "#62010"
+msgid "Last Animes"
+msgstr "Derniers animes"
+
+msgctxt "#62020"
+msgid "Most Views Animes"
+msgstr "Animes les plus vus"
+
+msgctxt "#62030"
+msgid "Top Week Animes"
+msgstr "Animes de la semaine"
+
+msgctxt "#62040"
+msgid "Anime List (Alphabetic)"
+msgstr "Liste d'animes (Ordre Alphabetique)"
+
+msgctxt "#62050"
+msgid "Search Anime"
+msgstr "Rechercher un anime"
+
+msgctxt "#62051"
+msgid "Search Anime (All sources)"
+msgstr "Rechercher un anime (toutes sources)"
+
+msgctxt "#62060"
+msgid "Top rate Animes"
+msgstr "Les mieux notes"
+
+msgctxt "#62070"
+msgid "List Animes"
+msgstr "Liste d anime"
+
+
+##
+#	'-__	SHOW MENU	__-'
+##
+
+msgctxt "#63010"
+msgid "Last Show"
+msgstr "Derniers Spectacles"
+
+msgctxt "#63020"
+msgid "Most Views Show"
+msgstr "Spectacles les plus vues"
+
+msgctxt "#63030"
+msgid "Top Week Show"
+msgstr "Les spectacles de la semaine"
+
+msgctxt "#63040"
+msgid "Show List (Alphabetic)"
+msgstr "Liste de spectacles (Ordre Alphabetique)"
+
+msgctxt "#63050"
+msgid "Search Show"
+msgstr "Rechercher un spectacle"
+
+##
+#	'-__	DOCUMENTARY MENU	__-'
+##
+
+msgctxt "#64010"
+msgid "Last Documentary"
+msgstr "Derniers Documentaires"
+
+msgctxt "#64020"
+msgid "Most Views Documentary"
+msgstr "Documentaires les plus vues"
+
+msgctxt "#64030"
+msgid "Top Week Documentary"
+msgstr "Les documentaires de la semaine"
+
+msgctxt "#64040"
+msgid "Documentary List (Alphabetic)"
+msgstr "Liste des documentaires (Ordre Alphabetique)"
+
+msgctxt "#64050"
+msgid "Search Documentary"
+msgstr "Rechercher un documentaire"
+
+####################
+
+msgctxt "#33013"
+msgid "Use debug"
+msgstr "Utiliser le mode debug"
+
+##
+#	'-__	OTHERS	__-'
+##
+msgctxt "#70000"
+msgid "Make a choice"
+msgstr "Choisissez"
+
+msgctxt "#70001"
+msgid "Play"
+msgstr "Lire"
+
+msgctxt "#70002"
+msgid "Open in Web Browser"
+msgstr "Ouvrir dans le navigateur"
+
+msgctxt "#70003"
+msgid "Download"
+msgstr "Telecharger"
+
+msgctxt "#70004"
+msgid "Get more links"
+msgstr "Plus de liens"
+
+msgctxt "#70005"
+msgid "Get links on "
+msgstr "Recherche de liens sur "
+
+msgctxt "#70006"
+msgid "Loading..."
+msgstr "Chargement..."
+
+msgctxt "#70007"
+msgid "Getting items..."
+msgstr "Recuperation des donnees..."
+
+msgctxt "#70008"
+msgid "Get metadata..."
+msgstr "Recuperation des metadonnees"
+
+msgctxt "#70009"
+msgid "Get streaming link..."
+msgstr "Recuperation/Debridage du lien streaming"
+
+msgctxt "#70010"
+msgid "Next page"
+msgstr "Page suivante"
+
+msgctxt "#70011"
+msgid "Previous page"
+msgstr "Page precedente"
+
+msgctxt "#70012"
+msgid "trailer"
+msgstr "bande annonce"
+
+msgctxt "#70013"
+msgid "Choose a link"
+msgstr "Choissisez un lien"
+
+##
+#	'-__	WATAMOVIE	__-'
+##
+
+msgctxt "#80000"
+msgid "Watamovie"
+msgstr "Watamovie"
+
+msgctxt "#80010"
+msgid "None"
+msgstr "Pas du tout"
+
+msgctxt "#80011"
+msgid "Neutral"
+msgstr "Moyen"
+
+msgctxt "#80012"
+msgid "A lot"
+msgstr "Beaucoup"
+
+msgctxt "#80013"
+msgid "Search"
+msgstr "Chercher"
+
+msgctxt "#80014"
+msgid "Cancel"
+msgstr "Annuler"
+
+msgctxt "#80020"
+msgid "Watamovie - Your movie"
+msgstr "Watamovie - Votre film"
+
+msgctxt "#80021"
+msgid "Another movie"
+msgstr "Un autre film"
+
+msgctxt "#80030"
+msgid "Watamovie - Links"
+msgstr "Watamovie - Liens"
+
+
+##
+#	'-__	UltraStream Service	   __-'
+##
+msgctxt "#90000"
+msgid "UltraStream Service"
+msgstr "UltraStream Service"
+
+msgctxt "#90001"
+msgid "Get movies..."
+msgstr "Recuperation des films..."
+
+msgctxt "#90002"
+msgid "Get tvshow..."
+msgstr "Recuperation des series..."
+
+
+
+msgctxt "#33048"
+msgid "Search"
+msgstr "Rechercher"
+
+msgctxt "#33049"
+msgid "Play"
+msgstr "Lire"
+
+msgctxt "#33050"
+msgid "Download and Play"
+msgstr "Telecharger et Lire"
+
+msgctxt "#33051"
+msgid "Download"
+msgstr "Telecharger"
+
+msgctxt "#33052"
+msgid "Make a choice"
+msgstr "Choisissez"
+
+msgctxt "#33053"
+msgid "Downloading File"
+msgstr "Telechargement en cours"
+
+msgctxt "#33054"
+msgid "Percent: "
+msgstr "Pourcentage : "
+
+msgctxt "#33055"
+msgid "Speed: "
+msgstr "Vitesse : "
+
+msgctxt "#33056"
+msgid "Select a link"
+msgstr "Selectionnez un lien"
+
+msgctxt "#33057"
+msgid "Please Wait ..."
+msgstr "Veuillez patientez ..."
+
+msgctxt "#33058"
+msgid "Resume the movie"
+msgstr "Reprendre la lecture"
+
+msgctxt "#33059"
+msgid "Do you want to resume the movie ?"
+msgstr "Voulez-vous reprendre la video ?"
+
+msgctxt "#33060"
+msgid "Streamer/Cache Settings"
+msgstr "Parametres du streamer"
+
+msgctxt "#33061"
+msgid "Cache Size (In Percent)"
+msgstr "Taille du Cache (En pourcentage)"
+
+msgctxt "#33062"
+msgid "Keep download file"
+msgstr "Garder le fichier telecharger"
+
+msgctxt "#33063"
+msgid "Directory for cache files"
+msgstr "Repertoire des fichiers caches"
+
+msgctxt "#33064"
+msgid "Always use StreamLauncher ?"
+msgstr "Toujours utiliser StreamLauncher ?"
+
+msgctxt "#33067"
+msgid "Addon Settings"
+msgstr "Parametres de l Add-on"
+
+msgctxt "#33068"
+msgid "Delete all history"
+msgstr "Supprimer tous l historique"
+
+msgctxt "#33069"
+msgid "Use Streamer V2 with the custom player"
+msgstr "Utiliser le Player Customise"
+
+msgctxt "#33070"
+msgid "Open in Web Browser"
+msgstr "Ouvrir dans le navigateur"
+
+
+
+
