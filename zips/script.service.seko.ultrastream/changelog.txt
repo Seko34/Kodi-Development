@@ -1,2 +1,4 @@
+Version 0.0.2:
+-Fix bugs on background progress
 Version 0.0.1:
 -Initial version

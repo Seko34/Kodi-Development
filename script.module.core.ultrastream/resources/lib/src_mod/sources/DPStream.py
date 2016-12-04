@@ -787,6 +787,7 @@ class DPStream(Source):
         """        
         # ___ Initialize the list to return
         elementList = []
+        self.__LOGGER__.log(episodeStreamItem.getJsonItem())
         
         if episodeStreamItem.getId() is None or len(episodeStreamItem.getId()) == 0:
             responsePage = self.openPage(episodeStreamItem.getHref())
@@ -809,8 +810,7 @@ class DPStream(Source):
         #data = {'episode_id':episodeStreamItem.getId()}
         post_href = 'tvshows/filter_player_data'
         data = {'tvshow_episode_id':str(episodeStreamItem.getId()),'player_id':0,'quality_id':0}
-        self.__LOGGER__.log(post_href)
-        self.__LOGGER__.log(data)
+        
         response = self.postPage(post_href, data, headers=self.DPSTREAM_POST_HEADER_CFG)
                 
         if response and response.getcode() == 200:   
@@ -819,8 +819,6 @@ class DPStream(Source):
             #lignes = soup.find('tbody',{'id':'show_more_result'}).findAll('tr')
             lignes = soup.findAll('tr',attrs = {'id' : True})
             
-            
-            self.__LOGGER__.log(content)
             for ligne in lignes:
               
                 colonnes = ligne.findAll('td')
@@ -828,7 +826,6 @@ class DPStream(Source):
                 version = colonnes[1].text.encode('UTF-8')
                 qualite = colonnes[2].text.encode('UTF-8')
                 href = colonnes[5].find('a')['href'].encode('UTF-8')
-                self.__LOGGER__.log(ligne)
                 
                 if href !='javascript:void(0)':
                     href = self.formatLink(href) 

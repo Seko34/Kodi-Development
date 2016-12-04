@@ -21,7 +21,7 @@ import threading
 
 # ____________________     V A R I A B L E S     ____________________
 settings = xbmcaddon.Addon(id='plugin.video.seko.ultrastream')
-version = "0.0.1"
+version = "0.0.2"
 plugin = "Ultrastream Service-" + version
 __LOGGER__ = logger.Logger('UltraStream-Service')
 __LOGGER__.log(plugin)

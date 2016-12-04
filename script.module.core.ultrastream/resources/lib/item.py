@@ -157,13 +157,16 @@ class StreamItem:
             if 'season' in params:
                 self.setSeason(params['season'])
             if 'episode' in params:
-                if params['episode']!= '' and not isinstance(params['episode'], str) and len(params['episode']) > 0:
+                if params['episode']!= '' and not isinstance(params['episode'], str) and len(params['episode']) > 0:                    
                     for ep in params['episode']:
                         self.addEpisode(ep)
-                elif params['episode']!= '' and isinstance(params['episode'], str):
-                    episodes = eval(params['episode'])
-                    if not isinstance(episodes, str) and len(episodes) > 0:
-                        for ep in params['episode']:
+                elif params['episode']!= '' and isinstance(params['episode'], str) and len(params['episode']) > 0:
+                    if params['episode'].startswith('[') and params['episode'].endswith(']'):
+                        episodes = ast.literal_eval(params['episode'])
+                    else:
+                        episodes = params['episode']
+                    if not isinstance(episodes, str) and not isinstance(episodes, int) and len(episodes) > 0:
+                        for ep in episodes:
                             self.addEpisode(ep)
                     else:
                         self.setEpisode(params['episode'])

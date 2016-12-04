@@ -12,8 +12,8 @@
 import xbmcaddon
 
 # ____________________     V A R I A B L E S     ____________________
-settings = xbmcaddon.Addon(id='script.module.seko.common')
+settings = xbmcaddon.Addon(id='script.module.core.ultrastream')
 language = settings.getLocalizedString
-version = "0.0.9"
-plugin = "SekoCommon-" + version
+version = "0.0.2"
+plugin = "Core-UltraStream-" + version
 

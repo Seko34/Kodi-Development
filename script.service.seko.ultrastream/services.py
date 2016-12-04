@@ -61,8 +61,10 @@ def launchServices():
             # ___ Update background progress        
             progressDialogBG.update(99)
             
-        # ___ Close background
-        progressDialogBG.close()
+        # ___ Close background      
+        progressDialogBG.update(100)
+        progressDialogBG.close()              
+        progressDialogBG = None
         
     # ___ Get tv show strm file
     if constant.__addon__.getSetting('activate_tvshow_service') == 'true':
@@ -146,11 +148,12 @@ def launchServices():
         # ___ Update background progress        
         progressDialogBG.update(100)
         # ___ Close background progress
-        progressDialogBG.close()
+        progressDialogBG.close()              
+        progressDialogBG = None
             
         # ___ Force to update library if necessary
         if constant.__addon__.getSetting('activate_movie_service') == 'true':    
             xbmc.executebuiltin('UpdateLibrary(video,'+constant.__addon__.getSetting('service_movie_dir')+')') 
         if constant.__addon__.getSetting('activate_tvshow_service') == 'true':
-            xbmc.executebuiltin('UpdateLibrary(video),'+constant.__addon__.getSetting('service_tvshow_dir')+')')       
+            xbmc.executebuiltin('UpdateLibrary(video)')       
     
