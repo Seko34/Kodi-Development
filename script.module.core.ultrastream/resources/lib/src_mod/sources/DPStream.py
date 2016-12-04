@@ -16,6 +16,8 @@ import webUtil
 import strUtil
 import re
 import constant
+import urllib2
+import traceback
 from BeautifulSoup import BeautifulSoup
 from pydoc import synopsis
 from src_mod.sourceTemplate import streamingSourceTemplate as Source
@@ -758,25 +760,12 @@ class DPStream(Source):
         for el in elementList:
             response = self.openPage(el.getHref()[:len(el.getHref())-1])
             if response is not None and response.getcode() == 200:
-                content = response.read()
-                indexId = content.find('sessionId: "')
-                if indexId > 0:                
-                    print el.getHref()[:len(el.getHref())-1]
-                    print response.info()
-                    print content
-                    print content[indexId+12:indexId+52]
-                    sessionPattern = re.compile('(.*)(sessionId: ")(.*)(",)(.*)',re.DOTALL)
-                    match = sessionPattern.match(content)
-                    if match is not None:
-                        id1 = match.group(3)
-                        print id1
                 
-                else:
-                    hostname = el.getHostname()
-                    url = response.geturl()
-                    el.setHref(url)
-                    el.setPlayableUrl(url)
-                    el.setHostname(hostname)
+                hostname = el.getHostname()
+                url = response.geturl()
+                el.setHref(url)
+                el.setPlayableUrl(url)
+                el.setHostname(hostname)
                     
         return elementList
     

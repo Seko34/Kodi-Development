@@ -1,3 +1,5 @@
+Version 0.0.3:
+-Add unshort url with viid.me
 Version 0.0.2:
 -Fix bugs on StreamItem
 -Fix DPStream link

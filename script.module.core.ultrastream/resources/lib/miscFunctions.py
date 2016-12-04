@@ -23,6 +23,7 @@ import kodiUtil
 import webUtil
 import constant
 import history
+from unshortenurl import UnshortenUrl
 from item import StreamItem
 from logger import Logger
 
@@ -40,7 +41,12 @@ def displayVideoOptions(streamItem):
     
     __LOGGER__.log("Try to resolve url "+streamItem.getHref(),xbmc.LOGDEBUG)
     
-
+    # ___ Try to unshort link
+    unshort = UnshortenUrl()
+    href = unshort.unshortUrl(streamItem.getHref())
+    __LOGGER__.log('Unshort url : '+str(href))
+    streamItem.setHref(href)
+    
     # ___ Resolve url
     playableUrl = False
     progress = xbmcgui.DialogProgress()
