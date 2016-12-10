@@ -936,7 +936,7 @@ class StreamItem:
             if 'year' in self.Item['metadata']:
                 nfoFile.write('\t<year>'+str(self.Item['metadata']['year'])+'</year>\n')
             if 'duration' in self.Item['metadata'] and len(str(self.Item['metadata']['duration']))>0:
-                nfoFile.write('\t<runtime>'+str(self.Item['metadata']['duration'].encode('utf-8'))+'</runtime>\n')
+                nfoFile.write('\t<runtime>'+str(self.Item['metadata']['duration'])+'</runtime>\n')
             if 'mpaa' in self.Item['metadata'] and len(self.Item['metadata']['mpaa'])>0:
                 nfoFile.write('\t<mpaa>'+str(self.Item['metadata']['mpaa'].encode('utf-8'))+'</mpaa>\n')
             if 'rating' in self.Item['metadata']:
@@ -997,7 +997,7 @@ class StreamItem:
             if 'year' in self.Item['metadata']:
                 nfoFile.write('\t<year>'+str(self.Item['metadata']['year'])+'</year>\n')
             if 'duration' in self.Item['metadata'] and len(str(self.Item['metadata']['duration']))>0:
-                nfoFile.write('\t<runtime>'+str(self.Item['metadata']['duration'].encode('utf-8'))+'</runtime>\n')
+                nfoFile.write('\t<runtime>'+str(self.Item['metadata']['duration'])+'</runtime>\n')
             if 'mpaa' in self.Item['metadata'] and len(self.Item['metadata']['mpaa'])>0:
                 nfoFile.write('\t<mpaa>'+str(self.Item['metadata']['mpaa'].encode('utf-8'))+'</mpaa>\n')
             if 'rating' in self.Item['metadata']:

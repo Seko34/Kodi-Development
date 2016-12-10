@@ -27,6 +27,7 @@ import metadata
 from BeautifulSoup import BeautifulSoup
 import src_mod as sources
 from item import StreamItem
+from logger import Logger
 
 
 # ____________________     C L A S S       ____________________
@@ -37,6 +38,7 @@ class Filmou(pyxbmct.AddonDialogWindow):
         
         Used for search a movie from watamovie
     """
+    __LOGGER__ = Logger('UltraStream-Watamovie')
     
     def __init__(self):
         """
@@ -59,14 +61,21 @@ class Filmou(pyxbmct.AddonDialogWindow):
         # ___ Set window width, height and grid resolution
             # ___ Get the current screenresolution
         resolution = xbmc.getInfoLabel('System.ScreenResolution')
+        self.__LOGGER__.log(str(resolution),xbmc.LOGDEBUG)
         resolutionPattern = re.compile('(.*)(x)(.*)(@)(.*)')
         match  = resolutionPattern.match(resolution)
         xmax = int(match.group(1))
-        ymax = int(match.group(3))
+        ymax = int(match.group(3))        
+        self.__LOGGER__.log(str(xmax),xbmc.LOGDEBUG)        
+        self.__LOGGER__.log(str(ymax),xbmc.LOGDEBUG)
             # ___ Calculate the width an height
         xGeometry = int( xmax*0.75)
         yGeometry = int( ymax*0.75)
-        xGeometry = min(500,xGeometry)
+        xGeometry = min(500,xGeometry)        
+        yGeometry = min(550,yGeometry)        
+        
+        self.__LOGGER__.log(str(xGeometry),xbmc.LOGDEBUG)        
+        self.__LOGGER__.log(str(yGeometry),xbmc.LOGDEBUG)
             # ___ Set the width height and grid
         self.setGeometry(xGeometry, yGeometry, 15, 2)
         

@@ -3,7 +3,7 @@
 	<!-- ########################################################################################### -->
 	<!-- 								Start - Property to change 									 -->
 	<!-- ########################################################################################### -->
-	<property name="version" value="0.1.2"/> 
+	<property name="version" value="0.1.3"/> 
 	<property name="projectName" value="plugin.video.seko.ultrastream"/>
 	<property name="destination" value="${basedir}/../zips/${projectName}"/> 
 	<property name="xbmc_addon_dir" value="${user.home}/AppData/Roaming/Kodi/addons"/> 
@@ -12,8 +12,26 @@
 	<!-- ########################################################################################### -->	
 	
 	
-	<!-- Copy the project to the local XBMC add-on directory (For Test) -->	
-	<target name="copy-to-xbmc" description="Copy the project to the xbmc add-on directory">
+	<!-- Update version -->
+	<target name="updateVersion">	
+		<!-- Update addon.xml -->	
+		<replaceregexp file="addon.xml"
+		               match="addon id=&quot;${projectName}&quot; name=(.*) version=&quot;(.{5})&quot;"
+		               replace="addon id=&quot;${projectName}&quot; name=\1 version=&quot;${version}&quot;"
+		/>
+		<!-- Update addons.xml -->
+		<replaceregexp file="../addons.xml"
+		               match="addon id=&quot;${projectName}&quot; name=(.*) version=&quot;(.{5})&quot;"
+		               replace="addon id=&quot;${projectName}&quot; name=\1 version=&quot;${version}&quot;"
+		/>
+		<replaceregexp file="../addons.xml"
+		               match="addon id=&quot;${projectName}&quot; name=(.*) version=&quot;(.{5})&quot;"
+		               replace="addon id=&quot;${projectName}&quot; name=\1 version=&quot;${version}&quot;"
+		/>
+	</target>
+	
+	<!-- Copy the project to the local XBMC add-on directory (For Test) -->		
+	<target name="copy-to-xbmc" depends="updateVersion" description="Copy the project to the xbmc add-on directory">
 		<delete dir="${xbmc_addon_dir}/${projectName}"/>
 				<copy todir="${xbmc_addon_dir}/${projectName}" overwrite="true">
 			<fileset dir=".">

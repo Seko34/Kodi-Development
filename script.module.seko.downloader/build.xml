@@ -1,4 +1,4 @@
-<project name="XBMC Seko Downloader Module" default="build-project"> 
+<project name="KODI Seko Downloader Module" default="build-project"> 
     
 	<!-- ########################################################################################### -->
 	<!-- 								Start - Property to change 									 -->
@@ -11,9 +11,38 @@
 	<!-- 								End   - Property to change 									 -->
 	<!-- ########################################################################################### -->	
 	
-	
+
+	<!-- Update version -->
+	<target name="updateVersion">	
+
+		<!-- Update addon.xml -->
+		<replaceregexp file="addon.xml"
+		               match="addon id=&quot;${projectName}&quot; name=(.*) version=&quot;(.{5})&quot;"
+		               replace="addon id=&quot;${projectName}&quot; name=\1 version=&quot;${version}&quot;"
+					/>
+		<!-- Update addons.xml -->
+		<replaceregexp file="../addons.xml"
+		               match="addon id=&quot;${projectName}&quot; name=(.*) version=&quot;(.{5})&quot;"
+		               replace="addon id=&quot;${projectName}&quot; name=\1 version=&quot;${version}&quot;"
+		/>
+		<replaceregexp file="../addons.xml"
+		               match="addon=&quot;${projectName}&quot; version=&quot;(.{5})&quot;"
+		               replace="addon=&quot;${projectName}&quot; version=&quot;${version}&quot;"
+					   byline="true"
+		/>
+		<!-- Update addon.xml of plugin.video.seko.ultrastream -->
+		<replaceregexp file="../plugin.video.seko.ultrastream/addon.xml"
+		               match="addon=&quot;${projectName}&quot; version=&quot;(.{5})&quot;"
+		               replace="addon=&quot;${projectName}&quot; version=&quot;${version}&quot;"
+		/>
+		<!-- Update addon.xml of script.module.core.ultrastream -->
+		<replaceregexp file="../script.module.core.ultrastream/addon.xml"
+		               match="addon=&quot;${projectName}&quot; version=&quot;(.{5})&quot;"
+		               replace="addon=&quot;${projectName}&quot; version=&quot;${version}&quot;"
+		/>
+	</target>
 	<!-- Copy the project to the local XBMC add-on directory (For Test) -->	
-	<target name="copy-to-xbmc" description="Copy the project to the xbmc add-on directory">
+	<target name="copy-to-xbmc" depends="updateVersion" description="Copy the project to the xbmc add-on directory">
 		<copy todir="${xbmc_addon_dir}/${projectName}" overwrite="true">
 			<fileset dir=".">
 			      <exclude name="build.xml"/>

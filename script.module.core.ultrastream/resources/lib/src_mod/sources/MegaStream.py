@@ -491,8 +491,6 @@ class MegaStream(Source):
         # ___ Get the soup
         soup = self._initOpenPage(streamItem)
                         
-          
-        links = soup.findAll('a',{'class':'videos-other vo-3 nosel'})
         qualities = soup.findAll('a',{'href':re.compile('(#lecteur_)(.*)')})  
         links = soup.findAll('div',{'id':re.compile('(lecteur_)(.*)')})   
                      
@@ -504,19 +502,22 @@ class MegaStream(Source):
                 lecteurQualityId = quality['href'].replace('#lecteur_','')
                 
                 if lecteurQualityId == lecteurId:
-                    href = base64.b64decode(link.find('a',{'class':'videos-other vo-3 nosel'})['data-tnetnoc-crs'])[::-1]
-                    lang = quality.find('img')['title'].encode('UTF-8')
-                    qual = quality.text.encode('UTF-8').strip()                
-                    # __ Create the element                       
-                    element = streamItem.copy()
-                    element.setAction(StreamItem.ACTION_PLAY)
-                    element.setType(StreamItem.TYPE_STREAMING_LINK)
-                    element.setLang(lang)
-                    element.setQuality(qual)
-                    element.setHref(href)               
-                    element.regenerateKodiTitle()
-                                        
-                    self.appendLinkInList(element, elementList)                                
+                    
+                    aEl = link.find('a',{'class':'videos-other vo-3 nosel'})
+                    if aEl is not None:
+                        href = base64.b64decode(aEl['data-tnetnoc-crs'])[::-1]
+                        lang = quality.find('img')['title'].encode('UTF-8')
+                        qual = quality.text.encode('UTF-8').strip()                
+                        # __ Create the element                       
+                        element = streamItem.copy()
+                        element.setAction(StreamItem.ACTION_PLAY)
+                        element.setType(StreamItem.TYPE_STREAMING_LINK)
+                        element.setLang(lang)
+                        element.setQuality(qual)
+                        element.setHref(href)               
+                        element.regenerateKodiTitle()
+                                            
+                        self.appendLinkInList(element, elementList)                     
                       
         return elementList
     

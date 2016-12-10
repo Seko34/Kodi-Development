@@ -1,3 +1,6 @@
+V0.1.3
+-Update Core module
+-Fix watamovie window resolution
 V0.1.2
 -Update Core module
 V0.1.1

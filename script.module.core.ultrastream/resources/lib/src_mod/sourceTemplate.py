@@ -716,7 +716,7 @@ class streamingSourceTemplate(object):
         # Movies HD
         if self.MAIN_MENU_MOVIE_HD in self.MAIN_MENU_OPT:  
             movieHD = StreamItem(constant.__addon__.getLocalizedString(40030))
-            movieHD.setIconImage('resources/media/films_hd.png') 
+            movieHD.setIconImage(constant.__coreAddonDir__+'/resources/media/films_hd.png') 
             movieHD.setType(StreamItem.TYPE_MOVIE_HD)
             movieHD.setAction(StreamItem.ACTION_DISPLAY_TYPE_MENU)
             movieHD.addListItemToDirectory()
@@ -725,7 +725,7 @@ class streamingSourceTemplate(object):
         # Movie
         if self.MAIN_MENU_MOVIE in self.MAIN_MENU_OPT:  
             movie = StreamItem(constant.__addon__.getLocalizedString(40031))
-            movie.setIconImage('resources/media/films.png') 
+            movie.setIconImage(constant.__coreAddonDir__+'/resources/media/films.png') 
             movie.setType(StreamItem.TYPE_MOVIE)
             movie.setAction(StreamItem.ACTION_DISPLAY_TYPE_MENU)
             movie.addListItemToDirectory()
@@ -733,7 +733,7 @@ class streamingSourceTemplate(object):
         # TV Show
         if self.MAIN_MENU_TVSHOW in self.MAIN_MENU_OPT:  
             tvshow = StreamItem(constant.__addon__.getLocalizedString(40032))
-            tvshow.setIconImage('resources/media/serietv.png') 
+            tvshow.setIconImage(constant.__coreAddonDir__+'/resources/media/serietv.png') 
             tvshow.setType(StreamItem.TYPE_TVSHOW)
             tvshow.setAction(StreamItem.ACTION_DISPLAY_TYPE_MENU)
             tvshow.addListItemToDirectory()
@@ -741,7 +741,7 @@ class streamingSourceTemplate(object):
         # Show
         if self.MAIN_MENU_SHOW in self.MAIN_MENU_OPT:  
             show = StreamItem(constant.__addon__.getLocalizedString(40033))
-            show.setIconImage('resources/media/show.png') 
+            show.setIconImage(constant.__coreAddonDir__+'/resources/media/show.png') 
             show.setType(StreamItem.TYPE_SHOW)
             show.setAction(StreamItem.ACTION_DISPLAY_TYPE_MENU)
             show.addListItemToDirectory()
@@ -750,7 +750,7 @@ class streamingSourceTemplate(object):
         
         if self.MAIN_MENU_DOCUMENTARY in self.MAIN_MENU_OPT:     
             documentary = StreamItem(constant.__addon__.getLocalizedString(40034))
-            documentary.setIconImage('resources/media/documentary.png') 
+            documentary.setIconImage(constant.__coreAddonDir__+'/resources/media/documentary.png') 
             documentary.setType(StreamItem.TYPE_DOCUMENTARY)
             documentary.setAction(StreamItem.ACTION_DISPLAY_TYPE_MENU)
             documentary.addListItemToDirectory()
@@ -758,7 +758,7 @@ class streamingSourceTemplate(object):
         # Anime
         if self.MAIN_MENU_ANIME in self.MAIN_MENU_OPT:  
             anime = StreamItem(constant.__addon__.getLocalizedString(40035))
-            anime.setIconImage('resources/media/anime.png') 
+            anime.setIconImage(constant.__coreAddonDir__+'/resources/media/anime.png') 
             anime.setType(StreamItem.TYPE_ANIME)
             anime.setAction(StreamItem.ACTION_DISPLAY_TYPE_MENU)
             anime.addListItemToDirectory()
@@ -766,7 +766,7 @@ class streamingSourceTemplate(object):
         # Download Manager
         if( constant.__addon__.getSetting('downloader_module') == '2'):        
             dlmanager = StreamItem(constant.__addon__.getLocalizedString(40038))
-            dlmanager.setIconImage('resources/media/urlresolver.png') 
+            dlmanager.setIconImage(constant.__coreAddonDir__+'/resources/media/urlresolver.png') 
             dlmanager.setType(StreamItem.TYPE_MENU)
             dlmanager.setAction(StreamItem.ACTION_DISPLAY_DOWNLOAD_MANAGER)
             dlmanager.addListItemToDirectory()
@@ -774,7 +774,7 @@ class streamingSourceTemplate(object):
         
         # Menu Settings
         menuSettings = StreamItem(constant.__addon__.getLocalizedString(40039))
-        menuSettings.setIconImage('resources/media/urlresolver.png') 
+        menuSettings.setIconImage(constant.__coreAddonDir__+'/resources/media/urlresolver.png') 
         menuSettings.setType(StreamItem.TYPE_MENU)
         menuSettings.setAction(StreamItem.ACTION_DISPLAY_MENU_SETTINGS)
         menuSettings.addListItemToDirectory()
@@ -782,14 +782,14 @@ class streamingSourceTemplate(object):
         
         # Resolver Settings
         #resolverSettings = StreamItem(constant.__addon__.getLocalizedString(40037))
-        #resolverSettings.setIconImage('resources/media/urlresolver.png') 
+        #resolverSettings.setIconImage(constant.__coreAddonDir__+'/resources/media/urlresolver.png') 
         #resolverSettings.setType(StreamItem.TYPE_SETTINGS)
         #resolverSettings.setAction(StreamItem.ACTION_DISPLAY_URLRESOLVER_SETTINGS)
         #resolverSettings.addListItemToDirectory()
             
         # Settings
         #menuSettings = StreamItem(constant.__addon__.getLocalizedString(40039))
-        #menuSettings.setIconImage('resources/media/urlresolver.png') 
+        #menuSettings.setIconImage(constant.__coreAddonDir__+'/resources/media/urlresolver.png') 
         #menuSettings.setType(StreamItem.TYPE_SETTINGS)
         #menuSettings.setAction(StreamItem.ACTION_DISPLAY_SETTINGS)
         #menuSettings.addListItemToDirectory()
@@ -815,7 +815,7 @@ class streamingSourceTemplate(object):
         # Search movie
         if self.MENU_MOVIE_SEARCH in self.MENU_MOVIE_OPT and constant.__addon__.getSetting('only_global_search') == 'false':  
             search = StreamItem(constant.__addon__.getLocalizedString(60061))
-            #movieHD.setIconImage('resources/media/films_hd.png') 
+            #movieHD.setIconImage(constant.__coreAddonDir__+'/resources/media/films_hd.png') 
             search.setType(StreamItem.TYPE_MOVIE)
             search.setAction(StreamItem.ACTION_SEARCH)
             search.addListItemToDirectory()
@@ -823,7 +823,7 @@ class streamingSourceTemplate(object):
         # Global Search movie
         if constant.__addon__.getSetting('use_global_search') == 'true':  
             search = StreamItem(constant.__addon__.getLocalizedString(60062))
-            #movieHD.setIconImage('resources/media/films_hd.png') 
+            #movieHD.setIconImage(constant.__coreAddonDir__+'/resources/media/films_hd.png') 
             search.setType(StreamItem.TYPE_MOVIE)
             search.setAction(StreamItem.ACTION_GLOBAL_SEARCH)
             search.addListItemToDirectory()
@@ -1255,7 +1255,7 @@ class streamingSourceTemplate(object):
          
         # Resolver Settings
         resolverSettings = StreamItem(constant.__addon__.getLocalizedString(40037))
-        resolverSettings.setIconImage('resources/media/urlresolver.png') 
+        resolverSettings.setIconImage(constant.__coreAddonDir__+'/resources/media/urlresolver.png') 
         resolverSettings.setType(StreamItem.TYPE_SETTINGS)
         resolverSettings.setAction(StreamItem.ACTION_DISPLAY_URLRESOLVER_SETTINGS)
         resolverSettings.addListItemToDirectory()
@@ -1263,14 +1263,14 @@ class streamingSourceTemplate(object):
         # Metahandler Settings
         if( constant.__addon__.getSetting('getdetails') == '2'):        
             dlmanager = StreamItem(constant.__addon__.getLocalizedString(40040))
-            dlmanager.setIconImage('resources/media/urlresolver.png') 
+            dlmanager.setIconImage(constant.__coreAddonDir__+'/resources/media/urlresolver.png') 
             dlmanager.setType(StreamItem.TYPE_SETTINGS)
             dlmanager.setAction(StreamItem.ACTION_DISPLAY_METAHANDLER_SETTINGS)
             dlmanager.addListItemToDirectory()
             
         # Settings
         resolverSettings = StreamItem(constant.__addon__.getLocalizedString(40041))
-        resolverSettings.setIconImage('resources/media/urlresolver.png') 
+        resolverSettings.setIconImage(constant.__coreAddonDir__+'/resources/media/urlresolver.png') 
         resolverSettings.setType(StreamItem.TYPE_SETTINGS)
         resolverSettings.setAction(StreamItem.ACTION_DISPLAY_SETTINGS)
         resolverSettings.addListItemToDirectory()        
