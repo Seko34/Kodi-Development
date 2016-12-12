@@ -255,7 +255,7 @@ class streamingSourceTemplate(object):
     def login(self):
         pass
     
-    def openPage(self, href=None, byPassLogin=False):
+    def openPage(self, href=None, byPassLogin=False, cHeaders=webUtil.HEADER_CFG):
         """
             Method to open a page 
             @param href: href value of a link
@@ -267,7 +267,8 @@ class streamingSourceTemplate(object):
         if not byPassLogin and not self.isLogin():
             self.login()
                
-        request = urllib2.Request(self.buildHref(href), headers=webUtil.HEADER_CFG)
+        
+        request = urllib2.Request(self.buildHref(href), headers=cHeaders)
         response = None
         
         try: 

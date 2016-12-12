@@ -22,7 +22,7 @@ import urlresolver
 import pyxbmct
 import cookielib
 import constant
-import miscFunctions
+import player
 import metadata
 from BeautifulSoup import BeautifulSoup
 import src_mod as sources
@@ -582,7 +582,7 @@ class FilmouResults(pyxbmct.AddonDialogWindow):
             # ___If the url is resolved, display the the list of possibilities (Open in web browser, Play, Download or Download & Play )
             if playableUrl != False  and isinstance(playableUrl,unicode) :        
                 listItems[result].setPlayableUrl(playableUrl)
-                miscFunctions.playVideo(listItems[result])
+                player.playVideo(listItems[result])
             else:
                 # ___ If the url is not resolved, display link choice again.
                 error = False                

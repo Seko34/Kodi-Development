@@ -16,8 +16,8 @@ import xbmcaddon
 import xbmc
 import src_mod as sources
 import miscFunctions
+import player
 import xbmcgui
-import xbmcplugin
 import downloaderModule
 import metadata
 import constant
@@ -93,7 +93,7 @@ def router(params):
                 listItems = __SOURCE__.getDocumentaryLink(paramsItem)
             
             progress.close()            
-            miscFunctions.playStrm(listItems)
+            player.playStrm(listItems)
                 
         
         # ___ MAIN MENU
@@ -372,7 +372,7 @@ def router(params):
                     
         # ___ DISPLAY VIDEO OPTION           
         elif int(params['action']) == StreamItem.ACTION_PLAY:
-            miscFunctions.displayVideoOptions(paramsItem)     
+            player.displayVideoOptions(paramsItem)     
        
         # ___ SETTINGS MENU
         elif int(params['action']) == StreamItem.ACTION_DISPLAY_MENU_SETTINGS:

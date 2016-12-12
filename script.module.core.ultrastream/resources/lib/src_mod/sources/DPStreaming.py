@@ -24,7 +24,9 @@ else:
     
 # ____________________        C L A S S          ____________________
 class DPStreaming(Source):
-    
+    """
+        @todo: Ajouter la partie series/mangas/exclue etc...
+    """
     
     # ___ The source ID
     ID = 2

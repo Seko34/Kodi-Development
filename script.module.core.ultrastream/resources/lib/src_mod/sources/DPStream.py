@@ -1864,7 +1864,12 @@ class DPStream(Source):
         elementList = []
             
         # ___ Try to open the link
-        response = self.openPage(hrefPage)
+        # ___ Add 'Referer' and 'X-Requested-With' values on headers
+        headers = webUtil.HEADER_CFG
+        headers['X-Requested-With']='XMLHttpRequest'
+        headers['Referer']='http://www.dpstream.net/films-recherche'
+        
+        response = self.openPage(hrefPage,cHeaders=headers)
         if response and response.getcode() == 200:
             
             elementList = self.getContentMovieList(response, streamItem)

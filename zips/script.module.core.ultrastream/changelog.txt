@@ -1,7 +1,10 @@
+Version 0.0.5:
+-Update DPStream (Fix getMovieListByGenre method)
+-Add automatically play video option
 Version 0.0.4:
 -Fix MegaStream
 -Fix media
-ersion 0.0.3:
+Version 0.0.3:
 -Add unshort url with viid.me
 Version 0.0.2:
 -Fix bugs on StreamItem

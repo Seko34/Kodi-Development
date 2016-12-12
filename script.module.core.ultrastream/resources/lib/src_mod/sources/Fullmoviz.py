@@ -26,7 +26,9 @@ else:
 
 # ____________________        C L A S S          ____________________
 class Fullmoviz(Source):
-    
+    """
+        @todo: Ajouter method getmoviesbygenre
+    """
     
     # ___ The source ID
     ID = 4
