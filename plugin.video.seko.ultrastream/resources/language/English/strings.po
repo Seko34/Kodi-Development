@@ -85,6 +85,10 @@ msgctxt "#50000"
 msgid "General"
 msgstr ""
 
+msgctxt "#50001"
+msgid "Play automatically"
+msgstr ""
+
 msgctxt "#50010"
 msgid "Android Web Browser (Android only)"
 msgstr ""
@@ -481,6 +485,10 @@ msgstr ""
 
 msgctxt "#70013"
 msgid "Choose a link"
+msgstr ""
+
+msgctxt "#70014"
+msgid "Link unavailable"
 msgstr ""
 
 ##

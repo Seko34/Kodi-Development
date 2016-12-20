@@ -1,3 +1,6 @@
+v0.1.5
+-Update DPStream (Use https)
+-Update language file
 v0.1.4
 -Update DPStream (Fix getMovieListByGenre method)
 -Add automatically play video option

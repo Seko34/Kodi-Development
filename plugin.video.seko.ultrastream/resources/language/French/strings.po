@@ -85,13 +85,17 @@ msgctxt "#50000"
 msgid "General"
 msgstr ""
 
+msgctxt "#50001"
+msgid "Play automatically"
+msgstr "Lancer la lecture automatiquement"
+
 msgctxt "#50010"
 msgid "Android Web Browser (Android only)"
 msgstr "Navigateur WEB (Android seulement)"
 
 msgctxt "#50011"
 msgid "Android Browser to use"
-msgstr "Navigua	teur Web a utiliser pour android"
+msgstr "Naviguateur Web a utiliser pour android"
 
 msgctxt "#50012"
 msgid "Browser to use with real-debrid"
@@ -479,6 +483,11 @@ msgstr "bande annonce"
 msgctxt "#70013"
 msgid "Choose a link"
 msgstr "Choissisez un lien"
+
+msgctxt "#70014"
+msgid "Link unavailable"
+msgstr "Lien invalide"
+
 
 ##
 #	'-__	WATAMOVIE	__-'

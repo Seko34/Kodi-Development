@@ -255,7 +255,7 @@ class streamingSourceTemplate(object):
     def login(self):
         pass
     
-    def openPage(self, href=None, byPassLogin=False, cHeaders=webUtil.HEADER_CFG):
+    def openPage(self, href=None, byPassLogin=False, buildHref=True, cHeaders=webUtil.HEADER_CFG):
         """
             Method to open a page 
             @param href: href value of a link
@@ -266,9 +266,11 @@ class streamingSourceTemplate(object):
         # ___ If it's necessary, login in the web site
         if not byPassLogin and not self.isLogin():
             self.login()
-               
-        
-        request = urllib2.Request(self.buildHref(href), headers=cHeaders)
+            
+        if buildHref:
+            request = urllib2.Request(self.buildHref(href), headers=cHeaders)
+        else:            
+            request = urllib2.Request(href, headers=cHeaders)
         response = None
         
         try: 
@@ -277,7 +279,8 @@ class streamingSourceTemplate(object):
             response = e 
         except:
             traceback.print_exc()
-            miscFunctions.displayNotification('Error during opening a web page on '+self.NAME)
+            self.__LOGGER__.log('Error during opening a web page on '+self.NAME,xbmc.LOGERROR)
+            #miscFunctions.displayNotification('Error during opening a web page on '+self.NAME)
             
         return response
      
@@ -302,8 +305,10 @@ class streamingSourceTemplate(object):
         try: 
             response = self.urlOpener.open(request)            
         except:
+            self.__LOGGER__.log('Error during POST message on '+self.NAME,xbmc.LOGERROR)
+            self.__LOGGER__.log('POST DATA : '+str(data),xbmc.LOGERROR)
             traceback.print_exc()
-            miscFunctions.displayNotification('Error during POST message on '+self.NAME)
+            #miscFunctions.displayNotification('Error during POST message on '+self.NAME)
         return response
     
     def _initOpenPage(self,streamItem):       
@@ -321,8 +326,7 @@ class streamingSourceTemplate(object):
             response.close() 
                           
         else:
-           
-            miscFunctions.displayNotification('Unable to open page in ' + self.getName())                   
+            #miscFunctions.displayNotification('Unable to open page in ' + self.getName())                   
             self.__LOGGER__.log('Connection ERROR : Failed to open page (' + self.buildHref(streamItem.getHref()) + ')', xbmc.LOGERROR)
         
         

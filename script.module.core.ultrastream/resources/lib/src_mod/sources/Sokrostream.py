@@ -13,11 +13,13 @@ import xbmc
 import sys
 import re
 import strUtil
+import copy
 import constant as constant
 from BeautifulSoup import BeautifulSoup
 from src_mod.sourceTemplate import streamingSourceTemplate as Source
 from item import StreamItem
 from logger import Logger
+import webUtil
 
 if sys.argv[0].endswith('test.py'):
     import resources.lib.test.dummyMiscFunctions as miscFunctions
@@ -201,7 +203,7 @@ class Sokrostream(Source):
                 movie = movies[index]                
                 seasonText = movie.find('div',{'class':'movief'}).text.encode('UTF-8')
                 
-                seasonPattern = re.compile("(.*)( Saison )(.*)")
+                seasonPattern = re.compile("(.*)(Saison )(.*)")
                 match = seasonPattern.match(seasonText)
                 if match is not None:                    
                 
@@ -277,9 +279,14 @@ class Sokrostream(Source):
         """  
         element = None  
         postHref = streamItem.getHref()
-        param = {'levideo':id}
+        param = {'levideo':str(id)}
+        headers = copy.copy(webUtil.HEADER_CFG)
+        headers['Referer'] = streamItem.getHref()
+        headers['Host'] = 'sokrostream.biz'
+        headers['Origin'] = 'http://sokrostream.biz'
+        headers['Upgrade-Insecure-Requests:'] = '1'
         
-        response = self.postPage(postHref, param)
+        response = self.postPage(postHref, param,headers=headers)
         
         if response and response.getcode() == 200:   
             content = response.read()
@@ -287,7 +294,29 @@ class Sokrostream(Source):
             
             # __ Case of iFrame
             link = soup.find('div',{'class':'bgvv'}).find('iframe')
-            if link is not None and not link['src'].startswith('http://sokrostream.biz/'):
+            if link is not None and link['src'].startswith('http://sokrostrem.xyz/video.php?p'):
+                headers = copy.copy(webUtil.HEADER_CFG)
+                headers['Referer'] = streamItem.getHref()
+                headers['Host'] = 'sokrostrem.xyz'
+                headers['Upgrade-Insecure-Requests:'] = '1'
+                response2 = self.openPage(link['src'],buildHref=False,cHeaders=headers)
+                if response2 and response2.getcode() == 200:   
+                    content2 = response2.read()
+                    soup2 = BeautifulSoup(content2)
+                    content = soup2.find('meta')['content']
+                    contentPattern = re.compile('(.*)(url=)(.*)')
+                    match = contentPattern.match(content)
+                    if match is not None :
+                        href = match.group(3)
+                        if href is not None and not href.startswith('http://sokrostream'):
+                            # __ Create the element                       
+                            element = streamItem.copy()
+                            element.setAction(StreamItem.ACTION_PLAY)
+                            element.setType(StreamItem.TYPE_STREAMING_LINK)
+                            element.setHref(href)                 
+                            element.regenerateKodiTitle()
+                            
+            elif link is not None and not link['src'].startswith('http://sokrostream'):
                 # ___ Case of streaming link
                 href = link['src'].encode('UTF-8')
                 href = self.formatLink(href)
@@ -298,7 +327,7 @@ class Sokrostream(Source):
                 element.setHref(href)                 
                 element.regenerateKodiTitle()
                 
-            elif link is not None and link['src'].startswith('http://sokrostream.biz/'):
+            elif link is not None and link['src'].startswith('http://sokrostream'):
                 # ___ Case of download link
                 response = self.openPage(link['src'])
                 if response and response.getcode() == 200:   
@@ -314,6 +343,7 @@ class Sokrostream(Source):
                         element.setType(StreamItem.TYPE_STREAMING_LINK)
                         element.setHref(href)                 
                         element.regenerateKodiTitle()  
+            
             
         return element
     
@@ -381,7 +411,7 @@ class Sokrostream(Source):
                     self.__LOGGER__.log("Finded title: "+title,xbmc.LOGDEBUG)
                     href = movie.find('a')['href']
                     year = strUtil.getYearFromTitle(title) 
-                    quality = movie.find('div',{'class':'movies'}).text.encode('UTF-8')
+                    quality = movie.find('div',{'class':re.compile('(movies)(.*)')}).text.encode('UTF-8')
                     langClass = movie.find('span')['class']
                     lang = None
                     subtitle = None

@@ -42,7 +42,7 @@ class DPStream(Source):
     NAME = 'DPStream'
     
     # WEB PAGE BASE
-    WEB_PAGE_BASE = "http://www.dpstream.net/"
+    WEB_PAGE_BASE = "https://www.dpstream.net/"
     
     # LOGGER    
     __LOGGER__ = Logger('UltraStream','DPStream')
@@ -713,10 +713,12 @@ class DPStream(Source):
         # Get all link from movies/filter_player_data
         post_href = 'movies/filter_player_data'
         data = {'movie_id':movieStreamItem.getId(),'player_id':0,'quality_id':0}
+        self.__LOGGER__.log(str(data))
         response = self.postPage(post_href, data, headers=self.DPSTREAM_POST_HEADER_CFG)
        
         if response and response.getcode() == 200: 
             content = response.read()
+            print content
             soup = BeautifulSoup(content)
             
             #lignes = soup.find('tbody',{'id':'show_more_player_result'}).findAll('tr')
