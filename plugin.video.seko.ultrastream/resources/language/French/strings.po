@@ -91,7 +91,7 @@ msgstr "Lancer la lecture automatiquement"
 
 msgctxt "#50002"
 msgid "Display links with a pop-up"
-msgstr "Afficher les liens dans une fenêtre"
+msgstr "Afficher les liens dans une fenetre"
 
 msgctxt "#50010"
 msgid "Android Web Browser (Android only)"
