@@ -2,7 +2,7 @@
 <addon id="script.service.seko.ultrastream" name="Seko Ultrastream Service" version="0.0.4" provider-name="Seko">
   <requires>
     <import addon="xbmc.python" version="2.6.0" />
-  	<import addon="script.module.core.ultrastream" version="0.0.6"/>
+  	<import addon="script.module.core.ultrastream" version="0.0.7"/>
   </requires>
   <extension point="xbmc.python.module" library="lib" />
   <extension point="xbmc.service"  library="default.py" />

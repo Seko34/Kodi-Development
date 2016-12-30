@@ -64,9 +64,16 @@ def displayVideoOptions(streamItem):
     elif playableUrl != False  and isinstance(playableUrl,unicode) and constant.__addon__.getSetting('play_auto') == 'false':
         
         streamItem.setPlayableUrl(playableUrl)
-        if constant.__addon__.getSetting('downloader_module') == '0':
+        if constant.__addon__.getSetting('downloader_module') == '0' and constant.__addon__.getSetting('activate_web_browser') == 'false':
             # ___ Do not display download choice if the downloader is not set.
-            liste = [constant.__addon__.getLocalizedString(70001),constant.__addon__.getLocalizedString(70002)]            
+            liste = [constant.__addon__.getLocalizedString(70001)]            
+        elif constant.__addon__.getSetting('downloader_module') == '0' and constant.__addon__.getSetting('activate_web_browser') == 'true':
+            # ___ Do not display download choice if the downloader is not set.
+            liste = [constant.__addon__.getLocalizedString(70001),constant.__addon__.getLocalizedString(70002)]
+        
+        elif constant.__addon__.getSetting('downloader_module') != '0' and constant.__addon__.getSetting('activate_web_browser') == 'false':
+            # ___ Do not display download choice if the downloader is not set.
+            liste = [constant.__addon__.getLocalizedString(70001),constant.__addon__.getLocalizedString(70003)]      
         else:
             liste = [constant.__addon__.getLocalizedString(70001),constant.__addon__.getLocalizedString(70002),constant.__addon__.getLocalizedString(70003)]
         
@@ -74,7 +81,7 @@ def displayVideoOptions(streamItem):
         select = selectDialog.select(constant.__addon__.getLocalizedString(70000), liste)
         if select == 0:
             playVideo(streamItem) 
-        elif select == 1:        
+        elif select == 1 and constant.__addon__.getSetting('activate_web_browser') == 'true':        
             isRealDebrid = False
             
             # ___ If we use real-debrid, build the streaming page : 
@@ -92,15 +99,15 @@ def displayVideoOptions(streamItem):
             
             # ___ Create or update the history
             history.createOrUpdateHistory(streamItem)
+        
+        elif select == 1 and constant.__addon__.getSetting('activate_web_browser') == 'false':   
+            miscFunctions.downloadFile(streamItem, False)                              
         elif select == 2:
             miscFunctions.downloadFile(streamItem, False)                              
           
-    # __ Else display notification for unavailable link
-    elif  constant.__addon__.getSetting('play_auto') == 'true':
-        miscFunctions.displayNotification(constant.__addon__.getLocalizedString(70014),'info')
         
     # __ Else display limited options        
-    else:
+    elif constant.__addon__.getSetting('activate_web_browser') == 'true': 
         __LOGGER__.log("Unable to resolve url "+streamItem.getHref(),xbmc.LOGWARNING)        
         
         # ___ Only display the option : Open in web browser
@@ -127,7 +134,10 @@ def displayVideoOptions(streamItem):
             
             # ___ Create or update the history     
             history.createOrUpdateHistory(streamItem)
-        
+            
+    # __ Else display notification for unavailable link
+    else:
+        miscFunctions.displayNotification(constant.__addon__.getLocalizedString(70014),'info') 
         
 def playVideo(streamItem):
     """
@@ -207,7 +217,10 @@ def playStrm(listItems):
         progress = xbmcgui.DialogProgress()
         progress.create(constant.__addon__.getLocalizedString(70006),constant.__addon__.getLocalizedString(70009))
         try:
-            playableUrl = urlresolver.resolve(listItems[result].getHref())
+            # ___ Try to unshort link
+            unshort = UnshortenUrl()
+            href = unshort.unshortUrl(listItems[result].getHref())
+            playableUrl = urlresolver.resolve(href)
         except:
             # ___ If the url is not resolved, display link choice again.
             error = True   
@@ -234,3 +247,128 @@ def playStrm(listItems):
                 listStr[result] = listItems[result].getKodiTitle()
                 result = dialog.select(constant.__addon__.getLocalizedString(70013), listStr)
                  
+
+def displayLinksInDialog(listItems):
+    """
+        Method to display a dialog with all link
+        @param listItems :  all StreamItem links
+    """
+    
+    # ___ Display links choice
+    dialog = xbmcgui.Dialog()
+    listStr = []
+    for index in range(0,len(listItems)):
+        item = listItems[index]
+        item.regenerateKodiTitle()
+        listStr.append(item.getKodiTitle())
+        
+    result = dialog.select(constant.__addon__.getLocalizedString(70013), listStr)
+    
+    # ___ Until the link is not resolved, we display the links choice dialog
+    if result > -1:
+        error = True
+    while error: 
+               
+        error = False
+        if int(listItems[result].getAction()) == StreamItem.ACTION_MORE_LINKS :
+            import src_mod as sources
+            listItems = sources.getMoreLinks(constant.__addon__.getSetting('default_stream_src'), listItems[result])
+            for item in listItems:
+                item.setMetadata(listItems[result].getMetadata())    
+            
+            listStr = []    
+            for index in range(0,len(listItems)):
+                item = listItems[index]
+                item.regenerateKodiTitle()
+                listStr.append(item.getKodiTitle())
+                
+            result = dialog.select(constant.__addon__.getLocalizedString(70013), listStr)
+            error = True
+       
+        else:
+            # ___ Resolve url
+            playableUrl = False
+            progress = xbmcgui.DialogProgress()
+            progress.create(constant.__addon__.getLocalizedString(70006),constant.__addon__.getLocalizedString(70009))
+            try:     
+                # ___ Try to unshort link
+                unshort = UnshortenUrl()
+                href = unshort.unshortUrl(listItems[result].getHref())
+                playableUrl = urlresolver.resolve(href)
+            except:
+                # ___ If the url is not resolved, display link choice again.
+                error = True   
+                listItems[result].setKOLinkStatus()
+                listItems[result].regenerateKodiTitle()
+                listStr[result] = listItems[result].getKodiTitle()
+                result = dialog.select(constant.__addon__.getLocalizedString(70013), listStr)
+                
+            progress.close()
+            __LOGGER__.log("Resolved url : "+str(playableUrl),xbmc.LOGDEBUG) 
+            
+            # ___If the url is resolved, display the the list of possibilities (Open in web browser, Play, Download or Download & Play )
+            if not error:
+                if playableUrl != False  and isinstance(playableUrl,unicode) :        
+                    
+                    streamItem = listItems[result]
+                    
+                    # ___If the url is resolved, play automatically if the setting is activated  
+                    if constant.__addon__.getSetting('play_auto') == 'true':
+                        streamItem.setPlayableUrl(playableUrl)
+                        playVideo(streamItem)
+                        
+                    # ___If the url is resolved, display the the list of possibilities (Open in web browser, Play, Download or Download & Play )    
+                    elif constant.__addon__.getSetting('play_auto') == 'false':
+                        
+                        streamItem.setPlayableUrl(playableUrl)
+                        if constant.__addon__.getSetting('downloader_module') == '0' and constant.__addon__.getSetting('activate_web_browser') == 'false':
+                            # ___ Do not display download choice if the downloader is not set.
+                            liste = [constant.__addon__.getLocalizedString(70001)]            
+                        elif constant.__addon__.getSetting('downloader_module') == '0' and constant.__addon__.getSetting('activate_web_browser') == 'true':
+                            # ___ Do not display download choice if the downloader is not set.
+                            liste = [constant.__addon__.getLocalizedString(70001),constant.__addon__.getLocalizedString(70002)]
+                        
+                        elif constant.__addon__.getSetting('downloader_module') != '0' and constant.__addon__.getSetting('activate_web_browser') == 'false':
+                            # ___ Do not display download choice if the downloader is not set.
+                            liste = [constant.__addon__.getLocalizedString(70001),constant.__addon__.getLocalizedString(70003)]      
+                        else:
+                            liste = [constant.__addon__.getLocalizedString(70001),constant.__addon__.getLocalizedString(70002),constant.__addon__.getLocalizedString(70003)]
+                        
+                        selectDialog = xbmcgui.Dialog()
+                        select = selectDialog.select(constant.__addon__.getLocalizedString(70000), liste)
+                        if select == 0:
+                            playVideo(streamItem) 
+                        elif select == 1 and constant.__addon__.getSetting('activate_web_browser') == 'true':        
+                            isRealDebrid = False
+                            
+                            # ___ If we use real-debrid, build the streaming page : 
+                            # ___     https://real-debrid.com/streaming-<MEDIA ID FOR REALDEBRID>
+                            if 'rdb.so' in str(playableUrl) or 'rdeb.io' in str(playableUrl):
+                                urlToPlay = "https://real-debrid.com/streaming-"+playableUrl.split("/")[4]                
+                                streamItem.setPlayableUrl(playableUrl)
+                                isRealDebrid = True
+                            
+                            # ___  For real-debrid we use firefox    
+                            if isRealDebrid:
+                                webUtil.openInWebbrowser(streamItem.getPlayableUrl(),constant.__addon__.getSetting('rd_web_browser'))   
+                            else:
+                                webUtil.openInWebbrowser(streamItem.getPlayableUrl(),constant.__addon__.getSetting('android_web_browser'))         
+                            
+                            # ___ Create or update the history
+                            history.createOrUpdateHistory(streamItem)
+                        
+                        elif select == 1 and constant.__addon__.getSetting('activate_web_browser') == 'false':   
+                            miscFunctions.downloadFile(streamItem, False)                              
+                        elif select == 2:
+                            miscFunctions.downloadFile(streamItem, False)
+                
+                else:
+                    # ___ If the url is not resolved, display link choice again.            
+                    error = True   
+                    listItems[result].setKOLinkStatus()
+                    listItems[result].regenerateKodiTitle()
+                    listStr[result] = listItems[result].getKodiTitle()
+                    result = dialog.select(constant.__addon__.getLocalizedString(70013), listStr)
+                
+        if result == -1:
+            error=False

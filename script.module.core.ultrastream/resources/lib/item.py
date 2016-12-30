@@ -310,7 +310,7 @@ class StreamItem:
         """
         
         self.Item['title'] = title #strUtil.unescapeHtml(title) #strUtil.normalize(title)
-        self.Item['dbTitle'] = strUtil.remove_special_char(self.Item['title'])
+        self.Item['dbTitle'] = strUtil.deleteAccent(strUtil.remove_special_char(self.Item['title']))
         
         self.regenerateKodiTitle()
     
@@ -702,6 +702,7 @@ class StreamItem:
             self.Item['action'] == self.ACTION_DISPLAY_METAHANDLER_SETTINGS or \
             self.Item['action'] == self.ACTION_DISPLAY_DOWNLOAD_MANAGER or \
             self.Item['action'] == self.ACTION_SEARCH_WATAMOVIE or \
+            (self.Item['action'] == self.ACTION_DISPLAY_LINKS and constant.__addon__.getSetting('links_in_dialog') == 'true') or \
             self.Item['action'] == self.ACTION_TEST :
             return False
         

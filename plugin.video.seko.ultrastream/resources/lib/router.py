@@ -307,7 +307,7 @@ def router(params):
                 listItems = __SOURCE__.getAnimeEpisodes(paramsItem)
             
         # ___ DISPLAY LINKS
-        elif int(params['action']) == StreamItem.ACTION_DISPLAY_LINKS:
+        elif int(params['action']) == StreamItem.ACTION_DISPLAY_LINKS and constant.__addon__.getSetting('links_in_dialog') == 'false':
             
             progress = xbmcgui.DialogProgress()
             progress.create(constant.__addon__.getLocalizedString(70006),constant.__addon__.getLocalizedString(70007)) 
@@ -335,7 +335,7 @@ def router(params):
             listItems.append(moreLink)
             
         # ___ GET MORE LINKS
-        elif int(params['action']) == StreamItem.ACTION_MORE_LINKS:
+        elif int(params['action']) == StreamItem.ACTION_MORE_LINKS and constant.__addon__.getSetting('links_in_dialog') == 'false':
             
             progress = xbmcgui.DialogProgress()
             progress.create(constant.__addon__.getLocalizedString(70006),constant.__addon__.getLocalizedString(70007)) 
@@ -370,6 +370,42 @@ def router(params):
                 elif int(params['type']) == StreamItem.TYPE_DOCUMENTARY:
                     listItems = __SOURCE__.searchDocumentary(title)
                     
+        # ___ DISPLAY LINKS IN DIALOG
+        elif int(params['action']) == StreamItem.ACTION_DISPLAY_LINKS and constant.__addon__.getSetting('links_in_dialog') == 'true':
+            
+            # __ MOVIE LINK
+            if int(params['type'])   == StreamItem.TYPE_MOVIE or int(params['type']) == StreamItem.TYPE_MOVIE_HD:
+                listItems = __SOURCE__.getMovieLink(paramsItem)
+            # __ TV SHOW LINK
+            elif int(params['type']) == StreamItem.TYPE_TVSHOW_EPISODE:                    
+                listItems = __SOURCE__.getTvShowEpisodeLink(paramsItem)
+            # __ ANIME LINK            
+            elif int(params['type']) == StreamItem.TYPE_ANIME_EPISODE: 
+                listItems = __SOURCE__.getAnimeEpisodeLink(paramsItem)
+            # __ SHOW LINK            
+            elif int(params['type']) == StreamItem.TYPE_SHOW: 
+                listItems = __SOURCE__.getShowLink(paramsItem)
+            # __ DOCUMENTARY LINK            
+            elif int(params['type']) == StreamItem.TYPE_DOCUMENTARY: 
+                listItems = __SOURCE__.getDocumentaryLink(paramsItem)
+          
+            # __ Add "More links" button
+            moreLink = paramsItem.copy()
+            moreLink.setAction(StreamItem.ACTION_MORE_LINKS)
+            moreLink.regenerateKodiTitle()
+            listItems.append(moreLink)
+            
+            player.displayLinksInDialog(listItems)
+            
+        # ___ GET MORE LINKS IN DIALOG
+        elif int(params['action']) == StreamItem.ACTION_MORE_LINKS and constant.__addon__.getSetting('links_in_dialog') == 'true':
+            
+            listItems = sources.getMoreLinks(constant.__addon__.getSetting('default_stream_src'), paramsItem)
+            for item in listItems:
+                item.setMetadata(paramsItem.getMetadata())
+            
+            player.displayLinksInDialog(listItems)
+            
         # ___ DISPLAY VIDEO OPTION           
         elif int(params['action']) == StreamItem.ACTION_PLAY:
             player.displayVideoOptions(paramsItem)     

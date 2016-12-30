@@ -89,6 +89,10 @@ msgctxt "#50001"
 msgid "Play automatically"
 msgstr "Lancer la lecture automatiquement"
 
+msgctxt "#50002"
+msgid "Display links with a pop-up"
+msgstr "Afficher les liens dans une fenêtre"
+
 msgctxt "#50010"
 msgid "Android Web Browser (Android only)"
 msgstr "Navigateur WEB (Android seulement)"
@@ -100,6 +104,10 @@ msgstr "Naviguateur Web a utiliser pour android"
 msgctxt "#50012"
 msgid "Browser to use with real-debrid"
 msgstr "Naviguateur Web a utiliser pour Real-debrid"
+
+msgctxt "#50013"
+msgid "Activate Web Browser"
+msgstr "Activer le navigateur Web"
 
 msgctxt "#50030"
 msgid "Use short list"

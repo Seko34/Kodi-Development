@@ -718,7 +718,6 @@ class DPStream(Source):
        
         if response and response.getcode() == 200: 
             content = response.read()
-            print content
             soup = BeautifulSoup(content)
             
             #lignes = soup.find('tbody',{'id':'show_more_player_result'}).findAll('tr')
