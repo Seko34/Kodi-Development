@@ -14,6 +14,7 @@ import xbmc
 import os
 import urlresolver
 import downloaderModule
+import strUtil
 import kodiUtil
 import constant
 from unshortenurl import UnshortenUrl
@@ -107,3 +108,20 @@ def writeSettingsFile(settingsTxt,serviceSettingsTxt):
         __LOGGER__.log("Settings file created/updated.")
     except:
         raise
+
+def filterLinksList(listItems):
+    """
+        Method to filter a links list, depends on settings
+        @param listItems: the list of links
+        @return the filtered links list
+    """
+    filteredList = []
+    
+    if constant.__addon__.getSetting('filter_screener_link') == 'true':
+        for item in listItems:
+            if not strUtil.isCAMQuality(item.getQuality()):
+                filteredList.append(item)
+    else:
+        filteredList = listItems
+    
+    return filteredList
