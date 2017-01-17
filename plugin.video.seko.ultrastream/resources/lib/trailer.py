@@ -62,8 +62,7 @@ class YoutubeTrailer(object):
             # ___ Initialize BeautifulSoup       
             soup = BeautifulSoup(content)
             link = soup.find('a',{'class':re.compile('(yt-uix-tile-link yt-ui-ellipsis yt-ui-ellipsis-2 yt-uix-sessionlink)(.*)(spf-link)(.*)')})
-            print content
-            print link
+            
             patternIdYoutube = re.compile('(\/watch\?v=)(.*)')
             match = patternIdYoutube.match(link['href'])
             if match is not None:

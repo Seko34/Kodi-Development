@@ -93,6 +93,10 @@ msgctxt "#50002"
 msgid "Display links with a pop-up"
 msgstr "Afficher les liens dans une fenetre"
 
+msgctxt "#50003"
+msgid "Not display screener links"
+msgstr "Ne pas afficher les liens CAM"
+
 msgctxt "#50010"
 msgid "Android Web Browser (Android only)"
 msgstr "Navigateur WEB (Android seulement)"

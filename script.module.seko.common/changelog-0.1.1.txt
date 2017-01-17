@@ -1,0 +1,23 @@
+Version 0.1.1:
+-Add "isCAMQualit"y method
+Version 0.1.0:
+-Fix bug
+Version 0.0.9:
+-Fix bug on strUtil lib
+Version 0.0.8:
+-Add util class
+Version 0.0.7:
+-Add history manager (with sqllite)
+-Add openInWebbrowser function
+Version 0.0.6:
+-Remove the movie db scraper
+Version 0.0.5:
+-Add history manager (with xml)
+Version 0.0.4:
+-Fix bugs
+Version 0.0.3:
+-Add function to the moviedb scrapper for season and episode
+Version 0.0.2:
+-Add the moviedb scrapper
+Version 0.0.1:
+-Initial version

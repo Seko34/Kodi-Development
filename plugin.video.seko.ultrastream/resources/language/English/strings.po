@@ -93,6 +93,10 @@ msgctxt "#50002"
 msgid "Display links with a pop-up"
 msgstr ""
 
+msgctxt "#50003"
+msgid "Not display screener links"
+msgstr ""
+
 msgctxt "#50010"
 msgid "Android Web Browser (Android only)"
 msgstr ""

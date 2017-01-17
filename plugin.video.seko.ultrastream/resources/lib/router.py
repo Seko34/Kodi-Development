@@ -334,6 +334,9 @@ def router(params):
             moreLink.regenerateKodiTitle()
             listItems.append(moreLink)
             
+            # ___ Filter the links list
+            listItems = miscFunctions.filterLinksList(listItems)
+            
         # ___ GET MORE LINKS
         elif int(params['action']) == StreamItem.ACTION_MORE_LINKS and constant.__addon__.getSetting('links_in_dialog') == 'false':
             
@@ -343,6 +346,9 @@ def router(params):
             listItems = sources.getMoreLinks(constant.__addon__.getSetting('default_stream_src'), paramsItem)
             for item in listItems:
                 item.setMetadata(paramsItem.getMetadata())
+                
+            # ___ Filter the links list
+            listItems = miscFunctions.filterLinksList(listItems)
                 
         # ___ SEARCH MOVIE, TVSHOW, ANIME ETC ...
         elif int(params['action']) == StreamItem.ACTION_SEARCH:
@@ -395,6 +401,9 @@ def router(params):
             moreLink.regenerateKodiTitle()
             listItems.append(moreLink)
             
+            # ___ Filter the links list
+            listItems = miscFunctions.filterLinksList(listItems)
+            
             player.displayLinksInDialog(listItems)
             
         # ___ GET MORE LINKS IN DIALOG
@@ -403,6 +412,9 @@ def router(params):
             listItems = sources.getMoreLinks(constant.__addon__.getSetting('default_stream_src'), paramsItem)
             for item in listItems:
                 item.setMetadata(paramsItem.getMetadata())
+            
+            # ___ Filter the links list
+            listItems = miscFunctions.filterLinksList(listItems)
             
             player.displayLinksInDialog(listItems)
             

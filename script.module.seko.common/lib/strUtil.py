@@ -422,12 +422,29 @@ def detectType(text):
         print "not a string"
         
 def toUTF8(text):
+    """
+        Method to encode a text in utf-8
+        @param text: the string to encode
+    """
     if isinstance(text, str):
         return text
     elif isinstance(text, unicode):
         return text.encode('UTF-8')
     else:
         return text
+    
+def isCAMQuality(quality):
+    """
+        Method which return true if the quality is a screener
+        @param quality: the quality string
+        @return true if the quality is a screener, else return false
+    """
+    patternCAM = re.compile('(TS|CAM|WEB|TS.MD|R5|R6|SCR|SCREENER)', re.IGNORECASE)
+    match = patternCAM.match(quality)
+    if match is not None:           
+        return True
+    else:
+        return False
     
 #title = 'http://youwatch.org/embed-0iohlgkcdrl7.html/'
 #print getHostname(title)
