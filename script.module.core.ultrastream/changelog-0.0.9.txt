@@ -1,0 +1,21 @@
+Version 0.0.9:
+-Add sh.st to unshorten url
+Version 0.0.8
+-Add filter for screener links
+Version 0.0.6:
+-Fix DPStream (Use https)
+-Fix Sokrostream
+-Update language file
+Version 0.0.5:
+-Update DPStream (Fix getMovieListByGenre method)
+-Add automatically play video option
+Version 0.0.4:
+-Fix MegaStream
+-Fix media
+Version 0.0.3:
+-Add unshort url with viid.me
+Version 0.0.2:
+-Fix bugs on StreamItem
+-Fix DPStream link
+Version 0.0.1:
+-Initial version

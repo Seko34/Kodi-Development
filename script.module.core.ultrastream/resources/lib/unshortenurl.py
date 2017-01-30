@@ -26,7 +26,8 @@ class UnshortenUrl(object):
     
     
     PATTERN_VIIDME = r'viid\.me'
-    
+    PATTERN_SHST = r'sh\.st'
+    PATTERN_SHST_WITH_FREEZE = r'http://sh.st/freeze/'
     
     def __init__(self):
         """
@@ -54,11 +55,15 @@ class UnshortenUrl(object):
             return url
         
         if re.search(self.PATTERN_VIIDME,url):
-            return self._unshortViidme(url)
+            return self._unshortshst(url,'viid.me')
+        elif re.search(self.PATTERN_SHST_WITH_FREEZE,url):
+            return self._unshortshst(url[20:])
+        elif re.search(self.PATTERN_SHST,url):
+            return self._unshortshst(url)
         else:
             return url
         
-    def _unshortViidme(self,url):
+    def _unshortshst(self,url,host='sh.st'):
         """
             Method to unshort Viid.me url
             @param url: the url to unshort
@@ -78,13 +83,13 @@ class UnshortenUrl(object):
                     # __ Get adSessionId
                     adSessionId = match.group(3)
                     # __ Construct url
-                    urlEnd  = 'http://viid.me/shortest-url/end-adsession?'
+                    urlEnd  = 'http://'+host+'/shortest-url/end-adsession?'
                     data1   = {'adSessionId':adSessionId,'callback':'c'}
                     dataStr = urllib.urlencode(data1)
                     urlEnd+=dataStr
                     # ___ Define headers
                     headers1 = copy.copy(self.HEADER_CFG)
-                    headers1["Host"]    = "viid.me"
+                    headers1["Host"]    = host
                     headers1["Referer"] = url
                     # ___ Sleep 5 seconds
                     currentSecond = 5
@@ -109,6 +114,7 @@ class UnshortenUrl(object):
                     if responseEnd is not None and responseEnd.getcode() == 200:
                         # ___ Get the destination url
                         contentEnd = responseEnd.read()
+                        print contentEnd
                         jsonResult = json.loads(contentEnd[6:-2].decode('utf-8'))
                         return jsonResult['destinationUrl']
         

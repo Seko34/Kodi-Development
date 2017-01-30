@@ -1,3 +1,5 @@
+v0.1.8
+-Update core module and service
 v0.1.7
 -Add filter for screener links
 v0.1.5

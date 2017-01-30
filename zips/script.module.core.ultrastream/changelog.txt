@@ -1,3 +1,5 @@
+Version 0.0.9:
+-Add sh.st to unshorten url
 Version 0.0.8
 -Add filter for screener links
 Version 0.0.6:
