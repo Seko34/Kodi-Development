@@ -52,6 +52,6 @@ def beginContentDirectory():
     """
         Method to begin the content of a directory
     """
-    xbmcplugin.setContent(__handle__, 'folder')
+    xbmcplugin.setContent(__handle__, 'addons')
     
     

@@ -1,3 +1,5 @@
+v0.1.1
+- Update common module
 v0.1.0
 - Change addons.xml
 v0.0.10

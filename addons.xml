@@ -14,13 +14,13 @@
 			<platform>all</platform>
 		</extension>
 	</addon>
-	<addon id="plugin.video.seko.ultrastream" name="UltraStream" version="0.1.8" provider-name="Seko">
+	<addon id="plugin.video.seko.ultrastream" name="UltraStream" version="0.1.9" provider-name="Seko">
 	  <requires>
 		<import addon="xbmc.python" version="2.7.0"/>
-		<import addon="script.module.core.ultrastream" version="0.0.9"/>
-		<import addon="script.service.seko.ultrastream" version="0.0.5"/>
-		<import addon="script.module.seko.common" version="0.1.1"/>
-		<import addon="script.module.seko.downloader" version="0.1.0"/>
+		<import addon="script.module.core.ultrastream" version="0.1.0"/>
+		<import addon="script.service.seko.ultrastream" version="0.0.6"/>
+		<import addon="script.module.seko.common" version="0.1.2"/>
+		<import addon="script.module.seko.downloader" version="0.1.1"/>
 		<import addon="script.module.pyxbmct" version="1.2" /> 
 		<import addon="script.module.beautifulsoup" version="3.2.1"/> 
 		<import addon="script.module.urlresolver" version="3.0.25"/> 
@@ -78,10 +78,10 @@
 		</extension>
 	</addon>
 	
-	<addon id="script.module.core.ultrastream" name="UltraStream Core Library" version="0.0.9" provider-name="Seko">
+	<addon id="script.module.core.ultrastream" name="UltraStream Core Library" version="0.1.0" provider-name="Seko">
 	  <requires>
 		<import addon="xbmc.python" version="2.6.0" />    
-		<import addon="script.module.seko.common" version="0.1.1"/>
+		<import addon="script.module.seko.common" version="0.1.2"/>
 		<import addon="script.module.seko.downloader" version="0.0.10"/>
 		<import addon="script.module.seko.scraper" version="0.0.4"/>
 		<import addon="script.module.beautifulsoup" version="3.2.1"/> 
@@ -95,10 +95,10 @@
 		<summary lang="fr">Librairie central pour UltraStream</summary>
 	  </extension>
 	</addon>
-	<addon id="script.service.seko.ultrastream" name="Seko Ultrastream Service" version="0.0.5" provider-name="Seko">
+	<addon id="script.service.seko.ultrastream" name="Seko Ultrastream Service" version="0.0.6" provider-name="Seko">
 	  <requires>
 		<import addon="xbmc.python" version="2.6.0" />
-		<import addon="script.module.core.ultrastream" version="0.0.9"/>
+		<import addon="script.module.core.ultrastream" version="0.1.0"/>
 	  </requires>
 	  <extension point="xbmc.python.module" library="lib" />
 	  <extension point="xbmc.service"  library="default.py" />
@@ -108,7 +108,7 @@
 		<summary lang="fr">Seko Ultrastream Service</summary>
 	  </extension>
 	</addon>
-	<addon id="script.module.seko.common" name="Seko Common Library" version="0.1.1" provider-name="Seko">
+	<addon id="script.module.seko.common" name="Seko Common Library" version="0.1.2" provider-name="Seko">
 	  <requires>
 		<import addon="xbmc.python" version="2.6.0" />    
 		<import addon="script.module.elementtree" version="1.2.8"/>
@@ -121,10 +121,10 @@
         <summary lang="fr">Module avec des fonctions standards, réutilisables pour d'autres addons.</summary>
 	  </extension>
 	</addon>
-	<addon id="script.module.seko.downloader" name="Seko Downloader" version="0.1.0" provider-name="Seko">
+	<addon id="script.module.seko.downloader" name="Seko Downloader" version="0.1.1" provider-name="Seko">
 	  <requires>
 		<import addon="xbmc.python" version="2.6.0" />
-		<import addon="script.module.seko.common" version="0.1.1"/>
+		<import addon="script.module.seko.common" version="0.1.2"/>
 		<!--  For Advanced Downloader --> 
 		<import addon="script.module.cryptopy" version="1.2.6"/>
 		<import addon="script.common.plugin.cache" version="2.5.8"/>
