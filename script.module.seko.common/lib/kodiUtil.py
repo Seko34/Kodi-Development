@@ -50,13 +50,13 @@ def endOfDirectory(isCached=True):
     """
     xbmcplugin.endOfDirectory(__handle__,cacheToDisc=isCached)    
     
-def beginContentDirectory():
+def beginContentDirectory(content='addons'):
     """
         Method to begin the content of a directory
     """
     if int(__kodiVersion__) < 17:        
-        xbmcplugin.setContent(__handle__, 'addons')
-    else:
         xbmcplugin.setContent(__handle__, 'folder')
+    else:
+        xbmcplugin.setContent(__handle__, content)
     
     

@@ -1,3 +1,5 @@
+Version 0.0.8:
+-Update Core module
 Version 0.0.7:
 -Use cacheToDisk
 Version 0.0.6:

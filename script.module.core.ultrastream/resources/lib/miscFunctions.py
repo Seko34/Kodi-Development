@@ -62,7 +62,7 @@ def displayStreamItem(listStreamItems):
     """
         Method to display a list of StreamItem
     """
-    kodiUtil.beginContentDirectory()
+    kodiUtil.beginContentDirectory(content='movies')
     
     if listStreamItems is not None and len(listStreamItems) > 0:
         for item in listStreamItems:

@@ -151,9 +151,9 @@ def launchServices():
         progressDialogBG.close()              
         progressDialogBG = None
             
-        # ___ Force to update library if necessary
-        if constant.__addon__.getSetting('activate_movie_service') == 'true':    
-            xbmc.executebuiltin('UpdateLibrary(video)') 
-        if constant.__addon__.getSetting('activate_tvshow_service') == 'true':
-            xbmc.executebuiltin('UpdateLibrary(video)')       
+    # ___ Force to update library if necessary
+    if constant.__addon__.getSetting('activate_movie_service') == 'true':
+        xbmc.executebuiltin('UpdateLibrary(video)') 
+    elif constant.__addon__.getSetting('activate_tvshow_service') == 'true':
+        xbmc.executebuiltin('UpdateLibrary(video)')       
     
