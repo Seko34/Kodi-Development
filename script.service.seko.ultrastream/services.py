@@ -153,7 +153,7 @@ def launchServices():
             
         # ___ Force to update library if necessary
         if constant.__addon__.getSetting('activate_movie_service') == 'true':    
-            xbmc.executebuiltin('UpdateLibrary(video,'+constant.__addon__.getSetting('service_movie_dir')+')') 
+            xbmc.executebuiltin('UpdateLibrary(video)') 
         if constant.__addon__.getSetting('activate_tvshow_service') == 'true':
             xbmc.executebuiltin('UpdateLibrary(video)')       
     
