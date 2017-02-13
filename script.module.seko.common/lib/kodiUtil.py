@@ -11,15 +11,17 @@ Created on 12 August 2014
 # ____________________        I M P O R T        ____________________
 import urllib
 import xbmcplugin
+import xbmc
 import sys
 # ____________________     V A R I A B L E S     ____________________
+# Get the kodi major version
+__kodiVersion__ =xbmc.getInfoLabel('System.BuildVersion')[0:2]
+print __kodiVersion__
 # Get base_url, add_handle and arguments
 __base_url__ = sys.argv[0]
 __handle__ = None
 if len(sys.argv) > 1:
     __handle__ = int(sys.argv[1]) 
-
-
 
 # ____________________       M E T H O D S       ____________________
 def build_url(query):
@@ -42,16 +44,19 @@ def addDirectoryItem(url, listItem, isFolder):
                                 listitem=listItem, 
                                 isFolder=isFolder)
     
-def endOfDirectory():
+def endOfDirectory(isCached=True):
     """"
         Method to declare the end of the directory
     """
-    xbmcplugin.endOfDirectory(__handle__)    
+    xbmcplugin.endOfDirectory(__handle__,cacheToDisc=isCached)    
     
 def beginContentDirectory():
     """
         Method to begin the content of a directory
     """
-    xbmcplugin.setContent(__handle__, 'addons')
+    if int(__kodiVersion__) < 17:        
+        xbmcplugin.setContent(__handle__, 'addons')
+    else:
+        xbmcplugin.setContent(__handle__, 'folder')
     
     

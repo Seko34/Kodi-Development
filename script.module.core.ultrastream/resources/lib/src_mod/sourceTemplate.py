@@ -1280,7 +1280,7 @@ class streamingSourceTemplate(object):
         resolverSettings.setAction(StreamItem.ACTION_DISPLAY_SETTINGS)
         resolverSettings.addListItemToDirectory()        
        
-        kodiUtil.endOfDirectory()
+        kodiUtil.endOfDirectory(False)
     
     def getSettingsXml(self):
         """
