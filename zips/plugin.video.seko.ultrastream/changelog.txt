@@ -1,3 +1,6 @@
+V0.2.2:
+-Add new functionnality : search synopsis on context menu
+-Add new functionnality : cached the last page (for fix the Kody 17 cacheToDisc bug)
 V0.2.1:
 -Update Core module
 V0.2.0:

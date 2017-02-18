@@ -20,6 +20,7 @@ import ast
 import webUtil
 import traceback
 import constant
+import icons
 from logger import Logger
 from difflib import SequenceMatcher as SM
     
@@ -76,6 +77,7 @@ class StreamItem:
     
     ACTION_SEARCH_WATAMOVIE       = 24
     ACTION_GLOBAL_SEARCH          = 25
+    ACTION_GET_SYNOPSIS           = 26
     
         # Settings
     ACTION_DISPLAY_MENU_SETTINGS        = 50
@@ -275,12 +277,15 @@ class StreamItem:
                 
         # ___ If the item is  movie
         if (self.getType() == self.TYPE_MOVIE or self.getType() == self.TYPE_MOVIE_HD) and self.getAction() == self.ACTION_DISPLAY_LINKS:
-            li.addContextMenuItems([ ('Bande annonce', 'RunPlugin(plugin://plugin.video.seko.ultrastream/?action=23&title='+self.getTitle()+')')])
+            li.addContextMenuItems([ (constant.__addon__.getLocalizedString(70012).title(), 'RunPlugin(plugin://plugin.video.seko.ultrastream/?action=23&title='+self.getTitle()+')'),
+                                    (constant.__addon__.getLocalizedString(70008).title(), 'Container.Update(plugin://plugin.video.seko.ultrastream/?action=26&type=-1&title='+self.getTitle()+')')])
+            
+        
              
         # ___ If the item is a page, we set the page thumbnail and page icon.
         if self.isPage():
-            li.setThumbnailImage(xbmc.translatePath(os.path.join(constant.__addonDir__,'resources/media/page.png')))
-            li.setIconImage(xbmc.translatePath(os.path.join(constant.__addonDir__,'resources/media/page.png')))
+            li.setThumbnailImage(icons.getIcon('nextpage'))
+            li.setIconImage(icons.getIcon('nextpage'))
     
         return li
     
@@ -344,7 +349,7 @@ class StreamItem:
             self.Item['kodi_title'] += " ["+str(self.Item['year'])+"]"
             
         if self.Item['hostName'] is not None and self.Item['hostName'] != '' and self.Item['hostName'] != 'None':
-            self.Item['kodi_title'] += " [I]["+self.Item['hostName']+"][/I]"
+            self.Item['kodi_title'] += " [I]["+str(self.Item['hostName'])+"][/I]"
         
         if self.getType() == self.TYPE_STREAMING_LINK and self.Item['linkStatus'] is not None and self.Item['linkStatus'] != '' and self.Item['linkStatus'] != 'None':
             self.Item['kodi_title'] += " [COLOR red]["+self.Item['linkStatus']+"][/COLOR]"

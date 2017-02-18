@@ -1,3 +1,5 @@
+v0.1.2
+- Update common module
 v0.1.1
 - Update common module
 v0.1.0

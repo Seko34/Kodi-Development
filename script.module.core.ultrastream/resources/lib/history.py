@@ -16,12 +16,7 @@ import historyModule
 import constant
 
 from item import StreamItem
-from logger import Logger
-
 # ____________________     V A R I A B L E S     ____________________
-
-# __ Init addon variable & Logger
-__LOGGER__ = Logger('UltraStream')
 
 
 # __ Init history module

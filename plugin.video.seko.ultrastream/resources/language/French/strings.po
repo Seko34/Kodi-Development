@@ -97,6 +97,18 @@ msgctxt "#50003"
 msgid "Not display screener links"
 msgstr "Ne pas afficher les liens CAM"
 
+msgctxt "#50004"
+msgid "Icon theme"
+msgstr "Theme des icones"
+
+msgctxt "#50005"
+msgid "Black"
+msgstr "Theme noir"
+
+msgctxt "#50006"
+msgid "White"
+msgstr "Theme blanc"
+
 msgctxt "#50010"
 msgid "Android Web Browser (Android only)"
 msgstr "Navigateur WEB (Android seulement)"

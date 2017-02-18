@@ -14,6 +14,7 @@ import sys
 import re
 import strUtil
 import copy
+import icons
 import constant as constant
 from BeautifulSoup import BeautifulSoup
 from src_mod.sourceTemplate import streamingSourceTemplate as Source
@@ -313,7 +314,7 @@ class Sokrostream(Source):
                             element = streamItem.copy()
                             element.setAction(StreamItem.ACTION_PLAY)
                             element.setType(StreamItem.TYPE_STREAMING_LINK)
-                            element.setHref(href)                 
+                            element.setHref(href)           
                             element.regenerateKodiTitle()
                             
             elif link is not None and not link['src'].startswith('http://sokrostream'):
@@ -439,6 +440,7 @@ class Sokrostream(Source):
                     elementList.append(element)      
             
             nextPage = StreamItem(constant.__addon__.getLocalizedString(70010))
+            nextPage.setIconImage(icons.getIcon('nextpage'))
             nextPage.setType(StreamItem.TYPE_MOVIE)
             nextPage.setAction(StreamItem.ACTION_DISPLAY_TYPE_LIST)
             nextPage.setSubType(streamItem.getSubType())
@@ -484,6 +486,7 @@ class Sokrostream(Source):
                     elementList.append(element)      
             
             nextPage = StreamItem(constant.__addon__.getLocalizedString(70010))
+            nextPage.setIconImage(icons.getIcon('nextpage'))
             nextPage.setType(StreamItem.TYPE_TVSHOW)
             nextPage.setAction(StreamItem.ACTION_DISPLAY_TYPE_LIST)
             nextPage.setSubType(streamItem.getSubType())

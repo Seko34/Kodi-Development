@@ -15,6 +15,7 @@ import sys
 import xbmcaddon
 import xbmc
 import src_mod as sources
+import cacheFunctions
 import miscFunctions
 import player
 import xbmcgui
@@ -22,7 +23,6 @@ import downloaderModule
 import metadata
 import constant
 from item import StreamItem
-from logger import Logger
 from resources.lib.trailer import YoutubeTrailer
 from resources.lib.watamovie import Filmou 
 from downloaderModule import DownloaderManager
@@ -32,13 +32,8 @@ import kodiUtil
 __url__ = sys.argv[0]
     # ___ Get the handle integer
 __handle__ = int(sys.argv[1])    
-    # ___ The logger
-__LOGGER__ = Logger('UltraStream')
 
 
-
-#xbmc.executebuiltin('Playlist.Clear')
-#xbmc.executebuiltin('PlayerControl(stop)')
 
 # ____________________     M E T H O D S     ____________________
 
@@ -67,12 +62,9 @@ def router(params):
         listItems = [] 
         progress = None
         
+        # ___ Display list of link when launch the addon from .strm file
         if 'strm' in params and int(params['strm']) == 1:
-            
-            """
-                @todo: Update this code
-            """
-            
+                                    
             progress = xbmcgui.DialogProgress()
             progress.create(constant.__addon__.getLocalizedString(70006),constant.__addon__.getLocalizedString(70007))  
             
@@ -95,11 +87,14 @@ def router(params):
             progress.close()            
             player.playStrm(listItems)
                 
-        
+        # ___ Use cache if the cached page is the requested page
+        # ___ Functionnality used until Kodi fix the cacheToDisc problem
+        if cacheFunctions.isCachedPage(params) and int(params['action']) != StreamItem.ACTION_DISPLAY_MENU:            
+            listItems = cacheFunctions.getPreviousCachedPage()            
         # ___ MAIN MENU
-        if int(params['action']) == StreamItem.ACTION_DISPLAY_MENU :
+        elif int(params['action']) == StreamItem.ACTION_DISPLAY_MENU :
+            cacheFunctions.clearCache()
             __SOURCE__.build_menu()
-        
         # ___ TYPE MENU
         elif paramsItem.getAction() == StreamItem.ACTION_DISPLAY_TYPE_MENU:
                         
@@ -121,7 +116,19 @@ def router(params):
             # ___ Documentary Menu
             elif int(params['type']) == StreamItem.TYPE_DOCUMENTARY:
                 __SOURCE__.build_documentary_menu()
-           
+        
+                    
+        # ___ CATEGORIE MENU     
+        elif int(params['action']) == StreamItem.ACTION_DISPLAY_CATEGORIE_MENU:
+            
+            # __ Alphabetic
+            if int(params['subtype']) == StreamItem.SUBTYPE_ALPHABETICS:
+                __SOURCE__.build_alphabetic_category(int(params['type']))
+                
+            # __ Genre
+            if int(params['subtype']) == StreamItem.SUBTYPE_GENRE:
+                __SOURCE__.build_genre_category(int(params['type']))
+                   
         # __  DISPLAY LIST 
         elif int(params['action']) == StreamItem.ACTION_DISPLAY_TYPE_LIST:            
             
@@ -220,17 +227,6 @@ def router(params):
                 # __ Most view
                 elif int(params['subtype']) == StreamItem.SUBTYPE_MOST_VIEW:
                     listItems = __SOURCE__.getMostViewDocumentary(paramsItem)   
-                    
-        # ___ CATEGORIE MENU     
-        elif int(params['action']) == StreamItem.ACTION_DISPLAY_CATEGORIE_MENU:
-            
-            # __ Alphabetic
-            if int(params['subtype']) == StreamItem.SUBTYPE_ALPHABETICS:
-                __SOURCE__.build_alphabetic_category(int(params['type']))
-                
-            # __ Genre
-            if int(params['subtype']) == StreamItem.SUBTYPE_GENRE:
-                __SOURCE__.build_genre_category(int(params['type']))
             
         # ___ DISPLAY CATEGORIE LIST 
         elif int(params['action']) == StreamItem.ACTION_DISPLAY_CATEGORIE_LIST:
@@ -481,7 +477,15 @@ def router(params):
                 elif int(params['type']) == StreamItem.TYPE_ANIME:
                     listItems = sources.searchAnime(title)
         
-        #     
+        # ___ Get synopsis of selected item
+        elif int(params['action']) == StreamItem.ACTION_GET_SYNOPSIS:
+            progress = xbmcgui.DialogProgress()
+            progress.create(constant.__addon__.getLocalizedString(70006),constant.__addon__.getLocalizedString(70008))
+            titleToSearch = params['title']
+            params = cacheFunctions.getCachedParams()
+            listItems = cacheFunctions.getCachedPage()
+            listItems = metadata.getMetadataFromContextMenu(listItems,titleToSearch,progress)
+            
         # ___ TEST ACTION
         elif int(params['action']) == StreamItem.ACTION_TEST:
             """
@@ -511,16 +515,16 @@ def router(params):
             fileToDl = StreamItem("Insaisissables 2", params)
             miscFunctions.downloadFile(fileToDl, False)
             """
-            __LOGGER__.log('tici ')
+            
+            """
             listItem = __SOURCE__.getTopWeekMovie()
-            if listItems is not None and len(listItems) > 0 :    
-                __LOGGER__.log( 'tcool')            
+            if listItems is not None and len(listItems) > 0 : 
                 listItems = metadata.getMetadataForList(listItem[0].getType(), listItems,None)
-                for item in listItem:
-                    __LOGGER__.log( 'tcool2')
+                for item in listItem:                    
                     item.writeStrmFile('D:\\test')
                     item.writeNfoFile('D:\\test')
-            
+            """
+            pass
             
             
                 
@@ -528,13 +532,30 @@ def router(params):
         if listItems is not None and len(listItems) > 0 :
             if progress is not None:
                 progress.update(0,constant.__addon__.getLocalizedString(70008))
-            listItems = metadata.getMetadataForList(params['type'], listItems,progress)
-            
+            listItems = metadata.getMetadataForList(params['type'], listItems,progress) 
+        
+        # ___ Cached the current page before displaying it
+        # ___ Functionnality used until Kodi fix the cacheToDisc problem
+        if int(params['action']) != StreamItem.ACTION_DISPLAY_MENU and \
+           int(params['action']) != StreamItem.ACTION_DISPLAY_TYPE_MENU and \
+           int(params['action']) != StreamItem.ACTION_DISPLAY_CATEGORIE_MENU and \
+           int(params['action']) != StreamItem.ACTION_DISPLAY_DOWNLOAD_MANAGER and \
+           int(params['action']) != StreamItem.ACTION_GLOBAL_SEARCH and \
+           int(params['action']) != StreamItem.ACTION_SEARCH_WATAMOVIE and \
+           int(params['action']) != StreamItem.ACTION_SEARCH and \
+           int(params['action']) != StreamItem.ACTION_PLAY and \
+           int(params['action']) != StreamItem.ACTION_PLAY_TRAILER and \
+           int(params['action']) != StreamItem.ACTION_DOWNLOAD and \
+           int(params['action']) < StreamItem.ACTION_DISPLAY_MENU_SETTINGS:
+            cacheFunctions.cachePage(params,listItems)
+        
+        # ___ Close the progress dialog
         if progress is not None:
             progress.close()
         
         # ___ Display all StreamItem
         miscFunctions.displayStreamItem(listItems)
         
-    else:
+    else:        
+        cacheFunctions.clearCache()
         __SOURCE__.build_menu()

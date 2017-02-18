@@ -22,12 +22,10 @@ import constant
 import history
 from unshortenurl import UnshortenUrl
 from item import StreamItem
-from logger import Logger
 
 # ____________________     V A R I A B L E S     ____________________
 
-# __ Init addon variable & Logger
-__LOGGER__ = Logger('UltraStream')
+
 
 # ____________________     F U N C T I O N S       ____________________
 def displayVideoOptions(streamItem):
@@ -36,12 +34,12 @@ def displayVideoOptions(streamItem):
         @param streamItem: the selected StreamItem   
     """
     
-    __LOGGER__.log("Try to resolve url "+streamItem.getHref(),xbmc.LOGDEBUG)
+    constant.__LOGGER__.log("Try to resolve url "+streamItem.getHref(),xbmc.LOGDEBUG)
     
     # ___ Try to unshort link
     unshort = UnshortenUrl()
     href = unshort.unshortUrl(streamItem.getHref())
-    __LOGGER__.log('Unshort url : '+str(href))
+    constant.__LOGGER__.log('Unshort url : '+str(href))
     streamItem.setHref(href)
     
     # ___ Resolve url
@@ -53,7 +51,7 @@ def displayVideoOptions(streamItem):
     except:
         pass
     progress.close()
-    __LOGGER__.log("Resolved url : "+str(playableUrl),xbmc.LOGDEBUG) 
+    constant.__LOGGER__.log("Resolved url : "+str(playableUrl),xbmc.LOGDEBUG) 
     
     # ___If the url is resolved, play automatically if the setting is activated  
     if playableUrl != False  and isinstance(playableUrl,unicode) and constant.__addon__.getSetting('play_auto') == 'true':
@@ -108,7 +106,7 @@ def displayVideoOptions(streamItem):
         
     # __ Else display limited options        
     elif constant.__addon__.getSetting('activate_web_browser') == 'true': 
-        __LOGGER__.log("Unable to resolve url "+streamItem.getHref(),xbmc.LOGWARNING)        
+        constant.__LOGGER__.log("Unable to resolve url "+streamItem.getHref(),xbmc.LOGWARNING)        
         
         # ___ Only display the option : Open in web browser
         liste = [constant.__addon__.getLocalizedString(70002)]            
@@ -144,7 +142,7 @@ def playVideo(streamItem):
         Method to play a video
         @param streamItem: the streamItem to play        
     """
-    __LOGGER__.log('Play url : '+streamItem.getPlayableUrl(),xbmc.LOGDEBUG)       
+    constant.__LOGGER__.log('Play url : '+streamItem.getPlayableUrl(),xbmc.LOGDEBUG)       
     
     # ___ Open the movie with KODI Player
     player = xbmc.Player()
@@ -230,7 +228,7 @@ def playStrm(listItems):
             result = dialog.select(constant.__addon__.getLocalizedString(70013), listStr)
             
         progress.close()
-        __LOGGER__.log("Resolved url : "+str(playableUrl),xbmc.LOGDEBUG) 
+        constant.__LOGGER__.log("Resolved url : "+str(playableUrl),xbmc.LOGDEBUG) 
         
         # ___If the url is resolved, display the the list of possibilities (Open in web browser, Play, Download or Download & Play )
         if not error:
@@ -304,7 +302,7 @@ def displayLinksInDialog(listItems):
                 result = dialog.select(constant.__addon__.getLocalizedString(70013), listStr)
                 
             progress.close()
-            __LOGGER__.log("Resolved url : "+str(playableUrl),xbmc.LOGDEBUG) 
+            constant.__LOGGER__.log("Resolved url : "+str(playableUrl),xbmc.LOGDEBUG) 
             
             # ___If the url is resolved, display the the list of possibilities (Open in web browser, Play, Download or Download & Play )
             if not error:

@@ -14,6 +14,7 @@ import sys
 import re
 import base64
 import strUtil
+import icons
 import constant as constant
 
 from BeautifulSoup import BeautifulSoup
@@ -622,6 +623,7 @@ class MegaStream(Source):
                     elementList.append(element)      
             
             nextPage = StreamItem(constant.__addon__.getLocalizedString(70010))
+            nextPage.setIconImage(icons.getIcon('nextpage'))
             nextPage.setType(StreamItem.TYPE_MOVIE)
             nextPage.setAction(StreamItem.ACTION_DISPLAY_TYPE_LIST)
             nextPage.setSubType(StreamItem.SUBTYPE_LAST)
@@ -706,6 +708,7 @@ class MegaStream(Source):
                     elementList.append(element)      
             
             nextPage = StreamItem(constant.__addon__.getLocalizedString(70010))
+            nextPage.setIconImage(icons.getIcon('nextpage'))
             nextPage.setType(StreamItem.TYPE_TVSHOW)
             nextPage.setAction(StreamItem.ACTION_DISPLAY_TYPE_LIST)
             nextPage.setSubType(StreamItem.SUBTYPE_LAST)
@@ -790,6 +793,7 @@ class MegaStream(Source):
                     elementList.append(element)      
             
             nextPage = StreamItem(constant.__addon__.getLocalizedString(70010))
+            nextPage.setIconImage(icons.getIcon('nextpage'))
             nextPage.setType(StreamItem.TYPE_TVSHOW)
             nextPage.setAction(StreamItem.ACTION_DISPLAY_TYPE_LIST)
             nextPage.setSubType(StreamItem.SUBTYPE_LAST)

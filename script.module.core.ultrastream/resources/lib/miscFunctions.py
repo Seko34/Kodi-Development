@@ -19,12 +19,9 @@ import kodiUtil
 import constant
 from unshortenurl import UnshortenUrl
 from item import StreamItem
-from logger import Logger
 
 # ____________________     V A R I A B L E S     ____________________
 
-# __ Init addon variable & Logger
-__LOGGER__ = Logger('UltraStream')
 
 # ____________________     F U N C T I O N S       ____________________
 
@@ -33,7 +30,7 @@ def downloadFile(streamItem,playAtEnd):
         Method to download a file
         @param streamItem : the streamItem
     """
-    __LOGGER__.log('Download file :'+streamItem.getPlayingFile()+' to '+constant.__addon__.getSetting('dlfolder').decode('utf-8'))
+    constant.__LOGGER__.log('Download file :'+streamItem.getPlayingFile()+' to '+constant.__addon__.getSetting('dlfolder').decode('utf-8'))
         
     # ___ Get the filename from the url
     fileName = streamItem.getPlayingFile()
@@ -58,7 +55,7 @@ def downloadFile(streamItem,playAtEnd):
     
     dlMod.download(fileName,params);
 
-def displayStreamItem(listStreamItems):
+def displayStreamItem(listStreamItems,urlParams=False):
     """
         Method to display a list of StreamItem
     """
@@ -67,8 +64,10 @@ def displayStreamItem(listStreamItems):
     if listStreamItems is not None and len(listStreamItems) > 0:
         for item in listStreamItems:
             item.addListItemToDirectory()
-    
+        
     kodiUtil.endOfDirectory()
+
+
     
 def displayNotification(message, type='error'):
     """
@@ -77,7 +76,7 @@ def displayNotification(message, type='error'):
         @param type : the type of notification (er
     """
     xbmc.executebuiltin('Notification(\'UltraStream\','+message+',2000,'+type+')')                       
-    __LOGGER__.log(message, xbmc.LOGINFO)
+    constant.__LOGGER__.log(message, xbmc.LOGINFO)
 
 
 def readSettingsTemplate():
@@ -105,7 +104,7 @@ def writeSettingsFile(settingsTxt,serviceSettingsTxt):
     try:
         with open(settingsFilePath, 'w') as f:
             f.write(xmlTxt)
-        __LOGGER__.log("Settings file created/updated.")
+        constant.__LOGGER__.log("Settings file created/updated.")
     except:
         raise
 

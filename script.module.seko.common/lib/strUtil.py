@@ -20,7 +20,7 @@ import HTMLParser
 # ____________________       M E T H O D S       ____________________
 def remove_special_char(str):
     """
-    Metho to remove all special characters to a string
+    Method to remove all special characters to a string
     
     @param str: the string to remove all special char
     """
@@ -53,7 +53,7 @@ def remove_special_char(str):
         pass
     return str
 
-def deleteAccent(str):
+def deleteAccent(text):
     """
         Method to delete accent from title
         
@@ -61,15 +61,21 @@ def deleteAccent(str):
         
         @return the title without accent
     """
-    accents = { 'a': ['à', 'ã', 'á', 'â'],
-                'e': ['é', 'è', 'ê', 'ë'],
-                'i': ['î', 'ï'],
-                'u': ['ù', 'ü', 'û'],
-                'o': ['ô', 'ö'] }
-    for (char, accented_chars) in accents.iteritems():
-        for accented_char in accented_chars:
-            str = str.replace(accented_char, char)
-    return str
+    if isinstance(text,unicode):
+        text = text.encode('utf-8')
+        
+    if not isinstance(text,str):
+        text = str
+    if isinstance(text,str):
+        accents = { 'a': ['à', 'ã', 'á', 'â'],
+                    'e': ['é', 'è', 'ê', 'ë'],
+                    'i': ['î', 'ï'],
+                    'u': ['ù', 'ü', 'û'],
+                    'o': ['ô', 'ö'] }
+        for (char, accented_chars) in accents.iteritems():
+            for accented_char in accented_chars:
+                text = text.replace(accented_char, char)
+    return text
     
 def unescapeHtml(str):
     """

@@ -14,15 +14,13 @@ Created on 24 November 2016
 import xbmc
 import history
 import scraperModule as Scrapers
-import constant as constant
+import constant
 
 from item import StreamItem
-from logger import Logger
+
 
 # ____________________     V A R I A B L E S     ____________________
 
-# __ Init addon variable & Logger
-__LOGGER__ = Logger('UltraStream')
 
 # ____________________     C O N S T A N T S       ____________________
 
@@ -65,7 +63,7 @@ def getMetadataForList(type,listItems,dialogProgress=False,useAsService=False):
     else:
         scraperType = -1
         
-    __LOGGER__.log('Scraper type = '+str(scraperType),xbmc.LOGDEBUG)
+    constant.__LOGGER__.log('Scraper type = '+str(scraperType),xbmc.LOGDEBUG)
     
     
     # ___ Transform list of streamitem in list of json
@@ -137,7 +135,7 @@ def getMetadata(streamItem,dialogProgress=False,useAsService=False):
     else:
         scraperType = -1
         
-    __LOGGER__.log('Scraper type = '+str(scraperType),xbmc.LOGDEBUG)
+    constant.__LOGGER__.log('Scraper type = '+str(scraperType),xbmc.LOGDEBUG)
     
     
     # ___ Transform list of streamitem in list of json
@@ -163,4 +161,35 @@ def getMetadata(streamItem,dialogProgress=False,useAsService=False):
     if historyElement is not None:
         streamItem.setPlayCount(1)
         
-    return streamItem      
+    return streamItem
+
+
+def getMetadataFromContextMenu(streamItems,title,dialogProgress=False):
+    """
+        Method to get metadata for a specific element. 
+        Called from context menu
+        @param streamItems: the list of StreamItem
+        @param the title of the selected element
+        @param dialogProgress : the  dialog to display the progress       
+        @param the new list of StreamItem 
+    """
+    # ___ Init the new list of StreamItem
+    result = []
+    constant.__addon__.setSetting('getdetails','1')
+    newStreamItem = None
+    # ___ Search all StreamItem with the same title as the selected one
+    for streamItem in streamItems:
+        # ___ If metadata has not already found, find it and add the new StreamItem
+        if newStreamItem is None and streamItem.getTitle() == title:
+            newStreamItem = getMetadata(streamItem,dialogProgress)
+            result.append(newStreamItem)
+        # ___ If metadata has already found, add the new StreamItem
+        elif newStreamItem is not None and streamItem.getTitle() == title:
+            result.append(newStreamItem)
+        # ___ Case of other StreamItem
+        else:
+            result.append(streamItem)
+    constant.__addon__.setSetting('getdetails','0')
+    # ___ Return the new list of element
+    return result
+        

@@ -18,6 +18,7 @@ import urllib
 import cookielib
 import kodiUtil
 import re
+import icons
 import constant as constant
 from item import StreamItem
 from logger import Logger
@@ -721,7 +722,7 @@ class streamingSourceTemplate(object):
         # Movies HD
         if self.MAIN_MENU_MOVIE_HD in self.MAIN_MENU_OPT:  
             movieHD = StreamItem(constant.__addon__.getLocalizedString(40030))
-            movieHD.setIconImage(constant.__coreAddonDir__+'/resources/media/films_hd.png') 
+            movieHD.setIconImage(icons.getIcon('movie',True)) 
             movieHD.setType(StreamItem.TYPE_MOVIE_HD)
             movieHD.setAction(StreamItem.ACTION_DISPLAY_TYPE_MENU)
             movieHD.addListItemToDirectory()
@@ -730,7 +731,7 @@ class streamingSourceTemplate(object):
         # Movie
         if self.MAIN_MENU_MOVIE in self.MAIN_MENU_OPT:  
             movie = StreamItem(constant.__addon__.getLocalizedString(40031))
-            movie.setIconImage(constant.__coreAddonDir__+'/resources/media/films.png') 
+            movie.setIconImage(icons.getIcon('movie')) 
             movie.setType(StreamItem.TYPE_MOVIE)
             movie.setAction(StreamItem.ACTION_DISPLAY_TYPE_MENU)
             movie.addListItemToDirectory()
@@ -738,7 +739,7 @@ class streamingSourceTemplate(object):
         # TV Show
         if self.MAIN_MENU_TVSHOW in self.MAIN_MENU_OPT:  
             tvshow = StreamItem(constant.__addon__.getLocalizedString(40032))
-            tvshow.setIconImage(constant.__coreAddonDir__+'/resources/media/serietv.png') 
+            tvshow.setIconImage(icons.getIcon('tvshow')) 
             tvshow.setType(StreamItem.TYPE_TVSHOW)
             tvshow.setAction(StreamItem.ACTION_DISPLAY_TYPE_MENU)
             tvshow.addListItemToDirectory()
@@ -746,7 +747,7 @@ class streamingSourceTemplate(object):
         # Show
         if self.MAIN_MENU_SHOW in self.MAIN_MENU_OPT:  
             show = StreamItem(constant.__addon__.getLocalizedString(40033))
-            show.setIconImage(constant.__coreAddonDir__+'/resources/media/show.png') 
+            show.setIconImage(icons.getIcon('show')) 
             show.setType(StreamItem.TYPE_SHOW)
             show.setAction(StreamItem.ACTION_DISPLAY_TYPE_MENU)
             show.addListItemToDirectory()
@@ -755,7 +756,7 @@ class streamingSourceTemplate(object):
         
         if self.MAIN_MENU_DOCUMENTARY in self.MAIN_MENU_OPT:     
             documentary = StreamItem(constant.__addon__.getLocalizedString(40034))
-            documentary.setIconImage(constant.__coreAddonDir__+'/resources/media/documentary.png') 
+            documentary.setIconImage(icons.getIcon('documentary')) 
             documentary.setType(StreamItem.TYPE_DOCUMENTARY)
             documentary.setAction(StreamItem.ACTION_DISPLAY_TYPE_MENU)
             documentary.addListItemToDirectory()
@@ -763,7 +764,7 @@ class streamingSourceTemplate(object):
         # Anime
         if self.MAIN_MENU_ANIME in self.MAIN_MENU_OPT:  
             anime = StreamItem(constant.__addon__.getLocalizedString(40035))
-            anime.setIconImage(constant.__coreAddonDir__+'/resources/media/anime.png') 
+            anime.setIconImage(icons.getIcon('animes')) 
             anime.setType(StreamItem.TYPE_ANIME)
             anime.setAction(StreamItem.ACTION_DISPLAY_TYPE_MENU)
             anime.addListItemToDirectory()
@@ -771,7 +772,7 @@ class streamingSourceTemplate(object):
         # Download Manager
         if( constant.__addon__.getSetting('downloader_module') == '2'):        
             dlmanager = StreamItem(constant.__addon__.getLocalizedString(40038))
-            dlmanager.setIconImage(constant.__coreAddonDir__+'/resources/media/urlresolver.png') 
+            dlmanager.setIconImage(icons.getIcon('downloads')) 
             dlmanager.setType(StreamItem.TYPE_MENU)
             dlmanager.setAction(StreamItem.ACTION_DISPLAY_DOWNLOAD_MANAGER)
             dlmanager.addListItemToDirectory()
@@ -779,7 +780,7 @@ class streamingSourceTemplate(object):
         
         # Menu Settings
         menuSettings = StreamItem(constant.__addon__.getLocalizedString(40039))
-        menuSettings.setIconImage(constant.__coreAddonDir__+'/resources/media/urlresolver.png') 
+        menuSettings.setIconImage(icons.getIcon('settings')) 
         menuSettings.setType(StreamItem.TYPE_MENU)
         menuSettings.setAction(StreamItem.ACTION_DISPLAY_MENU_SETTINGS)
         menuSettings.addListItemToDirectory()
@@ -820,7 +821,7 @@ class streamingSourceTemplate(object):
         # Search movie
         if self.MENU_MOVIE_SEARCH in self.MENU_MOVIE_OPT and constant.__addon__.getSetting('only_global_search') == 'false':  
             search = StreamItem(constant.__addon__.getLocalizedString(60061))
-            #movieHD.setIconImage(constant.__coreAddonDir__+'/resources/media/films_hd.png') 
+            search.setIconImage(icons.getIcon('search')) 
             search.setType(StreamItem.TYPE_MOVIE)
             search.setAction(StreamItem.ACTION_SEARCH)
             search.addListItemToDirectory()
@@ -828,7 +829,7 @@ class streamingSourceTemplate(object):
         # Global Search movie
         if constant.__addon__.getSetting('use_global_search') == 'true':  
             search = StreamItem(constant.__addon__.getLocalizedString(60062))
-            #movieHD.setIconImage(constant.__coreAddonDir__+'/resources/media/films_hd.png') 
+            search.setIconImage(icons.getIcon('search')) 
             search.setType(StreamItem.TYPE_MOVIE)
             search.setAction(StreamItem.ACTION_GLOBAL_SEARCH)
             search.addListItemToDirectory()
@@ -836,6 +837,7 @@ class streamingSourceTemplate(object):
         # Watamovie search
         if constant.__addon__.getSetting('use_watamovie') == 'true':  
             search = StreamItem(constant.__addon__.getLocalizedString(60100))
+            search.setIconImage(icons.getIcon('watamovie')) 
             search.setType(StreamItem.TYPE_MOVIE)
             search.setAction(StreamItem.ACTION_SEARCH_WATAMOVIE)
             search.addListItemToDirectory()
@@ -843,6 +845,7 @@ class streamingSourceTemplate(object):
         # Exclue Movie
         if self.MENU_MOVIE_EXCLUE in self.MENU_MOVIE_OPT:  
             lastMovie = StreamItem(constant.__addon__.getLocalizedString(60080))
+            lastMovie.setIconImage(icons.getIcon('exclues')) 
             lastMovie.setType(StreamItem.TYPE_MOVIE)
             lastMovie.setAction(StreamItem.ACTION_DISPLAY_TYPE_LIST)
             lastMovie.setSubType(StreamItem.SUBTYPE_EXCLUE)
@@ -851,6 +854,7 @@ class streamingSourceTemplate(object):
         # Last Movie
         if self.MENU_MOVIE_LAST in self.MENU_MOVIE_OPT:  
             lastMovie = StreamItem(constant.__addon__.getLocalizedString(60010))
+            lastMovie.setIconImage(icons.getIcon('news')) 
             lastMovie.setType(StreamItem.TYPE_MOVIE)
             lastMovie.setAction(StreamItem.ACTION_DISPLAY_TYPE_LIST)
             lastMovie.setSubType(StreamItem.SUBTYPE_LAST)
@@ -859,6 +863,7 @@ class streamingSourceTemplate(object):
         # Most view
         if self.MENU_MOVIE_TOPVIEW in self.MENU_MOVIE_OPT:  
             mostView = StreamItem(constant.__addon__.getLocalizedString(60020))
+            mostView.setIconImage(icons.getIcon('topview')) 
             mostView.setType(StreamItem.TYPE_MOVIE)
             mostView.setAction(StreamItem.ACTION_DISPLAY_TYPE_LIST)
             mostView.setSubType(StreamItem.SUBTYPE_MOST_VIEW)
@@ -867,6 +872,7 @@ class streamingSourceTemplate(object):
         # Top week
         if self.MENU_MOVIE_TOPWEEK in self.MENU_MOVIE_OPT: 
             topWeek = StreamItem(constant.__addon__.getLocalizedString(60030))
+            topWeek.setIconImage(icons.getIcon('topweek')) 
             topWeek.setType(StreamItem.TYPE_MOVIE)
             topWeek.setAction(StreamItem.ACTION_DISPLAY_TYPE_LIST)
             topWeek.setSubType(StreamItem.SUBTYPE_TOP_WEEK)
@@ -875,6 +881,7 @@ class streamingSourceTemplate(object):
         # Top rate
         if self.MENU_MOVIE_TOPRATE in self.MENU_MOVIE_OPT: 
             topRate = StreamItem(constant.__addon__.getLocalizedString(60040))
+            topRate.setIconImage(icons.getIcon('toprate')) 
             topRate.setType(StreamItem.TYPE_MOVIE)
             topRate.setAction(StreamItem.ACTION_DISPLAY_TYPE_LIST)
             topRate.setSubType(StreamItem.SUBTYPE_TOP_RATE)
@@ -883,6 +890,7 @@ class streamingSourceTemplate(object):
         # List
         if self.MENU_MOVIE_LIST in self.MENU_MOVIE_OPT: 
             topRate = StreamItem(constant.__addon__.getLocalizedString(60090))
+            topRate.setIconImage(icons.getIcon('news')) 
             topRate.setType(StreamItem.TYPE_MOVIE)
             topRate.setAction(StreamItem.ACTION_DISPLAY_TYPE_LIST)
             topRate.setSubType(StreamItem.SUBTYPE_LIST)
@@ -891,6 +899,7 @@ class streamingSourceTemplate(object):
         # Categorie alphabetics
         if self.MENU_MOVIE_CATEGORY_ALPHA in self.MENU_MOVIE_OPT: 
             alphaCat = StreamItem(constant.__addon__.getLocalizedString(60051))
+            alphaCat.setIconImage(icons.getIcon('alphabetics')) 
             alphaCat.setType(StreamItem.TYPE_MOVIE)
             alphaCat.setAction(StreamItem.ACTION_DISPLAY_CATEGORIE_MENU)
             alphaCat.setSubType(StreamItem.SUBTYPE_ALPHABETICS)
@@ -899,6 +908,7 @@ class streamingSourceTemplate(object):
         # Categorie genre
         if self.MENU_MOVIE_CATEGORY_GENRE in self.MENU_MOVIE_OPT: 
             genreCat = StreamItem(constant.__addon__.getLocalizedString(60070))
+            genreCat.setIconImage(icons.getIcon('bygenre')) 
             genreCat.setType(StreamItem.TYPE_MOVIE)
             genreCat.setAction(StreamItem.ACTION_DISPLAY_CATEGORIE_MENU)
             genreCat.setSubType(StreamItem.SUBTYPE_GENRE)
@@ -915,6 +925,7 @@ class streamingSourceTemplate(object):
         # Search hd movie
         if self.MENU_MOVIE_HD_SEARCH in self.MENU_MOVIE_HD_OPT and constant.__addon__.getSetting('only_global_search') == 'false':   
             search = StreamItem(constant.__addon__.getLocalizedString(60060))
+            search.setIconImage(icons.getIcon('search')) 
             search.setType(StreamItem.TYPE_MOVIE_HD)
             search.setAction(StreamItem.ACTION_SEARCH)
             search.addListItemToDirectory()
@@ -922,6 +933,7 @@ class streamingSourceTemplate(object):
         # Global search
         if constant.__addon__.getSetting('use_global_search') == 'true':  
             search = StreamItem(constant.__addon__.getLocalizedString(60062))
+            search.setIconImage(icons.getIcon('search')) 
             search.setType(StreamItem.TYPE_MOVIE_HD)
             search.setAction(StreamItem.ACTION_GLOBAL_SEARCH)
             search.addListItemToDirectory()
@@ -929,6 +941,7 @@ class streamingSourceTemplate(object):
         # Exclue Movie
         if self.MENU_MOVIE_HD_EXCLUE in self.MENU_MOVIE_OPT:  
             lastMovie = StreamItem(constant.__addon__.getLocalizedString(60080))
+            lastMovie.setIconImage(icons.getIcon('exclues')) 
             lastMovie.setType(StreamItem.TYPE_MOVIE_HD)
             lastMovie.setAction(StreamItem.ACTION_DISPLAY_TYPE_LIST)
             lastMovie.setSubType(StreamItem.SUBTYPE_EXCLUE)
@@ -937,6 +950,7 @@ class streamingSourceTemplate(object):
         # Last Movie
         if self.MENU_MOVIE_HD_LAST in self.MENU_MOVIE_HD_OPT:  
             lastMovie = StreamItem(constant.__addon__.getLocalizedString(60010))
+            lastMovie.setIconImage(icons.getIcon('news')) 
             lastMovie.setType(StreamItem.TYPE_MOVIE_HD)
             lastMovie.setAction(StreamItem.ACTION_DISPLAY_TYPE_LIST)
             lastMovie.setSubType(StreamItem.SUBTYPE_LAST)
@@ -945,6 +959,7 @@ class streamingSourceTemplate(object):
         # Most view
         if self.MENU_MOVIE_HD_TOPVIEW in self.MENU_MOVIE_HD_OPT:  
             mostView = StreamItem(constant.__addon__.getLocalizedString(60020))
+            mostView.setIconImage(icons.getIcon('topview')) 
             mostView.setType(StreamItem.TYPE_MOVIE_HD)
             mostView.setAction(StreamItem.ACTION_DISPLAY_TYPE_LIST)
             mostView.setSubType(StreamItem.SUBTYPE_MOST_VIEW)
@@ -953,6 +968,7 @@ class streamingSourceTemplate(object):
         # Top week
         if self.MENU_MOVIE_HD_TOPWEEK in self.MENU_MOVIE_HD_OPT:  
             topWeek = StreamItem(constant.__addon__.getLocalizedString(60030))
+            topWeek.setIconImage(icons.getIcon('topweek')) 
             topWeek.setType(StreamItem.TYPE_MOVIE_HD)
             topWeek.setAction(StreamItem.ACTION_DISPLAY_TYPE_LIST)
             topWeek.setSubType(StreamItem.SUBTYPE_TOP_WEEK)
@@ -961,6 +977,7 @@ class streamingSourceTemplate(object):
         # Top rate
         if self.MENU_MOVIE_HD_TOPRATE in self.MENU_MOVIE_HD_OPT:  
             topRate = StreamItem(constant.__addon__.getLocalizedString(60040))
+            topRate.setIconImage(icons.getIcon('toprate')) 
             topRate.setType(StreamItem.TYPE_MOVIE_HD)
             topRate.setAction(StreamItem.ACTION_DISPLAY_TYPE_LIST)
             topRate.setSubType(StreamItem.SUBTYPE_TOP_RATE)
@@ -969,6 +986,7 @@ class streamingSourceTemplate(object):
         # List
         if self.MENU_MOVIE_HD_LIST in self.MENU_MOVIE_HD_OPT:  
             topRate = StreamItem(constant.__addon__.getLocalizedString(60090))
+            topRate.setIconImage(icons.getIcon('news')) 
             topRate.setType(StreamItem.TYPE_MOVIE_HD)
             topRate.setAction(StreamItem.ACTION_DISPLAY_TYPE_LIST)
             topRate.setSubType(StreamItem.SUBTYPE_LIST)
@@ -977,6 +995,7 @@ class streamingSourceTemplate(object):
         # Categorie alphabetics
         if self.MENU_MOVIE_HD_CATEGORY_ALPHA in self.MENU_MOVIE_HD_OPT:  
             alphaCat = StreamItem(constant.__addon__.getLocalizedString(60050))
+            alphaCat.setIconImage(icons.getIcon('alphabetics')) 
             alphaCat.setType(StreamItem.TYPE_MOVIE_HD)
             alphaCat.setAction(StreamItem.ACTION_DISPLAY_CATEGORIE_MENU)
             alphaCat.setSubType(StreamItem.SUBTYPE_ALPHABETICS)
@@ -985,6 +1004,7 @@ class streamingSourceTemplate(object):
         # Categorie genre
         if self.MENU_MOVIE_HD_CATEGORY_GENRE in self.MENU_MOVIE_HD_OPT:  
             genreCat = StreamItem(constant.__addon__.getLocalizedString(60070))
+            genreCat.setIconImage(icons.getIcon('bygenre')) 
             genreCat.setType(StreamItem.TYPE_MOVIE_HD)
             genreCat.setAction(StreamItem.ACTION_DISPLAY_CATEGORIE_MENU)
             genreCat.setSubType(StreamItem.SUBTYPE_GENRE)
@@ -1001,6 +1021,7 @@ class streamingSourceTemplate(object):
         # Search anime
         if self.MENU_ANIME_SEARCH in self.MENU_ANIME_OPT and constant.__addon__.getSetting('only_global_search') == 'false':  
             search = StreamItem(constant.__addon__.getLocalizedString(62050))
+            search.setIconImage(icons.getIcon('search')) 
             search.setType(StreamItem.TYPE_ANIME)
             search.setAction(StreamItem.ACTION_SEARCH)
             search.addListItemToDirectory()
@@ -1008,6 +1029,7 @@ class streamingSourceTemplate(object):
         # Global Search anime
         if constant.__addon__.getSetting('use_global_search') == 'true':   
             search = StreamItem(constant.__addon__.getLocalizedString(62051))
+            search.setIconImage(icons.getIcon('search')) 
             search.setType(StreamItem.TYPE_ANIME)
             search.setAction(StreamItem.ACTION_GLOBAL_SEARCH)
             search.addListItemToDirectory()
@@ -1015,6 +1037,7 @@ class streamingSourceTemplate(object):
         # Last anime
         if self.MENU_ANIME_LAST in self.MENU_ANIME_OPT:  
             last = StreamItem(constant.__addon__.getLocalizedString(62010))
+            last.setIconImage(icons.getIcon('news')) 
             last.setType(StreamItem.TYPE_ANIME)
             last.setAction(StreamItem.ACTION_DISPLAY_TYPE_LIST)
             last.setSubType(StreamItem.SUBTYPE_LAST)
@@ -1023,6 +1046,7 @@ class streamingSourceTemplate(object):
         # Most view
         if self.MENU_ANIME_TOPVIEW in self.MENU_ANIME_OPT:  
             mostView = StreamItem(constant.__addon__.getLocalizedString(62020))
+            mostView.setIconImage(icons.getIcon('topview')) 
             mostView.setType(StreamItem.TYPE_ANIME)
             mostView.setAction(StreamItem.ACTION_DISPLAY_TYPE_LIST)
             mostView.setSubType(StreamItem.SUBTYPE_MOST_VIEW)
@@ -1031,6 +1055,7 @@ class streamingSourceTemplate(object):
         # Top rate
         if self.MENU_ANIME_TOPRATE in self.MENU_ANIME_OPT:  
             topRate = StreamItem(constant.__addon__.getLocalizedString(62060))
+            topRate.setIconImage(icons.getIcon('toprate')) 
             topRate.setType(StreamItem.TYPE_ANIME)
             topRate.setAction(StreamItem.ACTION_DISPLAY_TYPE_LIST)
             topRate.setSubType(StreamItem.SUBTYPE_TOP_RATE)
@@ -1040,6 +1065,7 @@ class streamingSourceTemplate(object):
         if self.MENU_ANIME_TOPWEEK in self.MENU_ANIME_OPT:  
             topRate = StreamItem(constant.__addon__.getLocalizedString(62030))
             topRate.setType(StreamItem.TYPE_ANIME)
+            topRate.setIconImage(icons.getIcon('topweek')) 
             topRate.setAction(StreamItem.ACTION_DISPLAY_TYPE_LIST)
             topRate.setSubType(StreamItem.SUBTYPE_TOP_WEEK)
             topRate.addListItemToDirectory()
@@ -1047,6 +1073,7 @@ class streamingSourceTemplate(object):
         # List
         if self.MENU_ANIME_LIST in self.MENU_ANIME_OPT:  
             topRate = StreamItem(constant.__addon__.getLocalizedString(62070))
+            topRate.setIconImage(icons.getIcon('news')) 
             topRate.setType(StreamItem.TYPE_ANIME)
             topRate.setAction(StreamItem.ACTION_DISPLAY_TYPE_LIST)
             topRate.setSubType(StreamItem.SUBTYPE_LIST)
@@ -1055,6 +1082,7 @@ class streamingSourceTemplate(object):
         # Categorie alphabetics
         if self.MENU_ANIME_CATEGORY_ALPHA in self.MENU_ANIME_OPT:  
             alphaCat = StreamItem(constant.__addon__.getLocalizedString(62040))
+            alphaCat.setIconImage(icons.getIcon('alphabetics')) 
             alphaCat.setType(StreamItem.TYPE_ANIME)
             alphaCat.setAction(StreamItem.ACTION_DISPLAY_CATEGORIE_MENU)
             alphaCat.setSubType(StreamItem.SUBTYPE_ALPHABETICS)
@@ -1071,6 +1099,7 @@ class streamingSourceTemplate(object):
         # Search tv show
         if self.MENU_TVSHOW_SEARCH in self.MENU_TVSHOW_OPT and constant.__addon__.getSetting('only_global_search') == 'false':  
             search = StreamItem(constant.__addon__.getLocalizedString(61050))
+            search.setIconImage(icons.getIcon('search')) 
             search.setType(StreamItem.TYPE_TVSHOW)
             search.setAction(StreamItem.ACTION_SEARCH)
             search.addListItemToDirectory()
@@ -1078,6 +1107,7 @@ class streamingSourceTemplate(object):
         # Global search tv show
         if constant.__addon__.getSetting('use_global_search') == 'true': 
             search = StreamItem(constant.__addon__.getLocalizedString(61051))
+            search.setIconImage(icons.getIcon('search')) 
             search.setType(StreamItem.TYPE_TVSHOW)
             search.setAction(StreamItem.ACTION_GLOBAL_SEARCH)
             search.addListItemToDirectory()
@@ -1085,6 +1115,7 @@ class streamingSourceTemplate(object):
         # Last Tv show
         if self.MENU_TVSHOW_LAST in self.MENU_TVSHOW_OPT:  
             last = StreamItem(constant.__addon__.getLocalizedString(61010))
+            last.setIconImage(icons.getIcon('news')) 
             last.setType(StreamItem.TYPE_TVSHOW)
             last.setAction(StreamItem.ACTION_DISPLAY_TYPE_LIST)
             last.setSubType(StreamItem.SUBTYPE_LAST)
@@ -1093,6 +1124,7 @@ class streamingSourceTemplate(object):
         # Most view
         if self.MENU_TVSHOW_TOPVIEW in self.MENU_TVSHOW_OPT:  
             mostView = StreamItem(constant.__addon__.getLocalizedString(61020))
+            mostView.setIconImage(icons.getIcon('topview')) 
             mostView.setType(StreamItem.TYPE_TVSHOW)
             mostView.setAction(StreamItem.ACTION_DISPLAY_TYPE_LIST)
             mostView.setSubType(StreamItem.SUBTYPE_MOST_VIEW)
@@ -1101,6 +1133,7 @@ class streamingSourceTemplate(object):
         # Top week
         if self.MENU_TVSHOW_TOPWEEK in self.MENU_TVSHOW_OPT:  
             topWeek = StreamItem(constant.__addon__.getLocalizedString(61030))
+            topWeek.setIconImage(icons.getIcon('topweek')) 
             topWeek.setType(StreamItem.TYPE_TVSHOW)
             topWeek.setAction(StreamItem.ACTION_DISPLAY_TYPE_LIST)
             topWeek.setSubType(StreamItem.SUBTYPE_TOP_WEEK)
@@ -1109,6 +1142,7 @@ class streamingSourceTemplate(object):
         # Top rate
         if self.MENU_TVSHOW_TOPRATE in self.MENU_TVSHOW_OPT:  
             topRate = StreamItem(constant.__addon__.getLocalizedString(61070))
+            topRate.setIconImage(icons.getIcon('toprate')) 
             topRate.setType(StreamItem.TYPE_TVSHOW)
             topRate.setAction(StreamItem.ACTION_DISPLAY_TYPE_LIST)
             topRate.setSubType(StreamItem.SUBTYPE_TOP_RATE)
@@ -1117,6 +1151,7 @@ class streamingSourceTemplate(object):
         # List
         if self.MENU_TVSHOW_LIST in self.MENU_TVSHOW_OPT:  
             list = StreamItem(constant.__addon__.getLocalizedString(61060))
+            list.setIconImage(icons.getIcon('news')) 
             list.setType(StreamItem.TYPE_TVSHOW)
             list.setAction(StreamItem.ACTION_DISPLAY_TYPE_LIST)
             list.setSubType(StreamItem.SUBTYPE_LIST)
@@ -1125,6 +1160,7 @@ class streamingSourceTemplate(object):
         # Categorie alphabetics
         if self.MENU_TVSHOW_CATEGORY_ALPHA in self.MENU_TVSHOW_OPT:  
             alphaCat = StreamItem(constant.__addon__.getLocalizedString(61040))
+            alphaCat.setIconImage(icons.getIcon('alphabetics')) 
             alphaCat.setType(StreamItem.TYPE_TVSHOW)
             alphaCat.setAction(StreamItem.ACTION_DISPLAY_CATEGORIE_MENU)
             alphaCat.setSubType(StreamItem.SUBTYPE_ALPHABETICS)
@@ -1141,6 +1177,7 @@ class streamingSourceTemplate(object):
         # Search show
         if self.MENU_SHOW_SEARCH in self.MENU_SHOW_OPT:  
             search = StreamItem(constant.__addon__.getLocalizedString(63050))
+            search.setIconImage(icons.getIcon('search')) 
             search.setType(StreamItem.TYPE_SHOW)
             search.setAction(StreamItem.ACTION_SEARCH)
             search.addListItemToDirectory()
@@ -1148,6 +1185,7 @@ class streamingSourceTemplate(object):
         # Last show
         if self.MENU_SHOW_LAST in self.MENU_SHOW_OPT:  
             last = StreamItem(constant.__addon__.getLocalizedString(63010))
+            last.setIconImage(icons.getIcon('news')) 
             last.setType(StreamItem.TYPE_SHOW)
             last.setAction(StreamItem.ACTION_DISPLAY_TYPE_LIST)
             last.setSubType(StreamItem.SUBTYPE_LAST)
@@ -1156,6 +1194,7 @@ class streamingSourceTemplate(object):
         # Most view
         if self.MENU_SHOW_TOPVIEW in self.MENU_SHOW_OPT:  
             mostView = StreamItem(constant.__addon__.getLocalizedString(63020))
+            mostView.setIconImage(icons.getIcon('topview')) 
             mostView.setType(StreamItem.TYPE_SHOW)
             mostView.setAction(StreamItem.ACTION_DISPLAY_TYPE_LIST)
             mostView.setSubType(StreamItem.SUBTYPE_MOST_VIEW)
@@ -1164,6 +1203,7 @@ class streamingSourceTemplate(object):
         # Top rate
         if self.MENU_SHOW_TOPRATE in self.MENU_SHOW_OPT:  
             topRate = StreamItem(constant.__addon__.getLocalizedString(63030))
+            topRate.setIconImage(icons.getIcon('toprate')) 
             topRate.setType(StreamItem.TYPE_SHOW)
             topRate.setAction(StreamItem.ACTION_DISPLAY_TYPE_LIST)
             topRate.setSubType(StreamItem.SUBTYPE_TOP_RATE)
@@ -1172,6 +1212,7 @@ class streamingSourceTemplate(object):
         # Categorie alphabetics
         if self.MENU_SHOW_CATEGORY_ALPHA in self.MENU_SHOW_OPT:  
             alphaCat = StreamItem(constant.__addon__.getLocalizedString(63040))
+            alphaCat.setIconImage(icons.getIcon('alphabetics')) 
             alphaCat.setType(StreamItem.TYPE_SHOW)
             alphaCat.setAction(StreamItem.ACTION_DISPLAY_CATEGORIE_MENU)
             alphaCat.setSubType(StreamItem.SUBTYPE_ALPHABETICS)
@@ -1188,6 +1229,7 @@ class streamingSourceTemplate(object):
         # Search show
         if self.MENU_DOCUMENTARY_SEARCH in self.MENU_DOCUMENTARY_OPT:  
             search = StreamItem(constant.__addon__.getLocalizedString(64050))
+            search.setIconImage(icons.getIcon('search')) 
             search.setType(StreamItem.TYPE_DOCUMENTARY)
             search.setAction(StreamItem.ACTION_SEARCH)
             search.addListItemToDirectory()
@@ -1195,6 +1237,7 @@ class streamingSourceTemplate(object):
         # Last show
         if self.MENU_DOCUMENTARY_LAST in self.MENU_DOCUMENTARY_OPT:  
             last = StreamItem(constant.__addon__.getLocalizedString(64010))
+            last.setIconImage(icons.getIcon('news')) 
             last.setType(StreamItem.TYPE_DOCUMENTARY)
             last.setAction(StreamItem.ACTION_DISPLAY_TYPE_LIST)
             last.setSubType(StreamItem.SUBTYPE_LAST)
@@ -1203,6 +1246,7 @@ class streamingSourceTemplate(object):
         # Most view
         if self.MENU_DOCUMENTARY_TOPVIEW in self.MENU_DOCUMENTARY_OPT:  
             mostView = StreamItem(constant.__addon__.getLocalizedString(64020))
+            mostView.setIconImage(icons.getIcon('topview')) 
             mostView.setType(StreamItem.TYPE_DOCUMENTARY)
             mostView.setAction(StreamItem.ACTION_DISPLAY_TYPE_LIST)
             mostView.setSubType(StreamItem.SUBTYPE_MOST_VIEW)
@@ -1211,6 +1255,7 @@ class streamingSourceTemplate(object):
         # Top rate
         if self.MENU_DOCUMENTARY_TOPRATE in self.MENU_DOCUMENTARY_OPT:  
             topRate = StreamItem(constant.__addon__.getLocalizedString(64030))
+            topRate.setIconImage(icons.getIcon('toprate')) 
             topRate.setType(StreamItem.TYPE_DOCUMENTARY)
             topRate.setAction(StreamItem.ACTION_DISPLAY_TYPE_LIST)
             topRate.setSubType(StreamItem.SUBTYPE_TOP_RATE)
@@ -1219,6 +1264,7 @@ class streamingSourceTemplate(object):
         # Categorie alphabetics
         if self.MENU_DOCUMENTARY_CATEGORY_ALPHA in self.MENU_DOCUMENTARY_OPT:  
             alphaCat = StreamItem(constant.__addon__.getLocalizedString(64040))
+            alphaCat.setIconImage(icons.getIcon('alphabetics')) 
             alphaCat.setType(StreamItem.TYPE_DOCUMENTARY)
             alphaCat.setAction(StreamItem.ACTION_DISPLAY_CATEGORIE_MENU)
             alphaCat.setSubType(StreamItem.SUBTYPE_ALPHABETICS)

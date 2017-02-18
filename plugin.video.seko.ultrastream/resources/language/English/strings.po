@@ -97,6 +97,18 @@ msgctxt "#50003"
 msgid "Not display screener links"
 msgstr ""
 
+msgctxt "#50004"
+msgid "Icon theme"
+msgstr ""
+
+msgctxt "#50005"
+msgid "Black"
+msgstr ""
+
+msgctxt "#50006"
+msgid "White"
+msgstr ""
+
 msgctxt "#50010"
 msgid "Android Web Browser (Android only)"
 msgstr ""

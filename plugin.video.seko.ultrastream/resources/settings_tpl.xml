@@ -6,6 +6,7 @@
 		<setting id="links_in_dialog" type="bool" label="50002" default="false"/> 
 		<setting id="filter_screener_link" type="bool" label="50003" default="false"/> 
 		<setting id="play_auto" type="bool" label="50001" default="false"/>    
+		<setting id="theme" label="50004" lvalues="50005|50006" type=enum/>		
 		<setting type="lsep" label="50010" enable="eq(-1,false)" visible="eq(-1,false)"/>
 		<setting id="activate_web_browser" type="bool" label="50013" default="false"  enable="eq(-2,false)" visible="eq(-2,false)"/>  
 		<setting id="android_web_browser" type="enum" label="50011" values="Android Browser|Firefox|Chrome|Opera|Opera for TV" default="0" enable="eq(-1,true)" visible="eq(-1,true)"/>  

@@ -21,6 +21,7 @@ from pydoc import synopsis
 from src_mod.sourceTemplate import streamingSourceTemplate as Source
 from item import StreamItem
 from logger import Logger
+from resources.lib import icons
 
 if sys.argv[0].endswith('test.py'):
     import resources.lib.test.dummyMiscFunctions as miscFunctions
@@ -1801,6 +1802,7 @@ class DPStream(Source):
                 elif listeType == DPStream.LIST_TYPE_TOPRATED:
                     subtype = StreamItem.SUBTYPE_TOP_RATE
                 nextPage = StreamItem(constant.__addon__.getLocalizedString(70010))
+                nextPage.setIconImage(icons.getIcon('nextpage'))
                 nextPage.setType(type)
                 nextPage.setAction(StreamItem.ACTION_DISPLAY_TYPE_LIST)
                 nextPage.setSubType(subtype)

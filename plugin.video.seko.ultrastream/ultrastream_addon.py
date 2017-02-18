@@ -17,6 +17,7 @@ import xbmc
 import os
 import shutil
 import sys
+import ga
 import resources.lib.router as router
 import src_mod as sources
 import miscFunctions as miscFunctions
@@ -65,7 +66,10 @@ if constant.__addon__.getSetting('service_tvshow_dir') == 'false':
         
 # ____________________     START ADDON SCRIPT     ____________________
 
+# ___ Google Analytics
+ga.pushData()
 
+# ___ Router
 router.router(__params__)
 
 # ____________________     END ADDON SCRIPT     ____________________

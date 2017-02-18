@@ -14,15 +14,19 @@ import xbmcplugin
 import xbmc
 import sys
 # ____________________     V A R I A B L E S     ____________________
-# Get the kodi major version
-__kodiVersion__ =xbmc.getInfoLabel('System.BuildVersion')[0:2]
-print __kodiVersion__
+
 # Get base_url, add_handle and arguments
 __base_url__ = sys.argv[0]
 __handle__ = None
 if len(sys.argv) > 1:
     __handle__ = int(sys.argv[1]) 
 
+
+# Get the kodi major version
+if not sys.argv[0].endswith('test.py'):
+    __kodiVersion__ =xbmc.getInfoLabel('System.BuildVersion')[0:2]
+else:
+    __kodiVersion__ = '17'
 # ____________________       M E T H O D S       ____________________
 def build_url(query):
     """

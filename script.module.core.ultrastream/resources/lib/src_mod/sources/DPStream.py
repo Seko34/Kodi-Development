@@ -16,6 +16,7 @@ import webUtil
 import strUtil
 import re
 import constant
+import icons
 import urllib2
 import traceback
 from BeautifulSoup import BeautifulSoup
@@ -1090,6 +1091,7 @@ class DPStream(Source):
                 elif listeType == DPStream.LIST_TYPE_TOPRATED:
                     subtype = StreamItem.SUBTYPE_TOP_RATE
                 nextPage = StreamItem(constant.__addon__.getLocalizedString(70010))
+                nextPage.setIconImage(icons.getIcon('nextpage'))
                 nextPage.setType(type)
                 nextPage.setAction(StreamItem.ACTION_DISPLAY_TYPE_LIST)
                 nextPage.setSubType(subtype)

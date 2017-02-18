@@ -1,3 +1,6 @@
+Version 0.1.3:
+-Add new functionnality : search synopsis on context menu
+-Add new functionnality : cached the last page (for fix the Kody 17 cacheToDisc bug)
 Version 0.1.2:
 -Use beginContentDirectory with content parameter
 Version 0.1.1:

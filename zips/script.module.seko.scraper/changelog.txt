@@ -1,3 +1,5 @@
+Version 0.0.6:
+-Fix bug on progressDialog
 Version 0.0.5:
 -Remove unused methods
 -Fix bugs

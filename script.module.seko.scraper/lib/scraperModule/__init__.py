@@ -195,7 +195,7 @@ def getMetadatas(scraperId, type,elementList, nbThread=1, dialogProgress=False):
             count += 1
             percent = int((count*100)/total)
             if dialogProgress:
-                dialogProgress.update(0,__addon__.getLocalizedString(70003),__addon__.getLocalizedString(70004)+str(percent)+'%')
+                dialogProgress.update(percent,__addon__.getLocalizedString(70003),__addon__.getLocalizedString(70004)+str(percent)+'%')
             if  'metadata' in element:
                 if str(type) == str(TYPE_MOVIE_HD) or str(type) == str(TYPE_MOVIE) :
                     metas = getMetadata(scraperId, TYPE_MOVIE, element['title'])
@@ -464,7 +464,7 @@ def startThreadForScraper(scraperId, type, elementList, nbThread, dialogProgress
             count += 1
             percent = int(((total-int(q_in.qsize()))*100)/total)
             if dialogProgress:
-                dialogProgress.update(0,__addon__.getLocalizedString(70003),__addon__.getLocalizedString(70004)+str(percent)+'%')
+                dialogProgress.update(percent,__addon__.getLocalizedString(70003),__addon__.getLocalizedString(70004)+str(percent)+'%')
                 
             # ___ Case of Movie HD
             if str(type) == str(TYPE_MOVIE_HD):                                
