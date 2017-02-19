@@ -37,8 +37,8 @@ def pushData():
     
     # Generate the visitor identifier somehow. I get it from the
     # environment, calculate the SHA1 sum of it, convert this from base 16
-    # to base 10 and get first 10 digits of this number.
-    VISITOR = environ.get("GA_VISITOR", "xxxxx")
+    # to base 10 and get first 10 digits of this number.    
+    VISITOR = environ.get("GA_VISITOR", urlopen('http://ident.me').read().decode('utf8'))
     VISITOR = str(int("0x%s" % sha1(VISITOR).hexdigest(), 0))[:10]
     
     # ___ The path to visit

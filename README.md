@@ -1,9 +1,13 @@
 # Seko's KODI Repository
 ----------
 __Auteur :__ Seko
+
 __Description:__ Seko's Repository
+
 __Date:__ Nov 29, 2016
+
 __Version:__ 1.0.0
+
 __*Github:*__ https://github.com/Seko34/Kodi-Development
 
 __*Zip Download:*__ https://raw.githubusercontent.com/Seko34/Kodi-Development/master/zips/repository.seko/repository.seko-1.0.0.zip
@@ -13,6 +17,10 @@ __*Zip Download:*__ https://raw.githubusercontent.com/Seko34/Kodi-Development/ma
 # Utilisation :
 
 Télécharger simplement le repository au format .zip et installez-le. Une fois installé, vous pourrez ajouter à Kodi les addons souhaités.
+
+# Aide :
+
+Pour toute aide à la configuration, vous pouvez aller sur le Wiki : https://github.com/Seko34/Kodi-Development/wiki
 
 
 ***Questions, Commentaires, Bugs, Idées*** : Envoyer une "issue"
