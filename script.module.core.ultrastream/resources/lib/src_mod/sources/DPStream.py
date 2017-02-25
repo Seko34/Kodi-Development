@@ -17,6 +17,7 @@ import strUtil
 import re
 import constant
 import icons
+import copy
 import urllib2
 import traceback
 from BeautifulSoup import BeautifulSoup
@@ -1249,16 +1250,23 @@ class DPStream(Source):
         
         # ___ Calculate href
         if letter == '0..9':
-            href_opt = 'title_by_num:0'
+            href_opt = 'title_by_num=0'
         else:
-            href_opt = 'lettre:'+letter
-                   
-        hrefPage = 'movies/films_ajax/' + href_opt + '/page:' + str(page)
+            href_opt = 'lettre='+letter.lower()
+        
+        hrefPage = 'films-recherche?page=' +str(page)+ '&' + href_opt
     
         # ___ Initialize the list to return
         elementList = []
             
         # ___ Try to open the link
+        """headers = copy.copy(webUtil.HEADER_CFG)
+        headers['referer'] = 'https://www.dpstream.net/films-recherche?'+href_opt
+        headers['x-requested-with'] = 'XMLHttpRequest'
+        headers[':path:'] = hrefPage
+        headers[':scheme:'] = 'https'
+        headers[':authority:'] = 'www.dpstream.net'
+        headers[':method:'] = 'GET'"""
         response = self.openPage(hrefPage)
         if response and response.getcode() == 200:
             
@@ -1357,11 +1365,11 @@ class DPStream(Source):
         
         # ___ Calculate href
         if letter == '0..9':
-            href_opt = 'title_by_num:0'
+            href_opt = 'title_by_num=0'
         else:
-            href_opt = 'lettre:'+letter
-                   
-        hrefPage = 'tvshows/series_ajax/' + href_opt + '/page:' + str(page)
+            href_opt = 'lettre='+letter.lower()
+        
+        hrefPage = 'series-recherche?page=' +str(page)+ '&' + href_opt
     
         # ___ Initialize the list to return
         elementList = []
@@ -1456,11 +1464,11 @@ class DPStream(Source):
         
         # ___ Calculate href
         if letter == '0..9':
-            href_opt = 'title_by_num:0'
+            href_opt = 'title_by_num=0'
         else:
-            href_opt = 'lettre:'+letter
-                   
-        hrefPage = 'tvshows/series_ajax/' + href_opt + '/page:' + str(page)
+            href_opt = 'lettre='+letter.lower()
+        
+        hrefPage = 'animes-recherche?page=' +str(page)+ '&' + href_opt
     
         # ___ Initialize the list to return
         elementList = []
@@ -1486,7 +1494,7 @@ class DPStream(Source):
                     element.setTitle('Page '+element.getPage())                  
                     elementList.append(element)
                 
-            # For every tvshow            
+            # For every anime            
             movies = soup.findAll('div',{"class":"resultHeader"})
             for index in range(0, len(movies)):
                 movie = movies[index]

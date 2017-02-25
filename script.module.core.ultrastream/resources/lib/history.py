@@ -31,7 +31,17 @@ def getHistory(streamItem):
     """
        Method to get the history for the streamItem 
        @param streamItem: the streamItem to play     
-       @return the history element
+       @return the history element 
+       resultJSON = { 
+                   'name':result[0][0],
+                   'url':result[0][1],
+                   'seektime':result[0][2],
+                   'percent':result[0][3],
+                   'isComplete':result[0][4],
+                   'tvshow':result[0][5],
+                   'season':result[0][6],
+                   'episode':result[0][7]
+                }
     """
     historyElement = None
     

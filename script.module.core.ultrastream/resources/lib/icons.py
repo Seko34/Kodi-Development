@@ -22,8 +22,13 @@ def getIcon(title,hd=False):
         Method to get the icon depends on the language and on the settings
         @param the icon title
         @return the icon path
-    """
+    """    
+    # ___ Get the selected theme
+    theme = constant.__addon__.getSetting('theme')
+    if theme == None or len(str(theme)) ==0 or not isinstance(theme,str):
+        theme = '0'
+        
     if hd:
-        return  os.path.join(constant.__ICONDIR__,constant.__addon__.getSetting('theme'),title+'_hd.png')
+        return  os.path.join(constant.__ICONDIR__,theme,title+'_hd.png')
    
-    return  os.path.join(constant.__ICONDIR__,constant.__addon__.getSetting('theme'),title+'.png')
+    return  os.path.join(constant.__ICONDIR__,theme,title+'.png')

@@ -22,6 +22,7 @@ import xbmcgui
 import downloaderModule
 import metadata
 import constant
+import ga
 from item import StreamItem
 from resources.lib.trailer import YoutubeTrailer
 from resources.lib.watamovie import Filmou 
@@ -64,7 +65,10 @@ def router(params):
         
         # ___ Display list of link when launch the addon from .strm file
         if 'strm' in params and int(params['strm']) == 1:
-                                    
+                                
+            # ___ Google Analytics
+            if constant.__kodiVersion__ >= 17:
+                ga.pushData('strm')
             progress = xbmcgui.DialogProgress()
             progress.create(constant.__addon__.getLocalizedString(70006),constant.__addon__.getLocalizedString(70007))  
             
@@ -416,6 +420,10 @@ def router(params):
             
         # ___ DISPLAY VIDEO OPTION           
         elif int(params['action']) == StreamItem.ACTION_PLAY:
+                                
+            # ___ Google Analytics
+            if constant.__kodiVersion__ >= 17:
+                ga.pushData('play')
             player.displayVideoOptions(paramsItem)     
        
         # ___ SETTINGS MENU
@@ -532,6 +540,10 @@ def router(params):
         if listItems is not None and len(listItems) > 0 :
             if progress is not None:
                 progress.update(0,constant.__addon__.getLocalizedString(70008))
+            else:
+                progress = xbmcgui.DialogProgress()
+                progress.create(constant.__addon__.getLocalizedString(70006),constant.__addon__.getLocalizedString(70008)) 
+                 
             listItems = metadata.getMetadataForList(params['type'], listItems,progress) 
         
         # ___ Cached the current page before displaying it

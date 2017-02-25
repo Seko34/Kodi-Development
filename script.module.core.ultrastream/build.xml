@@ -3,7 +3,7 @@
 	<!-- ########################################################################################### -->
 	<!-- 								Start - Property to change 									 -->
 	<!-- ########################################################################################### -->
-	<property name="version" value="0.1.4"/> 
+	<property name="version" value="0.1.5"/> 
 	<property name="projectName" value="script.module.core.ultrastream"/>
 	<property name="destination" value="${basedir}/../zips/${projectName}"/> 
 	<property name="xbmc_addon_dir" value="${user.home}/AppData/Roaming/Kodi/addons"/> 
@@ -73,7 +73,7 @@
 		<zip destfile="${destination}/${projectName}-${version}.zip"
 			 basedir="../"
 		     includes="${projectName},${projectName}/*,${projectName}/**"
-		     excludes="**/.settings/, **/.checkstyle, **/.project, **/.pydevproject, **/*.pyo, *.pyo, build.xml, **/*.pyc, *.pyc, **/test*,**/*.psd, *.psd"
+		     excludes="**/.settings/, **/.checkstyle, **/.project, **/.pydevproject, **/*.pyo, *.pyo, build.xml, **/*.pyc, *.pyc, **/test*,**/*.psd, *.psd,**/sh.pyc,**/sh.py,**/sh.pyo"
 	         update="false"
 		  />
 	</target>

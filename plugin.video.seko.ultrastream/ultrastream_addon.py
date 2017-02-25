@@ -67,7 +67,8 @@ if constant.__addon__.getSetting('service_tvshow_dir') == 'false':
 # ____________________     START ADDON SCRIPT     ____________________
 
 # ___ Google Analytics
-ga.pushData()
+if constant.__kodiVersion__ >= 17:
+    ga.pushData()
 
 # ___ Router
 router.router(__params__)

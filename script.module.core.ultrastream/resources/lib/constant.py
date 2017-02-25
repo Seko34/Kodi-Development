@@ -34,6 +34,12 @@ __LOGGER__ = Logger('UltraStream')
 # ___ Language
 __LANG__ = xbmc.getInfoLabel('System.Language')
 
+# Get the kodi major version
+if not sys.argv[0].endswith('test.py'):
+    __kodiVersion__ =xbmc.getInfoLabel('System.BuildVersion')[0:2]
+else:
+    __kodiVersion__ = '17'
+
 if not sys.argv[0].endswith('test.py'):
     # ___ Directory
     __MEDIADIR__ = os.path.join( __coreAddonDir__, 'resources', 'media')
@@ -42,3 +48,7 @@ if not sys.argv[0].endswith('test.py'):
     if __LANG__ == 'French':
         defaultIconLang = 'fr'
     __ICONDIR__ = os.path.join( __MEDIADIR__, 'icons',defaultIconLang)
+else:
+    __MEDIADIR__ = 'test'
+    __LANG__ = 'fr'
+    __ICONDIR__ = 'test'

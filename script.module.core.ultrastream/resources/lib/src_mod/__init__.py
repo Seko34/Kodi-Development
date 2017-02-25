@@ -18,6 +18,7 @@ import xbmcaddon
 import xbmcgui
 import strUtil
 import constant
+import timeit
 from item import StreamItem
 from difflib import SequenceMatcher as SM
 
@@ -114,7 +115,7 @@ def getMoreMovieLink(sourceId, streamItem,strictlyEgal=False):
         if str(inst.getId()) != str(sourceId) and inst.isActivated():           
             isFound = False
             nbInst = nbInst+1
-            percent = int( ( nbInst / len(MODULES_INSTANCES) ) * 100)  
+            percent = int((100*nbInst) / len(MODULES_INSTANCES))  
             progress.update( percent, str(constant.__addon__.getLocalizedString(70005))+inst.getName(), str(nbInst) + "/" + str(len(MODULES_INSTANCES)))
             
             # ___ Search the movie in the current source
@@ -209,7 +210,7 @@ def getMoreTvShowEpisodeLink(sourceId, streamItem):
         # ___ If the instance is not equal to our main sourceId
         if str(inst.getId()) != str(sourceId) and inst.isActivated():
             nbInst = nbInst+1
-            percent = int( ( nbInst / len(MODULES_INSTANCES) ) * 100)  
+            percent = int((100*nbInst) / len(MODULES_INSTANCES))  
             progress.update( percent, str(constant.__addon__.getLocalizedString(70005))+inst.getName(), str(nbInst) + "/" + str(len(MODULES_INSTANCES)))
             
             # ___ Search the tvshow in the current source
@@ -301,7 +302,7 @@ def getMoreAnimeEpisodeLink(sourceId, streamItem):
         # ___ If the instance is not equal to our main sourceId
         if str(inst.getId()) != str(sourceId) and inst.isActivated():
             nbInst = nbInst+1
-            percent = int( ( nbInst / len(MODULES_INSTANCES) ) * 100)  
+            percent = int((100*nbInst) / len(MODULES_INSTANCES))  
             progress.update( percent, str(constant.__addon__.getLocalizedString(70005))+inst.getName(), str(nbInst) + "/" + str(len(MODULES_INSTANCES)))
             
             # ___ Search the tvshow in the current source
@@ -351,7 +352,7 @@ def searchMovie(title):
     nbInst = 0
     for inst in MODULES_INSTANCES:
         nbInst = nbInst+1
-        percent = int( ( nbInst / len(MODULES_INSTANCES) ) * 100)  
+        percent = int( ( nbInst * 100) / len(MODULES_INSTANCES) )  
         progress.update( percent,str(constant.__addon__.getLocalizedString(70006))+ inst.getName(), str(nbInst) + "/" + str(len(MODULES_INSTANCES)))
            
         sourceElList = inst.searchMovie(title)
@@ -363,7 +364,10 @@ def searchMovie(title):
     progress.close()
     
     # ___ Sort the list
+    startTime=timeit.default_timer()
     elementList = sorted(elementList,key = lambda streamItem: streamItem.__compare__(title), reverse = True )
+    endTime=timeit.default_timer()
+    xbmc.log("Global search - Sort list in "+str(endTime-startTime)+" sec",xbmc.LOGDEBUG)
     
     return elementList
 
@@ -378,7 +382,7 @@ def searchTvShow(title):
     nbInst = 0
     for inst in MODULES_INSTANCES:
         nbInst = nbInst+1
-        percent = int( ( nbInst / len(MODULES_INSTANCES) ) * 100)  
+        percent = int( ( nbInst* 100)  / len(MODULES_INSTANCES) ) 
         progress.update( percent,str(constant.__addon__.getLocalizedString(70006))+ inst.getName(), str(nbInst) + "/" + str(len(MODULES_INSTANCES)))
            
         sourceElList = inst.searchTvShow(title)
@@ -390,7 +394,10 @@ def searchTvShow(title):
     progress.close()
     
     # ___ Sort the list
+    startTime=timeit.default_timer()
     elementList = sorted(elementList,key = lambda streamItem: streamItem.__compare__(title), reverse = True )
+    endTime=timeit.default_timer()
+    xbmc.log("Global search - Sort list in "+str(endTime-startTime)+" sec",xbmc.LOGDEBUG)
     
     return elementList   
     
@@ -405,7 +412,7 @@ def searchAnime(title):
     nbInst = 0
     for inst in MODULES_INSTANCES:
         nbInst = nbInst+1
-        percent = int( ( nbInst / len(MODULES_INSTANCES) ) * 100)  
+        percent = int( ( nbInst * 100) / len(MODULES_INSTANCES) )
         progress.update( percent,str(constant.__addon__.getLocalizedString(70006))+ inst.getName(), str(nbInst) + "/" + str(len(MODULES_INSTANCES)))
            
         sourceElList = inst.searchAnime(title)
@@ -417,7 +424,10 @@ def searchAnime(title):
     progress.close()
     
     # ___ Sort the list
+    startTime=timeit.default_timer()
     elementList = sorted(elementList,key = lambda streamItem: streamItem.__compare__(title), reverse = True )
+    endTime=timeit.default_timer()
+    xbmc.log("Global search - Sort list in "+str(endTime-startTime)+" sec",xbmc.LOGDEBUG)
     
     return elementList
    

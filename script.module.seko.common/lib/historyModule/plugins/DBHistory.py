@@ -110,8 +110,8 @@ class DBHistory(historyTemplate):
             
         clause_value = "name = '%s'" % (name)      
         
-        if url:
-            clause_value = clause_value + " AND url = '%s'" % (url)
+        #if url:
+        #   clause_value = clause_value + " AND url = '%s'" % (url)
         if tvshow:
             clause_value = clause_value + " AND tvshow = '%s'" % (tvshow)
         if season:
@@ -155,8 +155,8 @@ class DBHistory(historyTemplate):
         if self.findHistory(name, url, tvshow, season, episode) is not None:
             clause_value = "name = '%s'" % (name)
             
-            if url:
-                clause_value = clause_value + " AND url = '%s'" % (url)
+            #if url:
+            #    clause_value = clause_value + " AND url = '%s'" % (url)
             if tvshow:
                 clause_value = clause_value + " AND tvshow = '%s'" % (tvshow)
             if season:
@@ -183,8 +183,8 @@ class DBHistory(historyTemplate):
             tvshow = strUtil.remove_special_char(tvshow)
         clause_value = "name = '%s'" % (name)
         
-        if url:
-            clause_value = clause_value + " AND url = '%s'" % (url)
+        #if url:
+        #    clause_value = clause_value + " AND url = '%s'" % (url)
         if tvshow:
             clause_value = clause_value + " AND tvshow = '%s'" % (tvshow)
         if season:

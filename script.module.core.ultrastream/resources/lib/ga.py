@@ -30,7 +30,7 @@ from os import environ
 
 # ____________________     F U N C T I O N S       ____________________
 
-def pushData():
+def pushData(type=False):
     # Set your property id via the environment or simply type it
     # below
     PROPERTY_ID = environ.get("GA_PROPERTY_ID", base64.b64decode("VUEtOTIwOTIxNDYtMQ=="))
@@ -58,6 +58,9 @@ def pushData():
     match  = resolutionPattern.match(resolution)
     resolutionStr = match.group(1)+match.group(2)+match.group(3)
     
+    PATH = PATH +'/'+kodiUtil.__kodiVersion__ +'/'+kernelVersion
+    if type:
+        PATH =  PATH + '/' +type
     # ___ Collect everything in a dictionary
     DATA = {"utmwv": "5.2.2d",
             "utmn": str(randint(1, 9999999999)),

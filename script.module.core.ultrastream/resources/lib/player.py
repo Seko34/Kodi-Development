@@ -144,43 +144,70 @@ def playVideo(streamItem):
     """
     constant.__LOGGER__.log('Play url : '+streamItem.getPlayableUrl(),xbmc.LOGDEBUG)       
     
+    # ___ Boolean uses for seeking
+    seekBool = False
+    
+    # ___ Get the history of the element
+    historyEl = history.getHistory(streamItem)  
+    constant.__LOGGER__.log(historyEl)
+    if historyEl is not None:
+        
+        # If the percent is between 0 and 99, ask to resume the video
+        if int(historyEl['percent']) >0 and int(historyEl['percent']) <99:
+            dialog = xbmcgui.Dialog()
+            seekBool = dialog.yesno(constant.__addon__.getLocalizedString(70001), constant.__addon__.getLocalizedString(33059))
+            
+    
     # ___ Open the movie with KODI Player
     player = xbmc.Player()
     player.play(streamItem.getPlayableUrl())        
     
     # ___ Waiting to play the movie
-    notplaying = True 
     videotimewatched = 0
     isComplete = 0
     percent = 0
     
-    while notplaying :
-        if player.isPlaying() :
-            notplaying = False
+    # ___ Wait until the player is playing
+    while not player.isPlaying() :
         time.sleep(0.1) 
         
     # ___ While the movie is playing
-    if xbmc.Player().isPlaying() :
+    if player.isPlaying() :
         # ___ Get the total time
-        videototaltime = xbmc.Player().getTotalTime()
+        videototaltime = player.getTotalTime()
+        
+        # ___ Wait until the timer progress
+        currentTime = player.getTime()
+        while player.isPlaying() and player.getTime() <= currentTime:
+            time.sleep(0.1)
+        
+        # ___ ! Now the movie is started
+        
+        # ___ Seek time if necessary
+        if seekBool and historyEl is not None:
+            player.seekTime(float(historyEl['seektime']))
+            
+               
+        # ___ While the movie is watched
         while player.isPlaying() :
             
             # ___ Get the current time
-            videotimewatched = xbmc.Player().getTime()
+            videotimewatched = player.getTime()
             
             if videototaltime == 0:
                 # ____Get the total time
-                videototaltime = xbmc.Player().getTotalTime() 
+                videototaltime = player.getTotalTime() 
             # ___ Sleep 500ms
             time.sleep(0.5)
     
    
-    
+    # ___ Verify if the movie is ended    
     if videotimewatched is not None and videototaltime is not None and videotimewatched >= videototaltime:
         isComplete = 1
     else:
         isComplete = 0
         
+    # ___ Calculate the percent of video watched
     if videotimewatched is not None and videototaltime is not None and videototaltime > 0:
         percent = float( ( videotimewatched * 100 ) / videototaltime )
     else:

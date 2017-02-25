@@ -285,7 +285,6 @@ class Sokrostream(Source):
         headers['Referer'] = streamItem.getHref()
         headers['Host'] = 'sokrostream.biz'
         headers['Origin'] = 'http://sokrostream.biz'
-        headers['Upgrade-Insecure-Requests:'] = '1'
         
         response = self.postPage(postHref, param,headers=headers)
         
@@ -299,7 +298,7 @@ class Sokrostream(Source):
                 headers = copy.copy(webUtil.HEADER_CFG)
                 headers['Referer'] = streamItem.getHref()
                 headers['Host'] = 'sokrostrem.xyz'
-                headers['Upgrade-Insecure-Requests:'] = '1'
+                headers['Upgrade-Insecure-Requests'] = '1'
                 response2 = self.openPage(link['src'],buildHref=False,cHeaders=headers)
                 if response2 and response2.getcode() == 200:   
                     content2 = response2.read()
