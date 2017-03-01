@@ -184,8 +184,11 @@ def playVideo(streamItem):
         # ___ ! Now the movie is started
         
         # ___ Seek time if necessary
-        if seekBool and historyEl is not None:
-            player.seekTime(float(historyEl['seektime']))
+        if seekBool and historyEl is not None and player.isPlaying():
+            try:
+                player.seekTime(float(historyEl['seektime']))
+            except:
+                pass
             
                
         # ___ While the movie is watched

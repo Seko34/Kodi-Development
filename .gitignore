@@ -14,3 +14,5 @@ test.xml
 *xbmcstubs-master*
 *script.module.seko.test*
 sh.py
+sh_obs.py
+*ext_shortest*
