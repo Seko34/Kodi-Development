@@ -48,6 +48,10 @@ def router(params):
     #params = dict(parse_qsl(paramstring))
     paramsItem = StreamItem(params=params)
     
+    # ___ Google Analytics
+    if constant.__kodiVersion__ >= 17:
+        ga.pushData(paramsItem)
+    
     # ___ Get the source
     __SOURCE__ = sources.getStreaminSource(constant.__addon__.getSetting('default_stream_src'))
     
@@ -68,7 +72,7 @@ def router(params):
                                 
             # ___ Google Analytics
             if constant.__kodiVersion__ >= 17:
-                ga.pushData('strm')
+                ga.pushData(paramsItem,'strm')
             progress = xbmcgui.DialogProgress()
             progress.create(constant.__addon__.getLocalizedString(70006),constant.__addon__.getLocalizedString(70007))  
             
@@ -423,7 +427,7 @@ def router(params):
                                 
             # ___ Google Analytics
             if constant.__kodiVersion__ >= 17:
-                ga.pushData('play')
+                ga.pushData(paramsItem,'play')
             player.displayVideoOptions(paramsItem)     
        
         # ___ SETTINGS MENU

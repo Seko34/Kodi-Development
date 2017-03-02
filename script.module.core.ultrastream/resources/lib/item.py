@@ -1031,7 +1031,18 @@ class StreamItem:
                 nfoFile.write('http://www.imdb.com/tv/'+self.Item['metadata']['imdb_id'])
                 
             nfoFile.close()
-        
+     
+    def getGAUrl(self):
+        """
+            Method to get the GA Url
+            @return the GA url
+        """
+        url = 'UltraStream/'
+        url += 'action='+str(self.getAction())
+        url += 'type='+str(self.getType())
+        url += 'subtype='+str(self.getSubType())
+        return url
+           
     def __compare__(self,title):
         """
             Method to compare the current title with an other title

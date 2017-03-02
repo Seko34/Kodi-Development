@@ -47,7 +47,7 @@ if xbmc.getCondVisibility('System.HasAddon(%s)' % 'plugin.video.seko.ultrastream
         
     settings = xbmcaddon.Addon(id='plugin.video.seko.ultrastream')
     
-    version = "0.0.3"
+    version = "0.1.3"
     plugin = "Ultrastream Service-" + version
     __LOGGER__ = logger.Logger('UltraStream-Service')
     __LOGGER__.log(plugin)

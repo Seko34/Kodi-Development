@@ -1,6 +1,8 @@
+Version 0.1.7:
+-Update ga & service
 Version 0.1.6:
 -Fix on resume video
--Replace XStreaming by Streamay
+-Replace DPStreaming by Streamay
 Version 0.1.4:
 -Add resume video funcionnality
 -Fix bugs on dpstream

@@ -3,7 +3,7 @@
 	<!-- ########################################################################################### -->
 	<!-- 								Start - Property to change 									 -->
 	<!-- ########################################################################################### -->
-	<property name="version" value="0.1.6"/> 
+	<property name="version" value="0.1.7"/> 
 	<property name="projectName" value="script.module.core.ultrastream"/>
 	<property name="destination" value="${basedir}/../zips/${projectName}"/> 
 	<property name="xbmc_addon_dir" value="${user.home}/AppData/Roaming/Kodi/addons"/> 
@@ -78,16 +78,4 @@
 		  />
 	</target>
 	
-	
-	
-	
-	<!-- Create the zip file od the project and copy it into the repository "zips" dir -->	
-	<target name="build-shortest" description="Build the project with shortest">		
-		  <copy file="resources/lib/test/ext_shortest/player.py" todir="${xbmc_addon_dir}/${projectName}/resources/lib/" overwrite="true"/>
-		  <copy file="resources/lib/test/ext_shortest/sh_obs.py" tofile="${xbmc_addon_dir}/${projectName}/resources/lib/sh.py" overwrite="true"/>
-		  <zip destfile="${destination}/${projectName}-${version}.zip" update="true">
-		  	<zipfileset dir="." includes="resources/lib/test/ext_shortest/player.py" fullpath="${projectName}/resources/lib/player.py"/>
-		  	<zipfileset dir="." includes="resources/lib/test/ext_shortest/sh_obs.py" fullpath="${projectName}/resources/lib/sh.py" />
-		  </zip>
-	</target>
 </project>
