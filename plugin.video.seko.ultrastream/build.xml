@@ -3,7 +3,7 @@
 	<!-- ########################################################################################### -->
 	<!-- 								Start - Property to change 									 -->
 	<!-- ########################################################################################### -->
-	<property name="version" value="0.2.7"/> 
+	<property name="version" value="0.2.8"/> 
 	<property name="projectName" value="plugin.video.seko.ultrastream"/>
 	<property name="destination" value="${basedir}/../zips/${projectName}"/> 
 	<property name="xbmc_addon_dir" value="${user.home}/AppData/Roaming/Kodi/addons"/> 

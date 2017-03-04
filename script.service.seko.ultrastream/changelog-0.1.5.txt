@@ -1,0 +1,27 @@
+Version 0.1.4:
+-Update Core module
+Version 0.1.3:
+-Launch  service on kodi startup
+-Update Core module
+Version 0.1.2:
+-Update Core module
+Version 0.1.1:
+-Update Core module
+Version 0.0.9:
+-Update Core module
+Version 0.0.8:
+-Update Core module
+Version 0.0.7:
+-Use cacheToDisk
+Version 0.0.6:
+-Update common module
+Version 0.0.5:
+-Windows bugs : unzip archive and try to install plugin.video.seko.ultrastream if not exists
+Version 0.0.4:
+-Update Core module & Fix on writeStrm method
+Version 0.0.3:
+-Update Core module
+Version 0.0.2:
+-Fix bugs on background progress
+Version 0.0.1:
+-Initial version
