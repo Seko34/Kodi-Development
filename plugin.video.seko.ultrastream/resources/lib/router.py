@@ -50,7 +50,8 @@ def router(params):
     
     # ___ Google Analytics
     if constant.__kodiVersion__ >= 17:
-        ga.pushData(paramsItem)
+        t = ga.GAThread(paramsItem)
+        t.start()
     
     # ___ Get the source
     __SOURCE__ = sources.getStreaminSource(constant.__addon__.getSetting('default_stream_src'))
@@ -72,7 +73,9 @@ def router(params):
                                 
             # ___ Google Analytics
             if constant.__kodiVersion__ >= 17:
-                ga.pushData(paramsItem,'strm')
+                t = ga.GAThread(paramsItem,'strm')
+                t.start()       
+                
             progress = xbmcgui.DialogProgress()
             progress.create(constant.__addon__.getLocalizedString(70006),constant.__addon__.getLocalizedString(70007))  
             
@@ -427,7 +430,9 @@ def router(params):
                                 
             # ___ Google Analytics
             if constant.__kodiVersion__ >= 17:
-                ga.pushData(paramsItem,'play')
+                t = ga.GAThread(paramsItem)
+                t.start()
+                
             player.displayVideoOptions(paramsItem)     
        
         # ___ SETTINGS MENU

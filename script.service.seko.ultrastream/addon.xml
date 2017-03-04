@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="script.service.seko.ultrastream" name="Seko Ultrastream Service" version="0.1.3" provider-name="Seko">
+<addon id="script.service.seko.ultrastream" name="Seko Ultrastream Service" version="${ServiceVersion}" provider-name="Seko">
   <requires>
     <import addon="xbmc.python" version="2.6.0" />
-  	<import addon="script.module.core.ultrastream" version="0.1.7"/>
+  	<import addon="script.module.core.ultrastream" version="0.1.8"/>
   </requires>
   <extension point="xbmc.python.module" library="lib" />
   <extension point="xbmc.service"  library="default.py" start="login"/>

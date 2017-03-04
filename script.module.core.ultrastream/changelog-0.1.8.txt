@@ -1,0 +1,41 @@
+Version 0.1.8:
+-Update ga
+Version 0.1.7:
+-Update ga & service
+Version 0.1.6:
+-Fix on resume video
+-Replace DPStreaming by Streamay
+Version 0.1.4:
+-Add resume video funcionnality
+-Fix bugs on dpstream
+-Decrease icons size
+Version 0.1.3:
+-Add new functionnality : search synopsis on context menu
+-Add new functionnality : cached the last page (for fix the Kody 17 cacheToDisc bug)
+Version 0.1.2:
+-Use beginContentDirectory with content parameter
+Version 0.1.1:
+-Use cacheToDisk
+Version 0.1.0:
+-Update common module
+Version 0.0.9:
+-Add sh.st to unshorten url
+Version 0.0.8
+-Add filter for screener links
+Version 0.0.6:
+-Fix DPStream (Use https)
+-Fix Sokrostream
+-Update language file
+Version 0.0.5:
+-Update DPStream (Fix getMovieListByGenre method)
+-Add automatically play video option
+Version 0.0.4:
+-Fix MegaStream
+-Fix media
+Version 0.0.3:
+-Add unshort url with viid.me
+Version 0.0.2:
+-Fix bugs on StreamItem
+-Fix DPStream link
+Version 0.0.1:
+-Initial version

@@ -26,6 +26,7 @@ import urllib
 import urllib2
 import traceback
 import time
+from threading import Thread,RLock
 from cookielib import CookieJar
 from random import randint
 from urllib import urlencode
@@ -53,6 +54,7 @@ resolution = match.group(1)+'x'+match.group(3)
 vp =  match.group(1)+'x'+str(max(250,(int(match.group(3))-500)))
 
 
+lockGA = RLock()
 # ____________________     F U N C T I O N S       ____________________
 def pushData(streamItem,type=False):
     
@@ -198,3 +200,19 @@ def getTimeStampStr():
     return str(int(time.time()))
 
 
+class GAThread(Thread):
+    
+    def __init__(self,streamItem,type=False):
+        """
+            Constructor
+        """
+        Thread.__init__(self)
+        self.streamItem = streamItem
+        self.type = type
+        
+    def run(self):
+        """
+            Method run
+        """
+        with lockGA:
+            pushData(self.streamItem,self.type)

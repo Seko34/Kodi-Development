@@ -16,3 +16,6 @@ test.xml
 sh.py
 sh_obs.py
 *ext_shortest*
+script.module.core.ultrastream/build_sh.xml
+script.service.seko.ultrastream/build_sh.xml
+script.module.core.ultrastream/build_all.xml
