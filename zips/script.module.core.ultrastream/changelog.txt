@@ -1,3 +1,7 @@
+Version 0.2.0:
+-Add manga and tvshow for streamay
+Version 0.1.9:
+-Update Streamay
 Version 0.1.8:
 -Update ga
 Version 0.1.7:

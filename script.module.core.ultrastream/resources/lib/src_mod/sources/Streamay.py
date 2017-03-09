@@ -46,7 +46,7 @@ class Streamay(Source):
     MAIN_MENU_OPT = [#Source.MAIN_MENU_MOVIE_HD,
                      Source.MAIN_MENU_MOVIE,
                      Source.MAIN_MENU_TVSHOW,
-                     #Source.MAIN_MENU_ANIME,
+                     Source.MAIN_MENU_ANIME,
                      #Source.MAIN_MENU_SHOW,
                      #Source.MAIN_MENU_DOCUMENTARY]
                      ]
@@ -66,10 +66,11 @@ class Streamay(Source):
     
     MENU_TVSHOW_OPT = [
                        Source.MENU_TVSHOW_SEARCH,
-                       #Source.MENU_TVSHOW_LAST
+                       Source.MENU_TVSHOW_LAST,
+                       Source.MENU_TVSHOW_TOPVIEW
                        ] 
     
-    MENU_ANIME_OPT = [] 
+    MENU_ANIME_OPT = [ Source.MENU_ANIME_SEARCH] 
     
     def isLogin(self):          
         return True
@@ -134,7 +135,7 @@ class Streamay(Source):
                     element.setTvShowName(title)   
                 elif result['type'] == 'Manga':  
                     typeEl = StreamItem.TYPE_ANIME           
-                    element.setAction(StreamItem.ACTION_DISPLAY_SEASONS)
+                    element.setAction(StreamItem.ACTION_DISPLAY_EPISODES)
                     element.setType(StreamItem.TYPE_ANIME)  
                     element.setTvShowName(title)   
                 
@@ -254,7 +255,7 @@ class Streamay(Source):
             Method to get the seasons list of an anime
             @return a list of StreamItem
         """
-        pass
+        self.getAnimeEpisodes(tvShowStreamItem)
     
     def getTvShowEpisodes(self, episodeStreamItem):
         """
@@ -307,7 +308,32 @@ class Streamay(Source):
             Method to get the episodes list of a season
             @return a list of StreamItem
         """
-        pass
+        # ___ Initialize the list to return
+        elementList = []
+        href = '/read/mepisodes/'+str(episodeStreamItem.getId())
+        # ___ Get the soup
+        response = self.openPage(href)
+        
+        if response and response.getcode() == 200:        
+            content = response.read()
+            jsonR = json.loads(content)  
+            episodes = jsonR['episodes']
+                                
+            for episode in episodes:
+                # __ Create the element                       
+                element = episodeStreamItem.copy()
+                element.setAction(StreamItem.ACTION_DISPLAY_LINKS)
+                element.setType(StreamItem.TYPE_ANIME_EPISODE)
+                element.setEpisode(episode['episodeNumber'])
+                element.setHref('/read/mepisode/'+episodeStreamItem.getId()+'/'+episode['episodeNumber'])
+                #element.setId(episode['id'])
+                element.determineEpisodeTitle()
+                
+                elementList.append(element)  
+    
+            
+                
+        return elementList
     
    
     def getMovieLink(self,movieStreamItem):
@@ -379,7 +405,50 @@ class Streamay(Source):
             Method to get all links of an episode
             @return a list of StreamItem
         """
-        pass
+        # ___ Initialize the list to return
+        elementList = []
+        
+        # ___ Get the soup
+        response = self.openPage(episodeStreamItem.getHref())
+        if response is not None and response.getcode() == 200:
+            jsonR = json.loads(response.read())
+            episodeLinks = jsonR['episode']
+            for key in episodeLinks:
+                if key+'_vostfr' in episodeLinks:
+                    if episodeLinks[key] is not None:
+                        response2 = self.openPage('/streamerMEpisode/'+str(episodeStreamItem.getEpisode())+'/'+str(episodeStreamItem.getId())+'/'+key)
+                        if response2 is not None and response2.getcode() == 200:
+                            
+                            jsonLink = json.loads(response2.read())
+                            if 'code' in jsonLink:
+                                # __ Create the element                       
+                                element = episodeStreamItem.copy()
+                                element.setAction(StreamItem.ACTION_PLAY)
+                                element.setType(StreamItem.TYPE_STREAMING_LINK)
+                                element.setHref(jsonLink['code'])           
+                                element.setLang('FR')
+                                element.regenerateKodiTitle()
+                                self.appendLinkInList(element, elementList)
+                    
+                    if episodeLinks[key+'_vostfr'] is not None:
+                        
+                        response2 = self.openPage('/streamerMEpisode/'+str(episodeStreamItem.getEpisode())+'/'+str(episodeStreamItem.getId())+'/'+key+'_vostfr')
+                        if response2 is not None and response2.getcode() == 200:
+                            
+                            print response2.read()
+                            jsonLink = json.loads(response2.read())
+                            if 'code' in jsonLink:
+                                # __ Create the element                       
+                                element2 = episodeStreamItem.copy()
+                                element2.setAction(StreamItem.ACTION_PLAY)
+                                element2.setType(StreamItem.TYPE_STREAMING_LINK)
+                                element2.setHref(jsonLink['code'])           
+                                element2.setLang('VO')
+                                element2.setSubTitle('FR')
+                                element.regenerateKodiTitle()
+                                self.appendLinkInList(element2, elementList)
+        
+        return elementList  
     
     def getMoviesFromContent(self,content):
         """
@@ -443,6 +512,7 @@ class Streamay(Source):
         """
         elementList = []
         soup = BeautifulSoup(content)
+        
         movies = soup.findAll('div',{'class':'movie'})
         for movie in movies:
             title = movie.find('div',{'class':'infos'}).find('a',{'class':'title'}).find('span').text.encode('UTF-8')
@@ -450,7 +520,6 @@ class Streamay(Source):
             
             self.__LOGGER__.log("Finded title: "+title,xbmc.LOGDEBUG)
             href = movie.find('div',{'class':'infos'}).find('a',{'class':'title'})['href']
-            quality = movie.find('div',{'class':'pic'}).find('span',{'class':'qualitos'}).text.encode('UTF-8') 
             
             title = strUtil.cleanTitle(title)                
             self.__LOGGER__.log("Clean title: "+str(title),xbmc.LOGDEBUG)        
@@ -458,12 +527,11 @@ class Streamay(Source):
             # __ Create the element
             element = StreamItem(title)
             element.setHref(href)
-            element.setQuality(quality)
             element.setAction(StreamItem.ACTION_DISPLAY_SEASONS)
             element.setType(StreamItem.TYPE_TVSHOW)
             element.setSourceId(self.ID)  
             element.setIconImage(movie.find('div',{'class':'pic'}).find('img')['src'])   
-            element.setId(movie.find('div',{'class':'infos'}).find('a',{'data-type':'movie'})['data-id'])               
+            element.setId(movie.find('div',{'class':'infos'}).find('a',{'data-type':'serie'})['data-id'])               
             
             # ___ Get metadatas 
             metadatas = movie.find('div',{'class':'infos'})
@@ -471,13 +539,8 @@ class Streamay(Source):
             
             if metadatas is not None:
                 genres = metadatas.findAll('p',{'class':'nop genre meta an'})[0].find('a').text.encode('UTF-8')                                       
-                element.setMetadataGenre(genres)                        
+                element.setMetadataGenre(genres)                       
                 
-                year = metadatas.findAll('p',{'class':'nop genre meta an'})[1].find('a').text.encode('UTF-8')   
-                element.setMetadataYear(year)
-                
-                lang = strUtil.getLangFromTitle(metadatas.findAll('p',{'class':'nop genre meta an'})[2].find('img')['alt'])
-                element.setLang(lang)
                 
             overview = metadatas.find('p',{'class':'nop synopsis meta an'})
             if overview is not None:
@@ -542,11 +605,9 @@ class Streamay(Source):
         
         # ___ Get the soup
         response = self.openPage(href)
-        print response.getcode()
         if response and response.getcode() == 200:        
             content = response.read()
-            elementList = self.getTvShowsFromContent(content)   
-            print 'ici'
+            elementList = self.getTvShowsFromContent(content)
             # ___ Ad the next page
             nextPage = StreamItem(constant.__addon__.getLocalizedString(70010))
             nextPage.setIconImage(icons.getIcon('nextpage'))
@@ -655,7 +716,32 @@ class Streamay(Source):
             Method to get top week tv show
             @return a list of StreamItem
         """
-        pass
+        # ___ Initialize the list to return
+        elementList = []
+        
+        href = '/series?p=Populaire&page='
+        page = 1
+        
+        # ___ Get the page
+        if streamItem and streamItem.getPage() is not None and len(streamItem.getPage()) > 0:
+            page = streamItem.getPage()
+        
+        href = href+str(page)
+        
+        # ___ Get the soup
+        response = self.openPage(href)
+        if response and response.getcode() == 200:        
+            content = response.read()
+            elementList = self.getTvShowsFromContent(content)
+            # ___ Ad the next page
+            nextPage = StreamItem(constant.__addon__.getLocalizedString(70010))
+            nextPage.setIconImage(icons.getIcon('nextpage'))
+            nextPage.setType(StreamItem.TYPE_TVSHOW)
+            nextPage.setAction(StreamItem.ACTION_DISPLAY_TYPE_LIST)
+            nextPage.setSubType(StreamItem.SUBTYPE_LAST)
+            nextPage.setPage(int(page)+1)
+            elementList.append(nextPage)
+        return elementList
     
     
     def getMostViewAnime(self,streamItem=False):
@@ -702,7 +788,6 @@ class Streamay(Source):
                 idPattern = re.compile('(http://streamay.bz/)(\d{1,6}?)(-.*)(\.html)')
                 match = idPattern.match(href)
                 if match is not None:
-                    print match.group(2)
                     element.setId(match.group(2))               
                                     
                 # __ Add the element to the list
