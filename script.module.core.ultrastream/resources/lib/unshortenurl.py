@@ -28,6 +28,7 @@ class UnshortenUrl(object):
     PATTERN_VIIDME = r'viid\.me'
     PATTERN_SHST = r'sh\.st'
     PATTERN_SHST_WITH_FREEZE = r'http://sh.st/freeze/'
+    PATTERN_DPSTREAM = r'https://www.dpstream.net/external_link/'
     
     def __init__(self):
         """
@@ -49,6 +50,18 @@ class UnshortenUrl(object):
             @param url: the url to unshort
             @return the final url 
         """
+        newUrl = self._unshort(url)
+        while url != newUrl:
+            url = newUrl
+            newUrl = self._unshort(url)
+        return newUrl
+    
+    def _unshort(self,url):
+        """
+            Method to unshort url
+            @param url: the url to unshort
+            @return the final url 
+        """
         domain = urlsplit(url).netloc
 
         if not domain:
@@ -60,6 +73,8 @@ class UnshortenUrl(object):
             return self._unshortshst(url[20:])
         elif re.search(self.PATTERN_SHST,url):
             return self._unshortshst(url)
+        elif re.search(self.PATTERN_DPSTREAM,url):
+            return self._unshortdpstream(url)
         else:
             return url
         
@@ -113,8 +128,7 @@ class UnshortenUrl(object):
                         
                     if responseEnd is not None and responseEnd.getcode() == 200:
                         # ___ Get the destination url
-                        contentEnd = responseEnd.read()
-                        print contentEnd
+                        contentEnd = responseEnd.read()                        
                         jsonResult = json.loads(contentEnd[6:-2].decode('utf-8'))
                         return jsonResult['destinationUrl']
         
@@ -122,3 +136,21 @@ class UnshortenUrl(object):
             traceback.print_exc()
             
         return url
+    
+    
+    def _unshortdpstream(self,url):
+        """
+            Method to unshort dpstream url
+        """
+        
+        if url.endswith('/'):
+            url = url[:-1]
+        request = urllib2.Request(url, headers=self.HEADER_CFG)
+        response = None 
+        try: 
+            response = self.urlOpener.open(request)
+            if response is not None and response.getcode() == 200: 
+                return response.geturl()
+        except:
+            traceback.print_exc()
+        return url                

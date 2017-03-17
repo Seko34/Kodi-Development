@@ -36,16 +36,17 @@ def displayVideoOptions(streamItem):
     
     constant.__LOGGER__.log("Try to resolve url "+streamItem.getHref(),xbmc.LOGDEBUG)
     
+    # ___ Resolve url
+    playableUrl = False
+    progress = xbmcgui.DialogProgress()
+    progress.create(constant.__addon__.getLocalizedString(70006),constant.__addon__.getLocalizedString(70009))    
+    
     # ___ Try to unshort link
     unshort = UnshortenUrl()
     href = unshort.unshortUrl(streamItem.getHref())
     constant.__LOGGER__.log('Unshort url : '+str(href))
     streamItem.setHref(href)
     
-    # ___ Resolve url
-    playableUrl = False
-    progress = xbmcgui.DialogProgress()
-    progress.create(constant.__addon__.getLocalizedString(70006),constant.__addon__.getLocalizedString(70009))
     try:
         playableUrl = urlresolver.resolve(streamItem.getHref())
     except:

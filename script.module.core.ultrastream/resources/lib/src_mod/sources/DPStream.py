@@ -750,7 +750,7 @@ class DPStream(Source):
                     element.regenerateKodiTitle()   
                     elementList = self.appendLinkInList(element, elementList)
                      
-        elementList = self.getDPStreamLink(elementList)
+        #elementList = self.getDPStreamLink(elementList)
                                   
         return elementList
     
@@ -836,7 +836,7 @@ class DPStream(Source):
                     element.regenerateKodiTitle()   
                     elementList = self.appendLinkInList(element, elementList) 
                      
-        elementList = self.getDPStreamLink(elementList)
+        #elementList = self.getDPStreamLink(elementList)
                                        
         return elementList
     
@@ -920,7 +920,7 @@ class DPStream(Source):
                     element.regenerateKodiTitle()   
                     elementList = self.appendLinkInList(element, elementList) 
                      
-        elementList = self.getDPStreamLink(elementList)
+        #elementList = self.getDPStreamLink(elementList)
                                        
         return elementList
     
@@ -1116,21 +1116,44 @@ class DPStream(Source):
             Method to get all last movie
             @return a list of StreamItem
         """
+        elementList = []
+        nextLimit = 10
         if streamItem and streamItem.getPage() is not None and len(streamItem.getPage()) > 0:
-            return self.getHundredElementsList(StreamItem.TYPE_MOVIE, DPStream.LIST_TYPE_LAST,limit=int(streamItem.getPage()))
+            elementList = self.getHundredElementsList(StreamItem.TYPE_MOVIE, DPStream.LIST_TYPE_LAST,limit=int(streamItem.getPage()))
+            nextLimit = int(streamItem.getPage())+10
         else:
-            return self.getHundredElementsList(StreamItem.TYPE_MOVIE, DPStream.LIST_TYPE_LAST)
+            elementList = self.getHundredElementsList(StreamItem.TYPE_MOVIE, DPStream.LIST_TYPE_LAST)
+            
+        while len(elementList) < 10:
+            del elementList[-1]
+            addList = self.getHundredElementsList(StreamItem.TYPE_MOVIE, DPStream.LIST_TYPE_LAST,limit=nextLimit)
+            for el in addList:
+                elementList.append(el)
+            elementList = self.removeDuplicatesInList(elementList)                
+            nextLimit = nextLimit + 10
+        
+        return elementList
     
     def getLastTvShow(self,streamItem=False):
         """
             Method to get all last tv show
             @return a list of StreamItem
         """
-        
+        elementList = []        
+        nextLimit = 10
         if streamItem and streamItem.getPage() is not None and len(streamItem.getPage()) > 0:
-            return self.getHundredElementsList(StreamItem.TYPE_TVSHOW, DPStream.LIST_TYPE_LAST,limit=int(streamItem.getPage()))
+            elementList = self.getHundredElementsList(StreamItem.TYPE_TVSHOW, DPStream.LIST_TYPE_LAST,limit=int(streamItem.getPage()))
+            nextLimit = int(streamItem.getPage())+10
         else:
-            return self.getHundredElementsList(StreamItem.TYPE_TVSHOW, DPStream.LIST_TYPE_LAST)
+            elementList = self.getHundredElementsList(StreamItem.TYPE_TVSHOW, DPStream.LIST_TYPE_LAST)
+            
+        while len(elementList) < 10:
+            del elementList[-1]
+            addList = self.getHundredElementsList(StreamItem.TYPE_TVSHOW, DPStream.LIST_TYPE_LAST,limit=nextLimit)
+            for el in addList:
+                elementList.append(el)
+            elementList = self.removeDuplicatesInList(elementList)                
+            nextLimit = nextLimit + 10
         
     
     def getLastAnime(self,streamItem=False):
@@ -1138,10 +1161,22 @@ class DPStream(Source):
             Method to get all last anime
             @return a list of StreamItem
         """        
+        elementList = []
+        nextLimit = 10
         if streamItem and streamItem.getPage() is not None and len(streamItem.getPage()) > 0:
-            return self.getHundredElementsList(StreamItem.TYPE_ANIME, DPStream.LIST_TYPE_LAST,limit=int(streamItem.getPage()))
+            elementList = self.getHundredElementsList(StreamItem.TYPE_ANIME, DPStream.LIST_TYPE_LAST,limit=int(streamItem.getPage()))
+            nextLimit = int(streamItem.getPage())+10
         else:
-            return self.getHundredElementsList(StreamItem.TYPE_ANIME, DPStream.LIST_TYPE_LAST)  
+            elementList = self.getHundredElementsList(StreamItem.TYPE_ANIME, DPStream.LIST_TYPE_LAST)
+            
+        while len(elementList) < 10:
+            del elementList[-1]
+            addList = self.getHundredElementsList(StreamItem.TYPE_ANIME, DPStream.LIST_TYPE_LAST,limit=nextLimit)
+            for el in addList:
+                elementList.append(el)
+            elementList = self.removeDuplicatesInList(elementList)                
+            nextLimit = nextLimit + 10
+        return elementList
     
     def getTopMovie(self,streamItem=False):
         """
