@@ -208,9 +208,9 @@ class XStreamingx(Source):
             divs = soup.findAll("div", {"id" : "film"})
             count = 0  
             
-            
             # ___ Case of standard link page
             for div in divs:                 
+                 
                 # __ For each iframe
                 iframes = div.findAll("iframe")
                 for iframe in iframes:

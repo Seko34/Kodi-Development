@@ -36,7 +36,7 @@ class Streamay(Source):
     NAME = 'Streamay'
     
     # WEB PAGE BASE
-    WEB_PAGE_BASE = "http://streamay.bz/"
+    WEB_PAGE_BASE = "https://streamay.bz/"
     
     # LOGGER    
     __LOGGER__ = Logger('UltraStream','Streamay')

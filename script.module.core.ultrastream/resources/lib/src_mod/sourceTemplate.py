@@ -193,7 +193,7 @@ class streamingSourceTemplate(object):
         """        
         # ___ We active cookies support for urllib2
         self.cookiejar = cookielib.CookieJar()
-        self.urlOpener = urllib2.build_opener(SmartRedirectHandler(),urllib2.HTTPCookieProcessor(self.cookiejar))
+        self.urlOpener = urllib2.build_opener(urllib2.HTTPCookieProcessor(self.cookiejar),SmartRedirectHandler())
         
         # ___ Init service values        
         self.serviceMovieValues = []

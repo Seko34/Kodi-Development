@@ -118,42 +118,46 @@ def getMoreMovieLink(sourceId, streamItem,strictlyEgal=False):
             percent = int((100*nbInst) / len(MODULES_INSTANCES))  
             progress.update( percent, str(constant.__addon__.getLocalizedString(70005))+inst.getName(), str(nbInst) + "/" + str(len(MODULES_INSTANCES)))
             
-            # ___ Search the movie in the current source
-            searchMovies = inst.searchMovie(streamItem.getTitle())
-            if searchMovies is not None and len(searchMovies) > 0:
-                for movie in searchMovies:
-                    # ___ When the movie is found                   
-                    if isEquals(movie.getTitle(),streamItem.getTitle()):
-                        isFound = True
-                        # ___ Get links
-                        newElementList = inst.getMovieLink(movie)   
-                        # ___ Add link to the list
-                        if newElementList is not None and len(newElementList) > 0:
-                            for element in newElementList:
-                                elementList = appendLinkInList(element, elementList)  
-                                         
-                # ___ If not found, search approximatly 
-                if not isFound and not strictlyEgal:
-                    
+            try:
+                # ___ Search the movie in the current source
+                searchMovies = inst.searchMovie(streamItem.getTitle())
+                if searchMovies is not None and len(searchMovies) > 0:
                     for movie in searchMovies:
-
                         # ___ When the movie is found                   
-                        if SM(None, movie.getTitle(), streamItem.getTitle()).ratio() > 0.5:                            
+                        if isEquals(movie.getTitle(),streamItem.getTitle()):
+                            isFound = True
                             # ___ Get links
                             newElementList = inst.getMovieLink(movie)   
                             # ___ Add link to the list
                             if newElementList is not None and len(newElementList) > 0:
                                 for element in newElementList:
-                                    elementList = appendLinkInList(element, elementList)     
-                    """
-                    movie = searchMovies[0]
-                    # ___ Get links of the first element
-                    newElementList = inst.getMovieLink(movie)   
-                    # ___ Add link to the list
-                    if newElementList is not None and len(newElementList) > 0:
-                        for element in newElementList:
-                            elementList = appendLinkInList(element, elementList)   
-                    """
+                                    elementList = appendLinkInList(element, elementList)  
+                                             
+                    # ___ If not found, search approximatly 
+                    if not isFound and not strictlyEgal:
+                        
+                        for movie in searchMovies:
+    
+                            # ___ When the movie is found                   
+                            if SM(None, movie.getTitle(), streamItem.getTitle()).ratio() > 0.5:                            
+                                # ___ Get links
+                                newElementList = inst.getMovieLink(movie)   
+                                # ___ Add link to the list
+                                if newElementList is not None and len(newElementList) > 0:
+                                    for element in newElementList:
+                                        elementList = appendLinkInList(element, elementList)     
+                        """
+                        movie = searchMovies[0]
+                        # ___ Get links of the first element
+                        newElementList = inst.getMovieLink(movie)   
+                        # ___ Add link to the list
+                        if newElementList is not None and len(newElementList) > 0:
+                            for element in newElementList:
+                                elementList = appendLinkInList(element, elementList)   
+                        """
+            except:
+                pass
+    
     progress.close()
     return elementList 
 
@@ -213,39 +217,41 @@ def getMoreTvShowEpisodeLink(sourceId, streamItem):
             percent = int((100*nbInst) / len(MODULES_INSTANCES))  
             progress.update( percent, str(constant.__addon__.getLocalizedString(70005))+inst.getName(), str(nbInst) + "/" + str(len(MODULES_INSTANCES)))
             
-            # ___ Search the tvshow in the current source
-            searchTvShows = inst.searchTvShow(streamItem.getTvShowName())
-            
-            if searchTvShows is not None and len(searchTvShows)>0:
-                for tvShow in searchTvShows:
-                    # ___ When the tvshow is found
-                    if tvShow.getTvShowName() == streamItem.getTvShowName():
-                        
-                        # ___ Search seasons
-                        searchSeasons = inst.getTvShowSeasons(tvShow)
-                        
-                        if searchSeasons is not None and len(searchSeasons) > 0:
-                            for season in searchSeasons:
-                                # ___ When the season is found
-                                if season.getSeason() == streamItem.getSeason():
-                                    # ___ Search episode
-                                    searchEpisodes = inst.getTvShowEpisodes(season)
-                                    
-                                    if searchEpisodes is not None and len(searchEpisodes) > 0:
-                                        for episode in searchEpisodes:
-                                            # ___ When the episode is found
-                                            if episode.getEpisodes() is not None and len(episode.getEpisodes()) > 0 and  streamItem.getEpisodes() is not None and len(streamItem.getEpisodes()) > 0 and episode.getEpisodes()[0] == streamItem.getEpisodes()[0]:
-                                    
-                                                newElementList = inst.getTvShowEpisodeLink(episode)
-                                                # ___ Add link to the list
-                                                if newElementList is not None and len(newElementList) > 0:
-                                                    for element in newElementList:
-                                                        elementList = appendLinkInList(element, elementList)   
-                                                break                                
-                                    break
-                        break
+            try:
+                # ___ Search the tvshow in the current source
+                searchTvShows = inst.searchTvShow(streamItem.getTvShowName())
                 
-    
+                if searchTvShows is not None and len(searchTvShows)>0:
+                    for tvShow in searchTvShows:
+                        # ___ When the tvshow is found
+                        if tvShow.getTvShowName() == streamItem.getTvShowName():
+                            
+                            # ___ Search seasons
+                            searchSeasons = inst.getTvShowSeasons(tvShow)
+                            
+                            if searchSeasons is not None and len(searchSeasons) > 0:
+                                for season in searchSeasons:
+                                    # ___ When the season is found
+                                    if season.getSeason() == streamItem.getSeason():
+                                        # ___ Search episode
+                                        searchEpisodes = inst.getTvShowEpisodes(season)
+                                        
+                                        if searchEpisodes is not None and len(searchEpisodes) > 0:
+                                            for episode in searchEpisodes:
+                                                # ___ When the episode is found
+                                                if episode.getEpisodes() is not None and len(episode.getEpisodes()) > 0 and  streamItem.getEpisodes() is not None and len(streamItem.getEpisodes()) > 0 and episode.getEpisodes()[0] == streamItem.getEpisodes()[0]:
+                                        
+                                                    newElementList = inst.getTvShowEpisodeLink(episode)
+                                                    # ___ Add link to the list
+                                                    if newElementList is not None and len(newElementList) > 0:
+                                                        for element in newElementList:
+                                                            elementList = appendLinkInList(element, elementList)   
+                                                    break                                
+                                        break
+                            break
+            except:
+                pass       
+        
     progress.close()
     
     return elementList
@@ -305,38 +311,42 @@ def getMoreAnimeEpisodeLink(sourceId, streamItem):
             percent = int((100*nbInst) / len(MODULES_INSTANCES))  
             progress.update( percent, str(constant.__addon__.getLocalizedString(70005))+inst.getName(), str(nbInst) + "/" + str(len(MODULES_INSTANCES)))
             
-            # ___ Search the tvshow in the current source
-            searchTvShows = inst.searchAnime(streamItem.getTvShowName())
             
-            if searchTvShows is not None and len(searchTvShows)>0:
-                for tvShow in searchTvShows:
-                    # ___ When the tvshow is found
-                    if tvShow.getTvShowName() == streamItem.getTvShowName():
-                        
-                        # ___ Search seasons
-                        searchSeasons = inst.getAnimeSeasons(tvShow)
-                        
-                        if searchSeasons is not None and len(searchSeasons) > 0:
-                            for season in searchSeasons:
-                                # ___ When the season is found
-                                if season.getSeason() == streamItem.getSeason():
-                                    # ___ Search episode
-                                    searchEpisodes = inst.getAnimeEpisodes(season)
-                                    
-                                    if searchEpisodes is not None and len(searchEpisodes) > 0:
-                                        for episode in searchEpisodes:
-                                            # ___ When the episode is found
-                                            if episode.getEpisode() == streamItem.getEpisode():
-                                    
-                                                newElementList = inst.getAnimeEpisodeLink(episode)
-                                                # ___ Add link to the list
-                                                if newElementList is not None and len(newElementList) > 0:
-                                                    for element in newElementList:
-                                                        elementList = appendLinkInList(element, elementList)   
-                                                break                                
-                                    break
-                        break
+            try:
+                # ___ Search the tvshow in the current source
+                searchTvShows = inst.searchAnime(streamItem.getTvShowName())
                 
+                if searchTvShows is not None and len(searchTvShows)>0:
+                    for tvShow in searchTvShows:
+                        # ___ When the tvshow is found
+                        if tvShow.getTvShowName() == streamItem.getTvShowName():
+                            
+                            # ___ Search seasons
+                            searchSeasons = inst.getAnimeSeasons(tvShow)
+                            
+                            if searchSeasons is not None and len(searchSeasons) > 0:
+                                for season in searchSeasons:
+                                    # ___ When the season is found
+                                    if season.getSeason() == streamItem.getSeason():
+                                        # ___ Search episode
+                                        searchEpisodes = inst.getAnimeEpisodes(season)
+                                        
+                                        if searchEpisodes is not None and len(searchEpisodes) > 0:
+                                            for episode in searchEpisodes:
+                                                # ___ When the episode is found
+                                                if episode.getEpisode() == streamItem.getEpisode():
+                                        
+                                                    newElementList = inst.getAnimeEpisodeLink(episode)
+                                                    # ___ Add link to the list
+                                                    if newElementList is not None and len(newElementList) > 0:
+                                                        for element in newElementList:
+                                                            elementList = appendLinkInList(element, elementList)   
+                                                    break                                
+                                        break
+                            break
+            except:
+                pass
+       
     progress.close()
     
     return elementList 
@@ -354,13 +364,15 @@ def searchMovie(title):
         nbInst = nbInst+1
         percent = int( ( nbInst * 100) / len(MODULES_INSTANCES) )  
         progress.update( percent,str(constant.__addon__.getLocalizedString(70006))+ inst.getName(), str(nbInst) + "/" + str(len(MODULES_INSTANCES)))
-           
-        sourceElList = inst.searchMovie(title)
-        if sourceElList is not None and len(sourceElList)>0:
-            for el in sourceElList:
-                el.setSourceId(inst.getId())
-                appendElementInList(el,elementList)
-                
+        
+        try:   
+            sourceElList = inst.searchMovie(title)
+            if sourceElList is not None and len(sourceElList)>0:
+                for el in sourceElList:
+                    el.setSourceId(inst.getId())
+                    appendElementInList(el,elementList)
+        except:
+            pass       
     progress.close()
     
     # ___ Sort the list
@@ -384,13 +396,15 @@ def searchTvShow(title):
         nbInst = nbInst+1
         percent = int( ( nbInst* 100)  / len(MODULES_INSTANCES) ) 
         progress.update( percent,str(constant.__addon__.getLocalizedString(70006))+ inst.getName(), str(nbInst) + "/" + str(len(MODULES_INSTANCES)))
-           
-        sourceElList = inst.searchTvShow(title)
-        if sourceElList is not None and len(sourceElList)>0:
-            for el in sourceElList:
-                el.setSourceId(inst.getId())
-                appendElementInList(el,elementList)
-                
+        
+        try:
+            sourceElList = inst.searchTvShow(title)
+            if sourceElList is not None and len(sourceElList)>0:
+                for el in sourceElList:
+                    el.setSourceId(inst.getId())
+                    appendElementInList(el,elementList)
+        except:
+            pass       
     progress.close()
     
     # ___ Sort the list
@@ -415,12 +429,15 @@ def searchAnime(title):
         percent = int( ( nbInst * 100) / len(MODULES_INSTANCES) )
         progress.update( percent,str(constant.__addon__.getLocalizedString(70006))+ inst.getName(), str(nbInst) + "/" + str(len(MODULES_INSTANCES)))
            
-        sourceElList = inst.searchAnime(title)
-        if sourceElList is not None and len(sourceElList)>0:
-            for el in sourceElList:
-                el.setSourceId(inst.getId())
-                appendElementInList(el,elementList)
-                
+        try:
+            sourceElList = inst.searchAnime(title)
+            if sourceElList is not None and len(sourceElList)>0:
+                for el in sourceElList:
+                    el.setSourceId(inst.getId())
+                    appendElementInList(el,elementList)
+        except:
+            pass
+               
     progress.close()
     
     # ___ Sort the list
