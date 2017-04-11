@@ -201,20 +201,45 @@ class XStreamingx(Source):
         # ___ Initialize the list to return
         elementList = []
         
-        # ___ Get the soup
-        soup = self._initOpenPage(streamItem)
-        if soup is not None:
-            
+        # ___ Init soup
+        soup = None
+        # ___ Open the page
+        response = self.openPage(streamItem.getHref(),buildHref=False)
+        
+        if response:           
+            # ___ Read the source
+            content = response.read()
+            # ___ Initialize BeautifulSoup       
+            soup = BeautifulSoup(content)                
+            # ___ Close the connection
+            response.close() 
+       
             divs = soup.findAll("div", {"id" : "film"})
             count = 0  
-            
+           
             # ___ Case of standard link page
             for div in divs:                 
-                 
+                
                 # __ For each iframe
                 iframes = div.findAll("iframe")
                 for iframe in iframes:
                     if (iframe['src'].startswith('http://') or iframe['src'].startswith('https://')):
+                        
+                        # __ Get the link
+                        href = iframe['src'].encode('UTF-8')
+                        href = self.formatLink(href)
+                        # __ Create the element                       
+                        element = streamItem.copy()
+                        element.setAction(StreamItem.ACTION_PLAY)
+                        element.setType(StreamItem.TYPE_STREAMING_LINK)
+                        element.setHref(href)                 
+                        element.regenerateKodiTitle()
+                        
+                        self.appendLinkInList(element, elementList)
+                        
+                iframes = div.findAll("IFRAME")
+                for iframe in iframes:
+                    if (iframe['SRC'].startswith('http://') or iframe['SRC'].startswith('https://')):
                         
                         # __ Get the link
                         href = iframe['src'].encode('UTF-8')
@@ -246,7 +271,7 @@ class XStreamingx(Source):
                         
                                            
                 count = len(elementList)            
-                      
+        
         return elementList
     
     
