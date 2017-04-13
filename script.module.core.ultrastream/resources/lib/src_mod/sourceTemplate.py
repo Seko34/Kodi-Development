@@ -316,7 +316,10 @@ class streamingSourceTemplate(object):
         # ___ Init soup
         soup = None
         # ___ Open the page
-        response = self.openPage(streamItem.getHref())
+        if streamItem.getHref().startswith(self.WEB_PAGE_BASE):
+            response = self.openPage(streamItem.getHref(),buildHref=False)
+        else:
+            response = self.openPage(streamItem.getHref())
         
         if response:           
             # ___ Read the source

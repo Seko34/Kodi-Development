@@ -33,7 +33,7 @@ class XStreamingx(Source):
     NAME = 'XStreaming'
     
     # WEB PAGE BASE
-    WEB_PAGE_BASE = "http://xstreamingx.com/"
+    WEB_PAGE_BASE = "http://xstreamingx.net/"
     
     # LOGGER    
     __LOGGER__ = Logger('UltraStream','XStreaming')
@@ -202,75 +202,77 @@ class XStreamingx(Source):
         elementList = []
         
         # ___ Init soup
-        soup = None
-        # ___ Open the page
-        response = self.openPage(streamItem.getHref(),buildHref=False)
+        soup = self._initOpenPage(streamItem)
         
-        if response:           
-            # ___ Read the source
-            content = response.read()
-            # ___ Initialize BeautifulSoup       
-            soup = BeautifulSoup(content)                
-            # ___ Close the connection
-            response.close() 
-       
-            divs = soup.findAll("div", {"id" : "film"})
-            count = 0  
-           
-            # ___ Case of standard link page
-            for div in divs:                 
-                
-                # __ For each iframe
-                iframes = div.findAll("iframe")
-                for iframe in iframes:
-                    if (iframe['src'].startswith('http://') or iframe['src'].startswith('https://')):
+        if soup is not None: 
+            countLinks = 1
+            if soup.find("div",{"class":"keremiya_part"}) is not None:
+                countLinks = len(soup.find("div",{"class":"keremiya_part"}).findAll('span',attrs={'style': None}))
+            
+            
+            for i in range(1,countLinks+1):
+                response = self.openPage(streamItem.getHref()+'/'+str(i)+'/', buildHref=False)
+                if response is not None and response.getcode()==200:
+                    # ___ Read the source
+                    content = response.read()
+                    # ___ Initialize BeautifulSoup       
+                    soup = BeautifulSoup(content)    
+                    divs = soup.findAll("div", {"class" : "filmicerik"})
+                   
+                    # ___ Case of standard link page
+                    for div in divs:                 
+                        print 'ici'
+                        # __ For each iframe
+                        iframes = div.findAll("iframe")
+                        for iframe in iframes:
+                            if (iframe['src'].startswith('http://') or iframe['src'].startswith('https://')):
+                                
+                                # __ Get the link
+                                href = iframe['src'].encode('UTF-8')
+                                href = self.formatLink(href)
+                                # __ Create the element                       
+                                element = streamItem.copy()
+                                element.setAction(StreamItem.ACTION_PLAY)
+                                element.setType(StreamItem.TYPE_STREAMING_LINK)
+                                element.setHref(href)                 
+                                element.regenerateKodiTitle()
+                                
+                                self.appendLinkInList(element, elementList)
+                                
+                        iframes = div.findAll("IFRAME")
+                        for iframe in iframes:
+                            if (iframe['SRC'].startswith('http://') or iframe['SRC'].startswith('https://')):
+                                
+                                # __ Get the link
+                                href = iframe['src'].encode('UTF-8')
+                                href = self.formatLink(href)
+                                # __ Create the element                       
+                                element = streamItem.copy()
+                                element.setAction(StreamItem.ACTION_PLAY)
+                                element.setType(StreamItem.TYPE_STREAMING_LINK)
+                                element.setHref(href)                 
+                                element.regenerateKodiTitle()
+                                
+                                self.appendLinkInList(element, elementList)
                         
-                        # __ Get the link
-                        href = iframe['src'].encode('UTF-8')
-                        href = self.formatLink(href)
-                        # __ Create the element                       
-                        element = streamItem.copy()
-                        element.setAction(StreamItem.ACTION_PLAY)
-                        element.setType(StreamItem.TYPE_STREAMING_LINK)
-                        element.setHref(href)                 
-                        element.regenerateKodiTitle()
-                        
-                        self.appendLinkInList(element, elementList)
-                        
-                iframes = div.findAll("IFRAME")
-                for iframe in iframes:
-                    if (iframe['SRC'].startswith('http://') or iframe['SRC'].startswith('https://')):
-                        
-                        # __ Get the link
-                        href = iframe['src'].encode('UTF-8')
-                        href = self.formatLink(href)
-                        # __ Create the element                       
-                        element = streamItem.copy()
-                        element.setAction(StreamItem.ACTION_PLAY)
-                        element.setType(StreamItem.TYPE_STREAMING_LINK)
-                        element.setHref(href)                 
-                        element.regenerateKodiTitle()
-                        
-                        self.appendLinkInList(element, elementList)
-                
-                # __ For each embed
-                embeds = div.findAll("embed")
-                for embed in embeds:
-                    if (embed['src'].startswith('http://') or embed['src'].startswith('https://')):
-                        # __ Get the link
-                        href = embed['src'].encode('UTF-8')
-                        href = self.formatLink(href)
-                        # __ Create the element                       
-                        element = streamItem.copy()
-                        element.setAction(StreamItem.ACTION_PLAY)
-                        element.setType(StreamItem.TYPE_STREAMING_LINK)
-                        element.setHref(href)                        
-                        element.regenerateKodiTitle()
-                        
-                        self.appendLinkInList(element, elementList)
-                        
-                                           
-                count = len(elementList)            
+                        # __ For each embed
+                        embeds = div.findAll("embed")
+                        for embed in embeds:
+                            if (embed['src'].startswith('http://') or embed['src'].startswith('https://')):
+                                # __ Get the link
+                                href = embed['src'].encode('UTF-8')
+                                href = self.formatLink(href)
+                                # __ Create the element                       
+                                element = streamItem.copy()
+                                element.setAction(StreamItem.ACTION_PLAY)
+                                element.setType(StreamItem.TYPE_STREAMING_LINK)
+                                element.setHref(href)                        
+                                element.regenerateKodiTitle()
+                                
+                                self.appendLinkInList(element, elementList)
+                                
+                                                   
+                                   
         
         return elementList
     

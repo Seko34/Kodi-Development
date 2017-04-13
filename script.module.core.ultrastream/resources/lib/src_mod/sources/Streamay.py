@@ -351,6 +351,7 @@ class Streamay(Source):
         
         for streamer in streamers:
             response = self.openPage('streamer/'+movieStreamItem.getId()+'/'+streamer['data-streamer'])
+            
             if response is not None and response.getcode()==200:
                 content = response.read()
                 jsonR = json.loads(content)
@@ -785,7 +786,7 @@ class Streamay(Source):
                 element.setType(StreamItem.TYPE_MOVIE)
                 element.setSourceId(self.ID)  
                 element.setIconImage(self.buildHref(movie.find('img')['src']))
-                idPattern = re.compile('(http://streamay.bz/)(\d{1,6}?)(-.*)(\.html)')
+                idPattern = re.compile('(https://streamay.bz/)(\d{1,6}?)(-.*)(\.html)')
                 match = idPattern.match(href)
                 if match is not None:
                     element.setId(match.group(2))               

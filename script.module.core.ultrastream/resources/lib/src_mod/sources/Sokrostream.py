@@ -37,7 +37,7 @@ class Sokrostream(Source):
     NAME = 'Sokrostream'
     
     # WEB PAGE BASE
-    WEB_PAGE_BASE = "http://sokrostream.biz/"
+    WEB_PAGE_BASE = "http://sokrostream.cc/"
     
     # LOGGER    
     __LOGGER__ = Logger('UltraStream','Sokrostream')
@@ -119,7 +119,7 @@ class Sokrostream(Source):
             element.setIconImage(movie.find('img')['src'])
             type = StreamItem.TYPE_MOVIE
             
-            tvshowPattern = re.compile("(http://sokrostream.biz/series)(.*)")
+            tvshowPattern = re.compile("(http://sokrostream.cc/series)(.*)")
             match = tvshowPattern.match(href)
             if match is not None: 
                 element.setTvShowName(title)   
@@ -140,13 +140,18 @@ class Sokrostream(Source):
             Method to search a movie
             @return a list of StreamItem
         """
-        get_href = 'search.php?slug='+title
-        response = self.openPage(get_href)
+        get_href = 'search.php?q='+title
+        headers = copy.copy(webUtil.HEADER_CFG)
+        headers['Referer'] = 'http://sokrostream.cc'
+        headers['Host'] = 'sokrostream.cc'
+        headers['Origin'] = 'http://sokrostream.cc'
+        response = self.openPage(get_href,cHeaders=headers)
         elementList = []
         
         if response and response.getcode() == 200:    
-            content = response.read()            
-            elementList = self.getMoviesItemFromContent(content,StreamItem.TYPE_MOVIE)            
+            content = response.read()
+            if len(content) > 0 :  
+                elementList = self.getMoviesItemFromContent(content,StreamItem.TYPE_MOVIE)            
             
         # ___ Error during search the movie
         else:
@@ -161,12 +166,16 @@ class Sokrostream(Source):
             @return a list of StreamItem
         """
         
-        get_href = 'search.php?slug='+title
-        response = self.openPage(get_href)
+        get_href = 'search.php?q='+title
+        headers = copy.copy(webUtil.HEADER_CFG)
+        headers['Referer'] = 'http://sokrostream.cc'
+        headers['Host'] = 'sokrostream.cc'
+        headers['Origin'] = 'http://sokrostream.cc'
+        response = self.openPage(get_href,cHeaders=headers)
         elementList = []
         
         if response and response.getcode() == 200:    
-            content = response.read()            
+            content = response.read()
             elementList = self.getMoviesItemFromContent(content,StreamItem.TYPE_TVSHOW)            
             
         # ___ Error during search the movie
@@ -283,8 +292,8 @@ class Sokrostream(Source):
         param = {'levideo':str(id)}
         headers = copy.copy(webUtil.HEADER_CFG)
         headers['Referer'] = streamItem.getHref()
-        headers['Host'] = 'sokrostream.biz'
-        headers['Origin'] = 'http://sokrostream.biz'
+        headers['Host'] = 'sokrostream.cc'
+        headers['Origin'] = 'http://sokrostream.cc'
         
         response = self.postPage(postHref, param,headers=headers)
         
@@ -293,7 +302,10 @@ class Sokrostream(Source):
             soup = BeautifulSoup(content) 
             
             # __ Case of iFrame
-            link = soup.find('div',{'class':'bgvv'}).find('iframe')
+            link = None
+            if soup.find('div',{'class':'bgvv'}) is not None:
+                link = soup.find('div',{'class':'bgvv'}).find('iframe')
+                
             if link is not None and link['src'].startswith('http://sokrostrem.xyz/video.php?p'):
                 headers = copy.copy(webUtil.HEADER_CFG)
                 headers['Referer'] = streamItem.getHref()

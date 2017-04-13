@@ -754,6 +754,12 @@ class DPStream(Source):
                                   
         return elementList
     
+    def getShowLink(self,showStreamItem):
+        return self.getMovieLink(showStreamItem)
+    
+    def getDocumentaryLink(self,docuStreamItem):
+        return self.getMovieLink(docuStreamItem)
+    
     def getDPStreamLink(self,elementList):
         """
             Method to get real link from DPStream
@@ -987,8 +993,7 @@ class DPStream(Source):
                 # ___ Try to get the seaon and the episode
                 season=''
                 episode=''
-                
-                patternTvShow = re.compile('(.*)( S)(\d.*)(E)(\d.*)( .*)')
+                patternTvShow = re.compile('(.*)( S)(\d.*)( E)(\d.*)( .*)')
                 match = patternTvShow.match(title)
                 if match is not None:  
                     season = match.group(3) 
@@ -1154,7 +1159,7 @@ class DPStream(Source):
                 elementList.append(el)
             elementList = self.removeDuplicatesInList(elementList)                
             nextLimit = nextLimit + 10
-        
+        return elementList
     
     def getLastAnime(self,streamItem=False):
         """

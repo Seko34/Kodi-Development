@@ -1,4 +1,6 @@
-Version 0.2. 1:
+Version 0.2.4:
+-Fix all streaming source
+Version 0.2.1:
 -Update unshorten for dpstream & improve links display for DPStream
 -Update DPStream to display minimum 10 elements for "Last" list
 Version 0.2.0:
