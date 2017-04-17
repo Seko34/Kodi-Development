@@ -19,6 +19,7 @@ import time
 import json
 import xbmcgui
 import constant
+import webUtil
 from urlparse import urlsplit
 
 # ____________________         C L A S S         ____________________
@@ -26,6 +27,7 @@ class UnshortenUrl(object):
     
     
     PATTERN_VIIDME = r'viid\.me'
+    PATTERN_CLLKME = r'cllkme\.com'
     PATTERN_SHST = r'sh\.st'
     PATTERN_SHST_WITH_FREEZE = r'http://sh.st/freeze/'
     PATTERN_DPSTREAM = r'https://www.dpstream.net/external_link/'
@@ -41,7 +43,7 @@ class UnshortenUrl(object):
                'Accept-Language': 'en-US,en;q=0.8',
                'Connection': 'keep-alive'}
         self.cookiejar = cookielib.CookieJar()
-        self.urlOpener = urllib2.build_opener(urllib2.HTTPCookieProcessor(self.cookiejar))
+        self.urlOpener = urllib2.build_opener(urllib2.HTTPCookieProcessor(self.cookiejar),webUtil.SmartRedirectHandler())
         
         
     def unshortUrl(self,url):
@@ -69,6 +71,8 @@ class UnshortenUrl(object):
         
         if re.search(self.PATTERN_VIIDME,url):
             return self._unshortshst(url,'viid.me')
+        if re.search(self.PATTERN_CLLKME,url):
+            return self._unshortshst(url,'cllkme.com')
         elif re.search(self.PATTERN_SHST_WITH_FREEZE,url):
             return self._unshortshst(url[20:])
         elif re.search(self.PATTERN_SHST,url):
@@ -145,6 +149,7 @@ class UnshortenUrl(object):
         
         if url.endswith('/'):
             url = url[:-1]
+        print url
         request = urllib2.Request(url, headers=self.HEADER_CFG)
         response = None 
         try: 

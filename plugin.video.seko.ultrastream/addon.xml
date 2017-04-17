@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="plugin.video.seko.ultrastream" name="UltraStream" version="0.3.4" provider-name="Seko">
+<addon id="plugin.video.seko.ultrastream" name="UltraStream" version="0.3.5" provider-name="Seko">
   <requires>
     <import addon="xbmc.python" version="2.7.0"/>
-  	<import addon="script.module.core.ultrastream" version="0.2.4"/>
-  	<import addon="script.service.seko.ultrastream" version="0.2.1"/>
-  	<import addon="script.module.seko.common" version="0.1.6"/>
+  	<import addon="script.module.core.ultrastream" version="0.2.5"/>
+  	<import addon="script.service.seko.ultrastream" version="0.2.2"/>
+  	<import addon="script.module.seko.common" version="0.1.7"/>
   	<import addon="script.module.seko.downloader" version="0.1.2"/>
     <import addon="script.module.pyxbmct" version="1.2" /> 
     <import addon="script.module.beautifulsoup" version="3.2.1"/> 
-    <import addon="script.module.urlresolver" version="3.0.25"/> 
+    <import addon="script.module.urlresolver" version="3.0.30"/> 
   </requires>
   <extension point="xbmc.python.pluginsource" library="ultrastream_addon.py">
     <provides>video</provides>

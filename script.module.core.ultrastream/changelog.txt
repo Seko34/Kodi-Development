@@ -1,3 +1,6 @@
+Version 0.2.5:
+-Fix DPStream unshorter
+-Add cllkme.com unshorter
 Version 0.2.4:
 -Fix all streaming source
 Version 0.2.1:

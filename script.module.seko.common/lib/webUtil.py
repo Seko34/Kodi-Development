@@ -231,3 +231,23 @@ def getFileExtension(url):
         fileExtension = None
     
     return fileExtension   
+
+
+class SmartRedirectHandler(urllib2.HTTPRedirectHandler):
+    """
+        Class SmartRedirectHandler for redirection
+    """     
+    def http_error_301(self, req, fp, code, msg, headers):
+        result = urllib2.HTTPRedirectHandler.http_error_301(self, req, fp, code, msg, headers)      
+        result.status = code                           
+        return result                                       
+
+    def http_error_302(self, req, fp, code, msg, headers):  
+        # ___ Change clkme.in by cllkme.com 
+        if headers['location'].startswith('http://clkme.in'):
+            headers['location']=headers['location'].replace('http://clkme.in','http://cllkme.com')
+        result = urllib2.HTTPRedirectHandler.http_error_302(self, req, fp, code, msg, headers)              
+        result.status = code                                
+        return result 
+            
+            
