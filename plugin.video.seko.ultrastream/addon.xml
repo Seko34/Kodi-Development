@@ -2,7 +2,7 @@
 <addon id="plugin.video.seko.ultrastream" name="UltraStream" version="0.3.5" provider-name="Seko">
   <requires>
     <import addon="xbmc.python" version="2.7.0"/>
-  	<import addon="script.module.core.ultrastream" version="0.2.5"/>
+  	<import addon="script.module.core.ultrastream" version="0.2.6"/>
   	<import addon="script.service.seko.ultrastream" version="0.2.2"/>
   	<import addon="script.module.seko.common" version="0.1.7"/>
   	<import addon="script.module.seko.downloader" version="0.1.2"/>

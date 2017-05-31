@@ -1,3 +1,5 @@
+Version 0.2.6:
+-Fix unshorten url for DPStream
 Version 0.2.5:
 -Fix DPStream unshorter
 -Add cllkme.com unshorter

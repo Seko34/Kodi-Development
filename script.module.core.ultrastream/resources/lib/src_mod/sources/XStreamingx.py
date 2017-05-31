@@ -220,8 +220,7 @@ class XStreamingx(Source):
                     divs = soup.findAll("div", {"class" : "filmicerik"})
                    
                     # ___ Case of standard link page
-                    for div in divs:                 
-                        print 'ici'
+                    for div in divs: 
                         # __ For each iframe
                         iframes = div.findAll("iframe")
                         for iframe in iframes:

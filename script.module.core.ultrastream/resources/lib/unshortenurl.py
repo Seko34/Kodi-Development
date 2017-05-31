@@ -155,7 +155,15 @@ class UnshortenUrl(object):
         try: 
             response = self.urlOpener.open(request)
             if response is not None and response.getcode() == 200: 
-                return response.geturl()
+                content = response.read()
+                index = content.find('window.open')
+                if index > 0:          
+                    getUrlPattern = re.compile("(.*)(window.open\(\\\\')(.*)(\\\\',\\\\'_blank\\\\')(.*)",re.MULTILINE)
+                    match = getUrlPattern.match(content[index:])
+                    if match is not None:                        
+                        return match.group(3)
+                    else:
+                        print content
         except:
             traceback.print_exc()
         return url                
