@@ -55,12 +55,13 @@ def displayVideoOptions(streamItem):
     constant.__LOGGER__.log("Resolved url : "+str(playableUrl),xbmc.LOGDEBUG) 
     
     # ___If the url is resolved, play automatically if the setting is activated  
-    if playableUrl != False  and isinstance(playableUrl,unicode) and constant.__addon__.getSetting('play_auto') == 'true':
+    # ___ Remove  " and isinstance(playableUrl,unicode)"
+    if playableUrl != False and constant.__addon__.getSetting('play_auto') == 'true':
         streamItem.setPlayableUrl(playableUrl)
         playVideo(streamItem)
         
     # ___If the url is resolved, display the the list of possibilities (Open in web browser, Play, Download or Download & Play )    
-    elif playableUrl != False  and isinstance(playableUrl,unicode) and constant.__addon__.getSetting('play_auto') == 'false':
+    elif playableUrl != False and constant.__addon__.getSetting('play_auto') == 'false':
         
         streamItem.setPlayableUrl(playableUrl)
         if constant.__addon__.getSetting('downloader_module') == '0' and constant.__addon__.getSetting('activate_web_browser') == 'false':

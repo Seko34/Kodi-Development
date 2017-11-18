@@ -8,7 +8,7 @@
   	<import addon="script.module.seko.downloader" version="0.1.2"/>
     <import addon="script.module.pyxbmct" version="1.2" /> 
     <import addon="script.module.beautifulsoup" version="3.2.1"/> 
-    <import addon="script.module.urlresolver" version="3.0.30"/> 
+    <import addon="script.module.urlresolver" version="4.0.09"/> 
   </requires>
   <extension point="xbmc.python.pluginsource" library="ultrastream_addon.py">
     <provides>video</provides>

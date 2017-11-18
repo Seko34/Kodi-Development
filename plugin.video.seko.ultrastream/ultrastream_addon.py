@@ -46,7 +46,16 @@ except Exception, e:
     xbmc.log("Error during copy of png tile for titan skin",xbmc.LOGERROR)
     xbmc.log(str(e),xbmc.LOGERROR)   
 
-
+try:
+    fileToMove = os.path.join( constant.__coreAddonDir__, 'resources', 'media', 'icon_ultrastream_titan.png')
+    __addonTitan__ = xbmcaddon.Addon(id='skin.titan.kryptonbeta')
+    __addonTitanDir__ = xbmc.translatePath( __addonTitan__.getAddonInfo('path') )
+    destFile = os.path.join( __addonTitanDir__, 'extras', 'hometiles', 'icon_ultrastream_titan.png')
+    shutil.copyfile(fileToMove, destFile)
+except Exception, e:
+    xbmc.log("Error during copy of png tile for titan skin",xbmc.LOGERROR)
+    xbmc.log(str(e),xbmc.LOGERROR)
+    
     # Create or update settings file
 miscFunctions.writeSettingsFile(sources.getSourcesXmlSettings(),sources.getStreaminSource(constant.__addon__.getSetting('default_stream_src')).getServiceSettingValue())
 

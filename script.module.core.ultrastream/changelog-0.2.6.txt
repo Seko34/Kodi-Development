@@ -1,3 +1,6 @@
+Version 0.2.7:
+-Fix UrlResolver problem
+-Fix titan skin thumbnail copy
 Version 0.2.6:
 -Fix unshorten url for DPStream
 Version 0.2.5:

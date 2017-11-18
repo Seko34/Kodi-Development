@@ -6,7 +6,8 @@
 	<property name="version" value="0.1.2"/> 
 	<property name="projectName" value="script.module.seko.downloader"/>
 	<property name="destination" value="${basedir}/../zips/${projectName}"/> 
-	<property name="xbmc_addon_dir" value="${user.home}/AppData/Roaming/Kodi/addons"/> 
+	<!-- property name="xbmc_addon_dir" value="${user.home}/AppData/Roaming/Kodi/addons"/ -->
+	<property name="xbmc_addon_dir" value="${user.home}/.kodi/addons"/>
 	<!-- ########################################################################################### -->
 	<!-- 								End   - Property to change 									 -->
 	<!-- ########################################################################################### -->	
