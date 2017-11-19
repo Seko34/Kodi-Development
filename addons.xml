@@ -14,10 +14,10 @@
 			<platform>all</platform>
 		</extension>
 	</addon>
-	<addon id="plugin.video.seko.ultrastream" name="UltraStream" version="0.3.5" provider-name="Seko">
+	<addon id="plugin.video.seko.ultrastream" name="UltraStream" version="0.3.6" provider-name="Seko">
 	  <requires>
 		<import addon="xbmc.python" version="2.7.0"/>
-		<import addon="script.module.core.ultrastream" version="0.2.6"/>
+		<import addon="script.module.core.ultrastream" version="0.2.7"/>
 		<import addon="script.service.seko.ultrastream" version="0.2.2"/>
 		<import addon="script.module.seko.common" version="0.1.7"/>
 		<import addon="script.module.seko.downloader" version="0.1.2"/>
@@ -83,7 +83,7 @@
 		<source>https://github.com/jsergio123/script.module.urlresolver</source>
 		</extension>
 	</addon>	
-	<addon id="script.module.core.ultrastream" name="UltraStream Core Library" version="0.2.6" provider-name="Seko">
+	<addon id="script.module.core.ultrastream" name="UltraStream Core Library" version="0.2.7" provider-name="Seko">
 	  <requires>
 		<import addon="xbmc.python" version="2.6.0" />    
 		<import addon="script.module.seko.common" version="0.1.7"/>
@@ -103,7 +103,7 @@
 	<addon id="script.service.seko.ultrastream" name="Seko Ultrastream Service" version="0.2.2" provider-name="Seko">
 	  <requires>
 		<import addon="xbmc.python" version="2.6.0" />
-		<import addon="script.module.core.ultrastream" version="0.2.6"/>
+		<import addon="script.module.core.ultrastream" version="0.2.7"/>
 	  </requires>
 	  <extension point="xbmc.python.module" library="lib" />
 	  <extension point="xbmc.service"  library="default.py" />
