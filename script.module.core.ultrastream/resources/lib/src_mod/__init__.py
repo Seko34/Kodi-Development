@@ -18,6 +18,7 @@ import xbmcaddon
 import xbmcgui
 import strUtil
 import constant
+import miscFunctions
 import timeit
 from item import StreamItem
 from difflib import SequenceMatcher as SM
@@ -45,7 +46,9 @@ def loadModules():
     lst = os.listdir(__sourcesPath__)
     files = []
     
-    for f in lst:
+    # ___List of src file
+    srcFiles = ['DPStream.py','LibertyLand.py','MegaStream.py','Sokrostream.py','Streamay.py']
+    for f in srcFiles:
         s = __sourcesPath__ + os.sep + f
         if os.path.isfile(s) and os.path.exists(s) and f.endswith('.py') and f != '__init__.py':
             files.append(f[0:len(f)-3])
@@ -502,6 +505,23 @@ def appendLinkInList(streamItem,elementList):
         # ___ Else add the link       
         elementList.append(streamItem)
         return elementList 
+
+def changeSrcDialog():
+    listeSrc = []
+    
+    for inst in MODULES_INSTANCES:
+        listeSrc.append(inst.getName())
+        
+    selectDialog = xbmcgui.Dialog()
+    select = selectDialog.select(constant.__addon__.getLocalizedString(50090), listeSrc)
+    id = -1
+    for inst in MODULES_INSTANCES:
+        if listeSrc[select] == inst.getName():
+            id = inst.getId()
+    
+    if id > 0:
+        constant.__addon__.setSetting('default_stream_src',str(id))
+        miscFunctions.displayNotification('Source : '+listeSrc[select],'info')
     
 def getSourcesXmlSettings():
     """

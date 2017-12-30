@@ -515,6 +515,10 @@ msgctxt "#70014"
 msgid "Link unavailable"
 msgstr ""
 
+msgctxt "#70015"
+msgid "Change Streaming source"
+msgstr ""
+
 ##
 #	'-__	WATAMOVIE	__-'
 ##
@@ -655,7 +659,3 @@ msgstr ""
 msgctxt "#33070"
 msgid "Open in Web Browser"
 msgstr ""
-
-
-
-

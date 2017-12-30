@@ -59,7 +59,9 @@ def createOrUpdateHistory(streamItem, videotimewatched=0,percent=0,isComplete=0)
     """
     # ___ Create or update the history
     if streamItem.isEpisode():
+        constant.__LOGGER__.log('Insert History for episode',xbmc.LOGDEBUG);
         historyMod.updateHistory(streamItem.getDbTitle(), streamItem.getHref(), videotimewatched, percent, isComplete, tvshow=streamItem.getDbTvShowName(), season=streamItem.getSeason(), episode=streamItem.getEpisode())
     else:
+        constant.__LOGGER__.log('Insert History for movie',xbmc.LOGDEBUG);
         historyMod.updateHistory(streamItem.getDbTitle(), streamItem.getHref(), videotimewatched, percent, isComplete)
         

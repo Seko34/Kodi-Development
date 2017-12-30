@@ -91,6 +91,7 @@ def getMetadataForList(type,listItems,dialogProgress=False,useAsService=False):
         historyElement = history.getHistory(elementList)
         if historyElement is not None:
             elementList.setPlayCount(1)
+            constant.__LOGGER__.log(elementList.getJsonItem(),xbmc.LOGDEBUG)
     
     
         

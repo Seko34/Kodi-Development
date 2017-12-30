@@ -78,6 +78,7 @@ class StreamItem:
     ACTION_SEARCH_WATAMOVIE       = 24
     ACTION_GLOBAL_SEARCH          = 25
     ACTION_GET_SYNOPSIS           = 26
+    ACTION_CHANGE_STREAMING_SRC   = 27
     
         # Settings
     ACTION_DISPLAY_MENU_SETTINGS        = 50
@@ -278,8 +279,13 @@ class StreamItem:
         # ___ If the item is  movie
         if (self.getType() == self.TYPE_MOVIE or self.getType() == self.TYPE_MOVIE_HD) and self.getAction() == self.ACTION_DISPLAY_LINKS:
             li.addContextMenuItems([ (constant.__addon__.getLocalizedString(70012).title(), 'RunPlugin(plugin://plugin.video.seko.ultrastream/?action=23&title='+self.getTitle()+')'),
-                                    (constant.__addon__.getLocalizedString(70008).title(), 'Container.Update(plugin://plugin.video.seko.ultrastream/?action=26&type=-1&title='+self.getTitle()+')')])
-            
+                                    (constant.__addon__.getLocalizedString(70008).title(), 'Container.Update(plugin://plugin.video.seko.ultrastream/?action=26&type=-1&title='+self.getTitle()+')'),
+                                    (constant.__addon__.getLocalizedString(70015).title(), 'RunPlugin(plugin://plugin.video.seko.ultrastream/?action=27)')
+                                   ])
+        else:
+            li.addContextMenuItems([ 
+                                    (constant.__addon__.getLocalizedString(70015).title(), 'RunPlugin(plugin://plugin.video.seko.ultrastream/?action=27)')
+                                   ])
         
              
         # ___ If the item is a page, we set the page thumbnail and page icon.
@@ -523,7 +529,8 @@ class StreamItem:
             @return True if the item is an episode, else return false
         """
         if self.Item['type'] == self.TYPE_ANIME_EPISODE or self.Item['type'] == self.TYPE_TVSHOW_EPISODE :
-            return True
+            if self.getEpisode() != '' or int(self.getEpisode()) > -1:
+                return True
         else:
             return False
         

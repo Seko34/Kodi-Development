@@ -12,6 +12,7 @@ Created on 02 Jan 2016
 import xbmc
 import sys
 import re
+import json
 import strUtil
 import copy
 import icons
@@ -31,13 +32,13 @@ class Sokrostream(Source):
     
     
     # ___ The source ID
-    ID = 6
+    ID = 3
     
     # ___ The name of the source
     NAME = 'Sokrostream'
     
     # WEB PAGE BASE
-    WEB_PAGE_BASE = "http://sokrostream.cc/"
+    WEB_PAGE_BASE = "http://sokrostream.biz/"
     
     # LOGGER    
     __LOGGER__ = Logger('UltraStream','Sokrostream')
@@ -55,18 +56,21 @@ class Sokrostream(Source):
     MENU_MOVIE_OPT = [Source.MENU_MOVIE_SEARCH,
                      #Source.MENU_MOVIE_EXCLUE,
                      Source.MENU_MOVIE_LAST,
-                     Source.MENU_MOVIE_TOPVIEW,
-                     Source.MENU_MOVIE_TOPWEEK,
+                     #Source.MENU_MOVIE_TOPVIEW,
+                     #Source.MENU_MOVIE_TOPWEEK,
                      Source.MENU_MOVIE_TOPRATE,
                      #Source.MENU_MOVIE_CATEGORY_ALPHA,
-                     #Source.MENU_MOVIE_CATEGORY_GENRE
+                     #Source.MENU_MOVIE_CATEGORY_GENRE,
+                     Source.MENU_MOVIE_LIST
                      ]    
     
     MENU_MOVIE_HD_OPT = []    
     
     MENU_TVSHOW_OPT = [
                        Source.MENU_TVSHOW_SEARCH,
-                       Source.MENU_TVSHOW_LAST
+                       Source.MENU_TVSHOW_LAST,
+                       Source.MENU_TVSHOW_TOPRATE,
+                       Source.MENU_TVSHOW_LIST
                        ] 
     
     MENU_ANIME_OPT = [] 
@@ -87,25 +91,107 @@ class Sokrostream(Source):
             @param content: the html content
             @return the StreamItem list
         """ 
-        elementList = []
-        soup = BeautifulSoup(content)      
-                  
-        # For every post, get title and topicLink          
-        movies = soup.find('div',{'class':'filmcontent'}).findAll('div',{'class':'moviefilm'})
+        elementList = []  
+        
+        itemsPattern = re.compile('(.*)(window\.__NUXT__=)(.*?)(;</script>)(.*)',re.DOTALL)
+        match = itemsPattern.match(content)
+        if match is not None:
+            jsonEl = json.loads(match.group(3))
+            
+            if not filter or filter == StreamItem.TYPE_MOVIE:
+                
+                for item in jsonEl['data'][0]['films']:
+                    title = item['name']
+                            
+                    href = '/films/'+strUtil.remove_special_char(title).replace(' ','-').lower()+'-'+str(item['customID'])+'.html'
+                    year = item['releaseYear']
+                    quality = item['quality']
+                    langClass = item['language']
+                    lang = None
+                    subtitle = None
+                    if langClass == 'vf':
+                        lang = 'FR'
+                    else:
+                        lang = 'VO'
+                        subtitle = 'FR'
+                        
+                    title = strUtil.cleanTitle(title)                
+                    self.__LOGGER__.log("Clean title: "+str(title),xbmc.LOGDEBUG)     
+                    
+                    # __ Create the element
+                    element = StreamItem(title)
+                    element.setHref(href)                
+                    element.setYear(year)             
+                    element.setQuality(quality)             
+                    element.setLang(lang)
+                    element.setAction(StreamItem.ACTION_DISPLAY_LINKS)
+                    element.setType(StreamItem.TYPE_MOVIE)  
+                    element.setSourceId(self.ID)  
+                    element.setId(str(item['customID']))
+                    element.setIconImage(item['poster'])
+                    type = StreamItem.TYPE_MOVIE
+                    elementList.append(element)
+                    
+            elif filter == StreamItem.TYPE_TVSHOW:
+                for item in jsonEl['data'][0]['series']:
+                    title = item['name']
+                            
+                    href = '/series/'+strUtil.remove_special_char(title).replace(' ','-').lower()+'-'+str(item['customID'])+'.html'
+                    year = item['releaseYear']
+                    quality = item['quality']
+                    langClass = item['language']
+                    lang = None
+                    subtitle = None
+                    if langClass == 'vf':
+                        lang = 'FR'
+                    else:
+                        lang = 'VO'
+                        subtitle = 'FR'
+                        
+                    title = strUtil.cleanTitle(title)                
+                    self.__LOGGER__.log("Clean title: "+str(title),xbmc.LOGDEBUG)     
+                    
+                    # __ Create the element
+                    element = StreamItem(title)
+                    element.setHref(href)                
+                    element.setYear(year)             
+                    element.setQuality(quality)             
+                    element.setLang(lang)
+                    element.setSourceId(self.ID)  
+                    element.setId(str(item['customID']))
+                    element.setIconImage(item['poster'])                    
+                    element.setTvShowName(title)   
+                    element.setType(StreamItem.TYPE_TVSHOW)
+                    element.setAction(StreamItem.ACTION_DISPLAY_SEASONS)   
+                    type = StreamItem.TYPE_TVSHOW  
+                    elementList.append(element)
+                    
+        # For every post, get title and topicLink   
+        """       
+        movies = soup.findAll('div',{ 'class':'column is-one-quarter-desktop is-half-mobile'})
+                
         
         for index in range(0,len(movies)):
             
             movie = movies[index]
             
-            title = movie.find('div',{'class':'movief'}).text.encode('UTF-8')
+            title = movie.find('img',{'class':'image-fix'})['alt'].encode('UTF-8')
             title = strUtil.unescapeHtml(str(title))
+                    
             self.__LOGGER__.log("Finded title: "+title,xbmc.LOGDEBUG)
-            href = movie.find('div',{'class':'movief'}).find('a')['href']
+            href = movie.find('a')['href']
             year = strUtil.getYearFromTitle(title) 
-            quality = strUtil.getQualityFromTitle(title)  
-            lang = strUtil.getLangFromTitle(title)
+            quality = movie.find('div',{'class':re.compile('(media-content)(.*)')}).text.encode('UTF-8')
+            langClass = movie.find('img',{'class':'language-image'})['src']
+            lang = None
+            subtitle = None
+            if langClass == '/vf.png':
+                lang = 'FR'
+            else:
+                lang = 'VO'
+                subtitle = 'FR'
             title = strUtil.cleanTitle(title)                
-            self.__LOGGER__.log("Clean title: "+str(title),xbmc.LOGDEBUG)        
+            self.__LOGGER__.log("Clean title: "+str(title),xbmc.LOGDEBUG)     
             
             # __ Create the element
             element = StreamItem(title)
@@ -119,7 +205,8 @@ class Sokrostream(Source):
             element.setIconImage(movie.find('img')['src'])
             type = StreamItem.TYPE_MOVIE
             
-            tvshowPattern = re.compile("(http://sokrostream.cc/series)(.*)")
+            tvshowPattern = re.compile("(/series/)(.*)")
+            print href
             match = tvshowPattern.match(href)
             if match is not None: 
                 element.setTvShowName(title)   
@@ -132,26 +219,81 @@ class Sokrostream(Source):
                 elementList.append(element)
             elif type == int(filter):
                 elementList.append(element)
-        
+        """
         return elementList
+    
+    def getMovieContent(self,streamItem,page,response):
+        """
+            Generic method to get movie content
+            @param response: the html response
+            @param subtype: the subtype for streamItem 
+        """
+        elementList = []
+        if response and response.getcode() == 200:        
+            content = response.read()
+            soup = BeautifulSoup(content)  
+            if soup is not None:
+                movies = soup.find('section',{'class':'box'}).findAll('div',{ 'class':'column is-one-quarter-desktop is-half-mobile'})
+                
+                for movie in movies:
+                                                   
+                    title = movie.find('img',{'class':'image-fix'})['alt'].encode('UTF-8')
+                    title = strUtil.unescapeHtml(str(title))
+                    
+                    self.__LOGGER__.log("Finded title: "+title,xbmc.LOGDEBUG)
+                    href = movie.find('a')['href']
+                    year = strUtil.getYearFromTitle(title) 
+                    quality = movie.find('div',{'class':re.compile('(media-content)(.*)')}).text.encode('UTF-8')
+                    langClass = movie.find('img',{'class':'language-image'})['src']
+                    lang = None
+                    subtitle = None
+                    if langClass == '/vf.png':
+                        lang = 'FR'
+                    else:
+                        lang = 'VO'
+                        subtitle = 'FR'
+                    title = strUtil.cleanTitle(title)                
+                    self.__LOGGER__.log("Clean title: "+str(title),xbmc.LOGDEBUG)        
+                    
+                    # __ Create the element
+                    element = StreamItem(title)
+                    element.setHref(href)                
+                    element.setYear(year)
+                    element.setQuality(quality)                         
+                    element.setLang(lang)
+                    element.setSubTitle(subtitle)
+                    element.setAction(StreamItem.ACTION_DISPLAY_LINKS)
+                    element.setType(StreamItem.TYPE_MOVIE)
+                    element.setSourceId(self.ID)  
+                    element.setIconImage(movie.find('img',{'class':'image-fix'})['src'])                    
+                                                            
+                    # __ Add the element to the list
+                    elementList.append(element)      
+            
+            nextPage = StreamItem(constant.__addon__.getLocalizedString(70010))
+            nextPage.setIconImage(icons.getIcon('nextpage'))
+            nextPage.setType(StreamItem.TYPE_MOVIE)
+            nextPage.setAction(StreamItem.ACTION_DISPLAY_TYPE_LIST)
+            nextPage.setSubType(streamItem.getSubType())
+            nextPage.setPage(int(page)+1)
+            elementList.append(nextPage)
+            
+                    
+        return elementList
+    
     
     def searchMovie(self, title):
         """
             Method to search a movie
             @return a list of StreamItem
         """
-        get_href = 'search.php?q='+title
-        headers = copy.copy(webUtil.HEADER_CFG)
-        headers['Referer'] = 'http://sokrostream.cc'
-        headers['Host'] = 'sokrostream.cc'
-        headers['Origin'] = 'http://sokrostream.cc'
-        response = self.openPage(get_href,cHeaders=headers)
+        get_href = 'search/'+title
+        response = self.openPage(get_href)
         elementList = []
         
         if response and response.getcode() == 200:    
-            content = response.read()
-            if len(content) > 0 :  
-                elementList = self.getMoviesItemFromContent(content,StreamItem.TYPE_MOVIE)            
+            content = response.read()            
+            elementList = self.getMoviesItemFromContent(content,StreamItem.TYPE_MOVIE)            
             
         # ___ Error during search the movie
         else:
@@ -166,16 +308,12 @@ class Sokrostream(Source):
             @return a list of StreamItem
         """
         
-        get_href = 'search.php?q='+title
-        headers = copy.copy(webUtil.HEADER_CFG)
-        headers['Referer'] = 'http://sokrostream.cc'
-        headers['Host'] = 'sokrostream.cc'
-        headers['Origin'] = 'http://sokrostream.cc'
-        response = self.openPage(get_href,cHeaders=headers)
+        get_href = 'search/'+title
+        response = self.openPage(get_href)
         elementList = []
         
         if response and response.getcode() == 200:    
-            content = response.read()
+            content = response.read()            
             elementList = self.getMoviesItemFromContent(content,StreamItem.TYPE_TVSHOW)            
             
         # ___ Error during search the movie
@@ -198,33 +336,27 @@ class Sokrostream(Source):
             @return a list of StreamItem
         """
         
+        # ___ Initialize the list to return
         elementList = []
-        response = self.openPage(tvShowStreamItem.getHref())
         
+        # ___ Get the response        
+        response = self.openPage(tvShowStreamItem.getHref())
         if response and response.getcode() == 200:    
-            content = response.read()   
-            soup = BeautifulSoup(content)  
-
-            # For every post, get title and topicLink          
-            movies = soup.findAll('div',{'class':'filmcontent'})[1].findAll('div',{'class':'moviefilm'})
-            
-            for index in range(0,len(movies)):
+            content = response.read()
+            linksPattern = re.compile('(.*)(window\.__NUXT__=)(.*?)(;</script>)(.*)',re.DOTALL)
+            match = linksPattern.match(content)
+            if match is not None:
+                jsonEl = json.loads(match.group(3))
                 
-                movie = movies[index]                
-                seasonText = movie.find('div',{'class':'movief'}).text.encode('UTF-8')
-                
-                seasonPattern = re.compile("(.*)(Saison )(.*)")
-                match = seasonPattern.match(seasonText)
-                if match is not None:                    
+                for season in jsonEl['data'][0]['data']['seasons']:                    
                 
                     # __ Create the element
-                    href = movie.find('div',{'class':'movief'}).find('a')['href'].encode('UTF-8')
+                    href = '/series/'+strUtil.remove_special_char(tvShowStreamItem.getTvShowName()).replace(' ','-').lower()+'-saison-'+str(season['number'])+'-'+str(tvShowStreamItem.getId())+'.html'
                     element = tvShowStreamItem.copy()
-                    element.setSeason(match.group(3))             
+                    element.setSeason(season['number'])             
                     element.setAction(StreamItem.ACTION_DISPLAY_EPISODES)
                     element.setHref(href)
                     element.determineSeasonTitle()
-                    element.setIconImage(movie.find('img')['src'])
                     elementList.append(element)
         
         return elementList    
@@ -242,36 +374,31 @@ class Sokrostream(Source):
             @return a list of StreamItem
         """
         
-        
+        # ___ Initialize the list to return
         elementList = []
-        response = self.openPage(episodeStreamItem.getHref())
         
+        # ___ Get the response        
+        response = self.openPage(episodeStreamItem.getHref())
         if response and response.getcode() == 200:    
-            content = response.read()   
-            soup = BeautifulSoup(content)      
-
-            # For every post, get title and topicLink          
-            movies = soup.findAll('div',{'class':'filmcontent'})[1].findAll('div',{'class':'moviefilm2'})
-            
-            for index in range(0,len(movies)):
+            content = response.read()
+            linksPattern = re.compile('(.*)(window\.__NUXT__=)(.*?)(;</script>)(.*)',re.DOTALL)
+            match = linksPattern.match(content)
+            if match is not None:
+                jsonEl = json.loads(match.group(3))
                 
-                movie = movies[index]
-                
-                episodeText = movie.find('div',{'class':'movief2'}).text.encode('UTF-8')
-                episodePattern = re.compile("(Episode )(.*)")
-                match = episodePattern.match(episodeText)
-                if match is not None:                    
-                
+                for episode in jsonEl['data'][0]['data']['currentSeason']['episodes']:     
+                    
                     # __ Create the element
-                    href = movie.find('div',{'class':'movief2'}).find('a')['href'].encode('UTF-8')
+                    href = '/series/'+strUtil.remove_special_char(episodeStreamItem.getTvShowName()).replace(' ','-').lower()+'-saison-'+str(jsonEl['data'][0]['season'])+'-episode-'+str(episode['number'])+'-'+str(episodeStreamItem.getId())+'.html'
                     element = episodeStreamItem.copy()
-                    element.setEpisode(match.group(2))             
+                    element.setEpisode(episode['number'])
+                    element.setType(StreamItem.TYPE_TVSHOW_EPISODE)             
                     element.setAction(StreamItem.ACTION_DISPLAY_LINKS)
                     element.setHref(href)
                     element.determineEpisodeTitle()
                     elementList.append(element)
         
-        return elementList 
+        return elementList  
     
     def getAnimeEpisodes(self, episodeStreamItem):
         """
@@ -279,86 +406,7 @@ class Sokrostream(Source):
             @return a list of StreamItem
         """
         pass
-    
-    def getLink(self,id,streamItem):    
-        """
-            Method to get link
-            @param id: the id of the link
-            @param streamItem : the current StreamItem
-            @return a list of StreamItem
-        """  
-        element = None  
-        postHref = streamItem.getHref()
-        param = {'levideo':str(id)}
-        headers = copy.copy(webUtil.HEADER_CFG)
-        headers['Referer'] = streamItem.getHref()
-        headers['Host'] = 'sokrostream.cc'
-        headers['Origin'] = 'http://sokrostream.cc'
         
-        response = self.postPage(postHref, param,headers=headers)
-        
-        if response and response.getcode() == 200:   
-            content = response.read()
-            soup = BeautifulSoup(content) 
-            
-            # __ Case of iFrame
-            link = None
-            if soup.find('div',{'class':'bgvv'}) is not None:
-                link = soup.find('div',{'class':'bgvv'}).find('iframe')
-                
-            if link is not None and link['src'].startswith('http://sokrostrem.xyz/video.php?p'):
-                headers = copy.copy(webUtil.HEADER_CFG)
-                headers['Referer'] = streamItem.getHref()
-                headers['Host'] = 'sokrostrem.xyz'
-                headers['Upgrade-Insecure-Requests'] = '1'
-                response2 = self.openPage(link['src'],buildHref=False,cHeaders=headers)
-                if response2 and response2.getcode() == 200:   
-                    content2 = response2.read()
-                    soup2 = BeautifulSoup(content2)
-                    content = soup2.find('meta')['content']
-                    contentPattern = re.compile('(.*)(url=)(.*)')
-                    match = contentPattern.match(content)
-                    if match is not None :
-                        href = match.group(3)
-                        if href is not None and not href.startswith('http://sokrostream'):
-                            # __ Create the element                       
-                            element = streamItem.copy()
-                            element.setAction(StreamItem.ACTION_PLAY)
-                            element.setType(StreamItem.TYPE_STREAMING_LINK)
-                            element.setHref(href)           
-                            element.regenerateKodiTitle()
-                            
-            elif link is not None and not link['src'].startswith('http://sokrostream'):
-                # ___ Case of streaming link
-                href = link['src'].encode('UTF-8')
-                href = self.formatLink(href)
-                # __ Create the element                       
-                element = streamItem.copy()
-                element.setAction(StreamItem.ACTION_PLAY)
-                element.setType(StreamItem.TYPE_STREAMING_LINK)
-                element.setHref(href)                 
-                element.regenerateKodiTitle()
-                
-            elif link is not None and link['src'].startswith('http://sokrostream'):
-                # ___ Case of download link
-                response = self.openPage(link['src'])
-                if response and response.getcode() == 200:   
-                    content = response.read()
-                    soup = BeautifulSoup(content) 
-                    link = soup.find('a',{'class':'button_upload green'})  
-                    if link is not None:  
-                        href = link['href'].encode('UTF-8')
-                        href = self.formatLink(href)
-                        # __ Create the element                       
-                        element = streamItem.copy()
-                        element.setAction(StreamItem.ACTION_PLAY)
-                        element.setType(StreamItem.TYPE_STREAMING_LINK)
-                        element.setHref(href)                 
-                        element.regenerateKodiTitle()  
-            
-            
-        return element
-    
     def getLinks(self,streamItem):       
         """
             Method to get all links
@@ -367,15 +415,42 @@ class Sokrostream(Source):
         # ___ Initialize the list to return
         elementList = []
         
-        # ___ Get the soup
-        
-        soupI = self._initOpenPage(streamItem)
-        links = soupI.findAll('input',{'name':'levideo'})
-        for link in links:
-            id = link['value']
-            linkItem = self.getLink(id,streamItem)
-            if linkItem is not None:
-                elementList.append(linkItem)
+        # ___ Get the response        
+        response = self.openPage(streamItem.getHref())
+        if response and response.getcode() == 200:    
+            content = response.read()
+            linksPattern = re.compile('(.*)(window\.__NUXT__=)(.*?)(;</script>)(.*)',re.DOTALL)
+            match = linksPattern.match(content)
+            if match is not None:
+                jsonEl = json.loads(match.group(3))
+                
+                if streamItem.getType() == StreamItem.TYPE_MOVIE:
+                    for link in jsonEl['data'][0]['data']['videos']:
+                        # __ Create the element                       
+                        element = streamItem.copy()
+                        element.setAction(StreamItem.ACTION_PLAY)
+                        element.setType(StreamItem.TYPE_STREAMING_LINK)
+                        element.setHref(link['link'])                
+                        element.setQuality(link['quality'])                                      
+                        element.setLang(link['language'])                                                     
+                        element.setHostname(link['provider'])      
+                        element.regenerateKodiTitle()              
+                        # __ Add the element to the list
+                        elementList.append(element)  
+                        
+                elif streamItem.getType() == StreamItem.TYPE_TVSHOW_EPISODE:
+                    for link in jsonEl['data'][0]['data']['episode'][0]['videos']:
+                        # __ Create the element                       
+                        element = streamItem.copy()
+                        element.setAction(StreamItem.ACTION_PLAY)
+                        element.setType(StreamItem.TYPE_STREAMING_LINK)
+                        element.setHref(link['link'])                
+                        element.setQuality(link['quality'])                                      
+                        element.setLang(link['language'])                                                     
+                        element.setHostname(link['provider'])      
+                        element.regenerateKodiTitle()              
+                        # __ Add the element to the list
+                        elementList.append(element) 
                 
         return elementList
     
@@ -402,65 +477,8 @@ class Sokrostream(Source):
         """
         pass
     
-    def getMovieContent(self,streamItem,page,response):
-        """
-            Generic method to get movie content
-            @param response: the html response
-            @param subtype: the subtype for streamItem 
-        """
-        elementList = []
-        if response and response.getcode() == 200:        
-            content = response.read()
-            soup = BeautifulSoup(content)  
-            if soup is not None:
-                movies = soup.find('div',{'class':'filmcontent'}).findAll('div',{ 'class':'moviefilm'})
-                
-                for movie in movies:
-                                                   
-                    title = movie.find('img')['alt'].encode('UTF-8')
-                    title = strUtil.unescapeHtml(str(title))
-                    
-                    self.__LOGGER__.log("Finded title: "+title,xbmc.LOGDEBUG)
-                    href = movie.find('a')['href']
-                    year = strUtil.getYearFromTitle(title) 
-                    quality = movie.find('div',{'class':re.compile('(movies)(.*)')}).text.encode('UTF-8')
-                    langClass = movie.find('span')['class']
-                    lang = None
-                    subtitle = None
-                    if langClass == 'tr-dublaj':
-                        lang = 'FR'
-                    elif langClass == 'tr-altyazi':
-                        lang = 'VO'
-                        subtitle = 'FR'
-                    title = strUtil.cleanTitle(title)                
-                    self.__LOGGER__.log("Clean title: "+str(title),xbmc.LOGDEBUG)        
-                    
-                    # __ Create the element
-                    element = StreamItem(title)
-                    element.setHref(href)                
-                    element.setYear(year)
-                    element.setQuality(quality)                         
-                    element.setLang(lang)
-                    element.setSubTitle(subtitle)
-                    element.setAction(StreamItem.ACTION_DISPLAY_LINKS)
-                    element.setType(StreamItem.TYPE_MOVIE)
-                    element.setSourceId(self.ID)  
-                    element.setIconImage(movie.find('img')['src'])                    
-                                                            
-                    # __ Add the element to the list
-                    elementList.append(element)      
-            
-            nextPage = StreamItem(constant.__addon__.getLocalizedString(70010))
-            nextPage.setIconImage(icons.getIcon('nextpage'))
-            nextPage.setType(StreamItem.TYPE_MOVIE)
-            nextPage.setAction(StreamItem.ACTION_DISPLAY_TYPE_LIST)
-            nextPage.setSubType(streamItem.getSubType())
-            nextPage.setPage(int(page)+1)
-            elementList.append(nextPage)
-            
-                    
-        return elementList
     
+   
     def getTvShowContent(self,streamItem,page,response):
         """
             Generic method to get movie content
@@ -511,50 +529,113 @@ class Sokrostream(Source):
         """
             Method to get all last movie
             @return a list of StreamItem
-        """                
+        """  
+        
+        href = '/'              
         # ___ Initialize the list to return
         elementList = []
         
-        href = '/'
-        page = 0
-        # ___ Get the page
-        if streamItem and streamItem.getPage() is not None and len(streamItem.getPage()) > 0:
-            href = href +'page/' +streamItem.getPage()
-            page = streamItem.getPage()
-        else:
-            streamItem = StreamItem()
-            streamItem.setPage(0)
-            streamItem.setType(StreamItem.TYPE_MOVIE)
-            streamItem.setSubType(StreamItem.SUBTYPE_LAST)
+        # ___ Get the response        
+        response = self.openPage(href)
+        if response and response.getcode() == 200:    
+            content = response.read()
             
-        # ___ Get the response
-        response = self.openPage(href)           
-                   
-        # ___ Return the movie list 
-        return self.getMovieContent(streamItem,page,response)
+            linksPattern = re.compile('(.*)(window\.__NUXT__=)(.*?)(;</script>)(.*)',re.DOTALL)
+            match = linksPattern.match(content)
+            if match is not None:
+                jsonEl = json.loads(match.group(3))
+                
+                for movie in jsonEl['data'][0]['nouveaux']['films']:
+                
+                    href = '/films/'+strUtil.remove_special_char(movie['name']).replace(' ','-').lower()+'-'+str(movie['customID'])+'.html'
+                    year = movie['releaseYear']
+                    quality = movie['quality']
+                    langClass = movie['language']
+                    lang = None
+                    subtitle = None
+                    if langClass == 'vf':
+                        lang = 'FR'
+                    else:
+                        lang = 'VO'
+                        subtitle = 'FR'
+                        
+                    title = strUtil.cleanTitle(movie['name'] ) 
+                    title = strUtil.deleteAccent(title)   
+                    self.__LOGGER__.log("Clean title: "+str(title),xbmc.LOGDEBUG)     
+                    
+                    # __ Create the element
+                    element = StreamItem(title)
+                    element.setHref(href)                
+                    element.setYear(year)             
+                    element.setQuality(quality)             
+                    element.setLang(lang)
+                    if subtitle is not None:
+                        element.setSubTitle(subtitle)
+                    element.setAction(StreamItem.ACTION_DISPLAY_LINKS)
+                    element.setType(StreamItem.TYPE_MOVIE)  
+                    element.setSourceId(self.ID)  
+                    element.setId(str(movie['customID']))
+                    element.setIconImage(movie['poster'])
+                    elementList.append(element)
+                
+        return elementList
     
     def getLastTvShow(self,streamItem=False):
         """
             Method to get all last tv show
             @return a list of StreamItem
         """
-        href = '/categories/series-tv'
-        page = 0
-        # ___ Get the page
-        if streamItem and streamItem.getPage() is not None and len(streamItem.getPage()) > 0:
-            href = href +'/page/' +streamItem.getPage()
-            page = streamItem.getPage()
-        else:
-            streamItem = StreamItem()
-            streamItem.setPage(0)
-            streamItem.setType(StreamItem.TYPE_TVSHOW)
-            streamItem.setSubType(StreamItem.SUBTYPE_LAST)
+        href = '/'
+        # ___ Initialize the list to return
+        elementList = []
+        
+        # ___ Get the response        
+        response = self.openPage(href)
+        if response and response.getcode() == 200:    
+            content = response.read()
             
-        # ___ Get the response
-        response = self.openPage(href)           
-                   
-        # ___ Return the movie list 
-        return self.getTvShowContent(streamItem,page,response)
+            linksPattern = re.compile('(.*)(window\.__NUXT__=)(.*?)(;</script>)(.*)',re.DOTALL)
+            match = linksPattern.match(content)
+            if match is not None:
+                jsonEl = json.loads(match.group(3))
+                
+                for movie in jsonEl['data'][0]['nouveaux']['series']:
+                
+                    title = movie['name']
+                            
+                    href = '/series/'+strUtil.remove_special_char(title).replace(' ','-').lower()+'-'+str(movie['customID'])+'.html'
+                    year = movie['releaseYear']
+                    quality = movie['quality']
+                    langClass = movie['language']
+                    lang = None
+                    subtitle = None
+                    if langClass == 'vf':
+                        lang = 'FR'
+                    else:
+                        lang = 'VO'
+                        subtitle = 'FR'
+                        
+                    title = strUtil.cleanTitle(title)                 
+                    title = strUtil.deleteAccent(title)   
+                    self.__LOGGER__.log("Clean title: "+str(title),xbmc.LOGDEBUG)     
+                    
+                    # __ Create the element
+                    element = StreamItem(title)
+                    element.setHref(href)                
+                    element.setYear(year)             
+                    element.setQuality(quality)             
+                    element.setLang(lang)
+                    if subtitle is not None:
+                        element.setSubTitle(subtitle)
+                    element.setSourceId(self.ID)  
+                    element.setId(str(movie['customID']))
+                    element.setIconImage(movie['poster'])                    
+                    element.setTvShowName(title)   
+                    element.setType(StreamItem.TYPE_TVSHOW)
+                    element.setAction(StreamItem.ACTION_DISPLAY_SEASONS)  
+                    elementList.append(element)
+                    
+        return elementList
     
     def getLastAnime(self,streamItem=False):
         """
@@ -567,32 +648,114 @@ class Sokrostream(Source):
         """
             Method to get top movie
             @return a list of StreamItem
-        """        
-        href = '/films-les-mieux-notes-2'
-        page = 0
-        # ___ Get the page
-        if streamItem and streamItem.getPage() is not None and len(streamItem.getPage()) > 0:
-            href = href +'/page/' +streamItem.getPage()
-            page = streamItem.getPage()
-        else:
-            streamItem = StreamItem()
-            streamItem.setPage(0)
-            streamItem.setType(StreamItem.TYPE_MOVIE)
-            streamItem.setSubType(StreamItem.SUBTYPE_TOP_RATE)
+        """     
+        href = '/'   
+        # ___ Initialize the list to return
+        elementList = []
+        
+        # ___ Get the response        
+        response = self.openPage(href)
+        if response and response.getcode() == 200:    
+            content = response.read()
             
-        # ___ Get the response
-        response = self.openPage(href)           
-                   
-        # ___ Return the movie list 
-        return self.getMovieContent(streamItem,page,response)
+            linksPattern = re.compile('(.*)(window\.__NUXT__=)(.*?)(;</script>)(.*)',re.DOTALL)
+            match = linksPattern.match(content)
+            if match is not None:
+                jsonEl = json.loads(match.group(3))
+                
+                for movie in jsonEl['data'][0]['box']['films']:
+                
+                    href = '/films/'+strUtil.remove_special_char(movie['name']).replace(' ','-').lower()+'-'+str(movie['customID'])+'.html'
+                    year = movie['releaseYear']
+                    quality = movie['quality']
+                    langClass = movie['language']
+                    lang = None
+                    subtitle = None
+                    if langClass == 'vf':
+                        lang = 'FR'
+                    else:
+                        lang = 'VO'
+                        subtitle = 'FR'
+                        
+                    title = strUtil.cleanTitle(movie['name'])         
+                    title = strUtil.deleteAccent(title)           
+                    self.__LOGGER__.log("Clean title: "+str(title),xbmc.LOGDEBUG)     
+                    
+                    # __ Create the element
+                    element = StreamItem(title)
+                    element.setHref(href)                
+                    element.setYear(year)             
+                    element.setQuality(quality)             
+                    element.setLang(lang)
+                    if subtitle is not None:
+                        element.setSubTitle(subtitle)
+                    element.setAction(StreamItem.ACTION_DISPLAY_LINKS)
+                    element.setType(StreamItem.TYPE_MOVIE)  
+                    element.setSourceId(self.ID)  
+                    element.setId(str(movie['customID']))
+                    element.setIconImage(movie['poster'])
+                    elementList.append(element)
     
+    
+        return elementList
     
     def getTopTvShow(self,streamItem=False):
         """
             Method to get top tv show
             @return a list of StreamItem
         """
-        pass
+        
+        href = '/'
+        # ___ Initialize the list to return
+        elementList = []
+        
+        # ___ Get the response        
+        response = self.openPage(href)
+        if response and response.getcode() == 200:    
+            content = response.read()
+            
+            linksPattern = re.compile('(.*)(window\.__NUXT__=)(.*?)(;</script>)(.*)',re.DOTALL)
+            match = linksPattern.match(content)
+            if match is not None:
+                jsonEl = json.loads(match.group(3))
+                
+                for movie in jsonEl['data'][0]['box']['series']:
+                
+                    title = movie['name']
+                            
+                    href = '/series/'+strUtil.remove_special_char(title).replace(' ','-').lower()+'-'+str(movie['customID'])+'.html'
+                    year = movie['releaseYear']
+                    quality = movie['quality']
+                    langClass = movie['language']
+                    lang = None
+                    subtitle = None
+                    if langClass == 'vf':
+                        lang = 'FR'
+                    else:
+                        lang = 'VO'
+                        subtitle = 'FR'
+                        
+                    title = strUtil.cleanTitle(title)       
+                    title = strUtil.deleteAccent(title)             
+                    self.__LOGGER__.log("Clean title: "+str(title),xbmc.LOGDEBUG)     
+                    
+                    # __ Create the element
+                    element = StreamItem(title)
+                    element.setHref(href)                
+                    element.setYear(year)             
+                    element.setQuality(quality)             
+                    element.setLang(lang)
+                    if subtitle is not None:
+                        element.setSubTitle(subtitle)
+                    element.setSourceId(self.ID)  
+                    element.setId(str(movie['customID']))
+                    element.setIconImage(movie['poster'])                    
+                    element.setTvShowName(title)   
+                    element.setType(StreamItem.TYPE_TVSHOW)
+                    element.setAction(StreamItem.ACTION_DISPLAY_SEASONS)  
+                    elementList.append(element)
+                    
+        return elementList
     
     
     def getTopAnime(self,streamItem=False):
@@ -607,26 +770,7 @@ class Sokrostream(Source):
             Method to get top week movie
             @return a list of StreamItem
         """                
-        # ___ Initialize the list to return
-        elementList = []
-        
-        href = '/les-films-les-plus-vues-2'
-        page = 0
-        # ___ Get the page
-        if streamItem and streamItem.getPage() is not None and len(streamItem.getPage()) > 0:
-            href = href +'/page/' +streamItem.getPage()
-            page = streamItem.getPage()
-        else:
-            streamItem = StreamItem()
-            streamItem.setPage(0)
-            streamItem.setType(StreamItem.TYPE_MOVIE)
-            streamItem.setSubType(StreamItem.SUBTYPE_MOST_VIEW)
-            
-        # ___ Get the response
-        response = self.openPage(href)           
-                   
-        # ___ Return the movie list 
-        return self.getMovieContent(streamItem,page,response)
+        pass
     
     
     def getMostViewTvShow(self,streamItem=False):
@@ -649,26 +793,7 @@ class Sokrostream(Source):
             Method to get top week movie
             @return a list of StreamItem
         """
-        # ___ Initialize the list to return
-        elementList = []
-        
-        href = '/les-films-les-plus-commentes-2'
-        page = 0
-        # ___ Get the page
-        if streamItem and streamItem.getPage() is not None and len(streamItem.getPage()) > 0:
-            href = href +'/page/' +streamItem.getPage()
-            page = streamItem.getPage()
-        else:
-            streamItem = StreamItem()
-            streamItem.setPage(0)
-            streamItem.setType(StreamItem.TYPE_MOVIE)
-            streamItem.setSubType(StreamItem.SUBTYPE_TOP_WEEK)
-            
-        # ___ Get the response
-        response = self.openPage(href)           
-                   
-        # ___ Return the movie list 
-        return self.getMovieContent(streamItem,page,response)
+        pass
     
     
     def getTopWeekTvShow(self,streamItem=False):
@@ -690,19 +815,7 @@ class Sokrostream(Source):
             Method to get exclu movie
             @return a list of StreamItem
         """
-        # ___ Initialize the list to return
-        elementList = []
-        
-        # ___ Get the soup
-        response = self.openPage('')
-        
-        if response and response.getcode() == 200:        
-            content = response.read()
-            soup = BeautifulSoup(content)  
-            if soup is not None:
-                pass 
-                    
-        return elementList   
+        pass
     
     
     def getAlphabeticMovieList(self,letter,page):
@@ -734,6 +847,166 @@ class Sokrostream(Source):
             @return a list of link
         """
         pass
+    
+    def getMovieList(self,streamItem=False):
+        """
+            Method to get a list of movie
+            @return a list of StreamItem        
+        """
+        href = '/categories/films/page/1'
+        page = 1
+        if streamItem and streamItem.isPage():
+            page = streamItem.getPage()
+            href = streamItem.getHref()
+        
+        # ___ Initialize the list to return
+        elementList = []
+        
+        # ___ Get the response        
+        response = self.openPage(href)
+        if response and response.getcode() == 200:    
+            content = response.read()
+            
+            linksPattern = re.compile('(.*)(window\.__NUXT__=)(.*?)(;</script>)(.*)',re.DOTALL)
+            match = linksPattern.match(content)
+            if match is not None:
+                jsonEl = json.loads(match.group(3))
+                
+                for movie in jsonEl['data'][0]['elements']:
+                
+                    href = '/films/'+strUtil.remove_special_char(movie['name']).replace(' ','-').lower()+'-'+str(movie['customID'])+'.html'
+                    year = movie['releaseYear']
+                    quality = movie['quality']
+                    langClass = movie['language']
+                    lang = None
+                    subtitle = None
+                    if langClass == 'vf':
+                        lang = 'FR'
+                    else:
+                        lang = 'VO'
+                        subtitle = 'FR'
+                        
+                    title = strUtil.cleanTitle(movie['name'])         
+                    title = strUtil.deleteAccent(title)           
+                    self.__LOGGER__.log("Clean title: "+str(title),xbmc.LOGDEBUG)     
+                    
+                    # __ Create the element
+                    element = StreamItem(title)
+                    element.setHref(href)                
+                    element.setYear(year)             
+                    element.setQuality(quality)             
+                    element.setLang(lang)
+                    if subtitle is not None:
+                        element.setSubTitle(subtitle)
+                    element.setAction(StreamItem.ACTION_DISPLAY_LINKS)
+                    element.setType(StreamItem.TYPE_MOVIE)  
+                    element.setSourceId(self.ID)  
+                    element.setId(str(movie['customID']))
+                    element.setIconImage(movie['poster'])
+                    elementList.append(element)
+                
+                if streamItem:
+                    element = streamItem.copy()
+                    page = page + 1
+                    element.setType(StreamItem.TYPE_PAGE)
+                    element.setPage(page)
+                    element.setTitle('Page '+str(element.getPage()))
+                    element.setHref('/categories/films/page/' + str(page))                    
+                    elementList.append(element)
+                else:
+                    page = page + 1
+                    element = StreamItem('Page '+str(element.getPage()))
+                    element.setType(StreamItem.TYPE_PAGE)
+                    element.setPage(page)
+                    element.setTitle('Page '+str(element.getPage()))   
+                    element.setAction(StreamItem.ACTION_DISPLAY_TYPE_LIST)
+                    element.setSubType(StreamItem.SUBTYPE_LIST)  
+                    element.setHref('/categories/films/page/' + str(page))              
+                    elementList.append(element)
+    
+        return elementList
+    
+    def getTvShowList(self,streamItem=False):
+        """
+            Method to get a list of tvshow
+            @return a list of StreamItem        
+        """
+        
+        href = '/categories/series-tv/page/1'
+        page = 1
+        if streamItem and streamItem.isPage():
+            page = streamItem.getPage()
+            href = streamItem.getHref()
+        
+        # ___ Initialize the list to return
+        elementList = []
+        
+        # ___ Get the response        
+        response = self.openPage(href)
+        if response and response.getcode() == 200:    
+            content = response.read()
+            
+            linksPattern = re.compile('(.*)(window\.__NUXT__=)(.*?)(;</script>)(.*)',re.DOTALL)
+            match = linksPattern.match(content)
+            if match is not None:
+                jsonEl = json.loads(match.group(3))
+                
+                for movie in jsonEl['data'][0]['elements']:
+                
+                    title = movie['name']
+                                                
+                    href = '/series/'+strUtil.remove_special_char(title).replace(' ','-').lower()+'-'+str(movie['customID'])+'.html'
+                    year = movie['releaseYear']
+                    quality = movie['quality']
+                    langClass = movie['language']
+                    lang = None
+                    subtitle = None
+                    if langClass == 'vf':
+                        lang = 'FR'
+                    else:
+                        lang = 'VO'
+                        subtitle = 'FR'
+                        
+                    title = strUtil.cleanTitle(title)       
+                    title = strUtil.deleteAccent(title)             
+                    self.__LOGGER__.log("Clean title: "+str(title),xbmc.LOGDEBUG)     
+                    
+                    # __ Create the element
+                    element = StreamItem(title)
+                    element.setHref(href)                
+                    element.setYear(year)             
+                    element.setQuality(quality)             
+                    element.setLang(lang)
+                    if subtitle is not None:
+                        element.setSubTitle(subtitle)
+                    element.setSourceId(self.ID)  
+                    element.setId(str(movie['customID']))
+                    element.setIconImage(movie['poster'])                    
+                    element.setTvShowName(title)   
+                    element.setType(StreamItem.TYPE_TVSHOW)
+                    element.setAction(StreamItem.ACTION_DISPLAY_SEASONS)  
+                    elementList.append(element)
+                
+                if streamItem:
+                    element = streamItem.copy()
+                    page = page + 1
+                    element.setType(StreamItem.TYPE_PAGE)
+                    element.setPage(page)
+                    element.setTitle('Page '+str(element.getPage()))
+                    element.setHref('/categories/series-tv//page/' + str(page))                    
+                    elementList.append(element)
+                else:
+                    page = page + 1
+                    element = StreamItem('Page '+str(element.getPage()))
+                    element.setType(StreamItem.TYPE_PAGE)
+                    element.setPage(page)
+                    element.setTitle('Page '+str(element.getPage()))   
+                    element.setAction(StreamItem.ACTION_DISPLAY_TYPE_LIST)
+                    element.setSubType(StreamItem.SUBTYPE_LIST)  
+                    element.setHref('/categories/series-tv//page/' + str(page))              
+                    elementList.append(element)
+    
+        return elementList
     
     def getSettingsXml(self):
         """

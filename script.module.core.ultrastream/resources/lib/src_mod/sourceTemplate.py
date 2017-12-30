@@ -193,7 +193,7 @@ class streamingSourceTemplate(object):
         """        
         # ___ We active cookies support for urllib2
         self.cookiejar = cookielib.CookieJar()
-        self.urlOpener = urllib2.build_opener(urllib2.HTTPCookieProcessor(self.cookiejar),SmartRedirectHandler())
+        self.urlOpener = urllib2.build_opener(SmartRedirectHandler(),urllib2.HTTPCookieProcessor(self.cookiejar))
         
         # ___ Init service values        
         self.serviceMovieValues = []
@@ -278,14 +278,33 @@ class streamingSourceTemplate(object):
             response = self.urlOpener.open(request)
         except urllib2.HTTPError as e:
             response = e 
+        except urllib2.URLError as urlerror:
+            # ___ Fix SSLError on Python 2.6 - Kodi 16.1 with http://www.filterbypass.me/
+            print self.buildHref(href)
+            response = self.openWithHideWebProxy(href,buildHref,cHeaders)
         except:
             traceback.print_exc()
             self.__LOGGER__.log('Error during opening a web page on '+self.NAME,xbmc.LOGERROR)
             #miscFunctions.displayNotification('Error during opening a web page on '+self.NAME)
             
         return response
+    
+    def openWithHideWebProxy(self,href=None, buildHref=True, cHeaders=webUtil.HEADER_CFG):
+        if buildHref:
+            requestUrl = self.buildHref(href)
+        else:            
+            requestUrl = href
+        url='http://www.hideweb.org/includes/process.php?action=update'
+        data={'u':requestUrl,
+              'allowCookies':'on',
+              'stripJS':'on',
+              'stripObjects':'on'}
+        
+        return self.postPage(url, data)
+        
+        
      
-    def postPage(self, href=None, data=None, byPassLogin=False, headers=False):
+    def postPage(self, href=None, data=None, byPassLogin=False, headers=False,buildHref=True):
         """
             Method to open a page 
             @param href: href value of a link
@@ -297,10 +316,13 @@ class streamingSourceTemplate(object):
         if not byPassLogin and not self.isLogin():
             self.login()
             
+        if buildHref:
+            href=self.buildHref(href)
+            
         if not headers:
-            request = urllib2.Request(self.buildHref(href), urllib.urlencode(data), headers=webUtil.HEADER_CFG)
+            request = urllib2.Request(href, urllib.urlencode(data), headers=webUtil.HEADER_CFG)
         else:           
-            request = urllib2.Request(self.buildHref(href), urllib.urlencode(data), headers=headers)
+            request = urllib2.Request(href, urllib.urlencode(data), headers=headers)
         response = None
         
         try: 
@@ -316,20 +338,19 @@ class streamingSourceTemplate(object):
         # ___ Init soup
         soup = None
         # ___ Open the page
-        if streamItem.getHref().startswith(self.WEB_PAGE_BASE):
-            response = self.openPage(streamItem.getHref(),buildHref=False)
-        else:
-            response = self.openPage(streamItem.getHref())
+        response = self.openPage(streamItem.getHref())
         
-        if response:           
+        if response:   
             # ___ Read the source
             content = response.read()
+
             # ___ Initialize BeautifulSoup       
             soup = BeautifulSoup(content)                
             # ___ Close the connection
             response.close() 
                           
         else:
+            print 'error'
             #miscFunctions.displayNotification('Unable to open page in ' + self.getName())                   
             self.__LOGGER__.log('Connection ERROR : Failed to open page (' + self.buildHref(streamItem.getHref()) + ')', xbmc.LOGERROR)
         

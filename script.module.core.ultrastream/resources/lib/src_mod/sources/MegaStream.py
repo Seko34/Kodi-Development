@@ -32,7 +32,7 @@ class MegaStream(Source):
     
     
     # ___ The source ID
-    ID = 5
+    ID = 4
     
     # ___ The name of the source
     NAME = 'MegaStream'

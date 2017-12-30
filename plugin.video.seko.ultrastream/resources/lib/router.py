@@ -502,6 +502,11 @@ def router(params):
             params = cacheFunctions.getCachedParams()
             listItems = cacheFunctions.getCachedPage()
             listItems = metadata.getMetadataFromContextMenu(listItems,titleToSearch,progress)
+ 
+        # ___ Change streaming source
+        elif int(params['action']) == StreamItem.ACTION_CHANGE_STREAMING_SRC:
+            sources.changeSrcDialog()
+            xbmc.executebuiltin('Container.Update(plugin://plugin.video.seko.ultrastream/)')
             
         # ___ TEST ACTION
         elif int(params['action']) == StreamItem.ACTION_TEST:

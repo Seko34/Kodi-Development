@@ -512,6 +512,10 @@ msgctxt "#70014"
 msgid "Link unavailable"
 msgstr "Lien invalide"
 
+msgctxt "#70015"
+msgid "Change Streaming source"
+msgstr "Changer d annuaire streaming"
+
 
 ##
 #	'-__	WATAMOVIE	__-'

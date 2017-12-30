@@ -385,37 +385,39 @@ class DPStream(Source):
         soup = self._initOpenPage(tvShowStreamItem)
         if soup is not None:
             
-            titles = soup.find("div", {"id" : "myContent"}).findAll('div', {'class':'season-tit col-md-6'})
-            
-            # __ For each link on the left div
-            for index in range(0, len(titles)):
+            if soup.find("div", {"id" : "myContent"}) is not None:
                 
-                # ___ Get title and season with UTF-8 encoding
-                title = titles[index].text.encode('UTF-8')
-                season = -1
-                if 'Saison ' in title:
-                    season = title.replace("Saison ","")
-                    try:
-                        season = int(season)
-                    except:
-                        pass
+                titles = soup.find("div", {"id" : "myContent"}).findAll('div', {'class':'season-tit col-md-6'})
                 
-                # ___ Unscape html on title
-                title = strUtil.unescapeHtml(title)
-                self.__LOGGER__.log('Season find : '+title,xbmc.LOGDEBUG)
-                
-                # __ Create the element
-                element = StreamItem(title)
-                element.setHref(tvShowStreamItem.getHref())         
-                element.setAction(StreamItem.ACTION_DISPLAY_EPISODES)
-                element.setType(StreamItem.TYPE_TVSHOW_SEASON)                    
-                element.setTvShowName(tvShowStreamItem.getTvShowName())                
-                if season > 0:
-                    element.setSeason(season)
-                    element.determineSeasonTitle()
-                
-               
-                elementList.append(element)
+                # __ For each link on the left div
+                for index in range(0, len(titles)):
+                    
+                    # ___ Get title and season with UTF-8 encoding
+                    title = titles[index].text.encode('UTF-8')
+                    season = -1
+                    if 'Saison ' in title:
+                        season = title.replace("Saison ","")
+                        try:
+                            season = int(season)
+                        except:
+                            pass
+                    
+                    # ___ Unscape html on title
+                    title = strUtil.unescapeHtml(title)
+                    self.__LOGGER__.log('Season find : '+title,xbmc.LOGDEBUG)
+                    
+                    # __ Create the element
+                    element = StreamItem(title)
+                    element.setHref(tvShowStreamItem.getHref())         
+                    element.setAction(StreamItem.ACTION_DISPLAY_EPISODES)
+                    element.setType(StreamItem.TYPE_TVSHOW_SEASON)                    
+                    element.setTvShowName(tvShowStreamItem.getTvShowName())                
+                    if season > 0:
+                        element.setSeason(season)
+                        element.determineSeasonTitle()
+                    
+                   
+                    elementList.append(element)
         
         
         return elementList;    
@@ -431,12 +433,10 @@ class DPStream(Source):
         # ___ Get the soup
         soup = self._initOpenPage(tvShowStreamItem)
         if soup is not None:
-            
             titles = soup.find("aside", {"id" : "episodeSidebarNav"}).findAll('h4', {'class':'panel-title'})
             #titles = soup.find("div", {"id" : "myContent"}).findAll('div', {'class':'season-tit col-md-6'})
             # __ For each link on the left div
             for index in range(0, len(titles)):
-                
                 # ___ Get title and season with UTF-8 encoding                
                 title = titles[index].text.encode('UTF-8')
                 season = -1
@@ -750,15 +750,9 @@ class DPStream(Source):
                     element.regenerateKodiTitle()   
                     elementList = self.appendLinkInList(element, elementList)
                      
-        #elementList = self.getDPStreamLink(elementList)
+        elementList = self.getDPStreamLink(elementList)
                                   
         return elementList
-    
-    def getShowLink(self,showStreamItem):
-        return self.getMovieLink(showStreamItem)
-    
-    def getDocumentaryLink(self,docuStreamItem):
-        return self.getMovieLink(docuStreamItem)
     
     def getDPStreamLink(self,elementList):
         """
@@ -842,7 +836,7 @@ class DPStream(Source):
                     element.regenerateKodiTitle()   
                     elementList = self.appendLinkInList(element, elementList) 
                      
-        #elementList = self.getDPStreamLink(elementList)
+        elementList = self.getDPStreamLink(elementList)
                                        
         return elementList
     
@@ -926,10 +920,16 @@ class DPStream(Source):
                     element.regenerateKodiTitle()   
                     elementList = self.appendLinkInList(element, elementList) 
                      
-        #elementList = self.getDPStreamLink(elementList)
+        elementList = self.getDPStreamLink(elementList)
                                        
         return elementList
     
+    def getShowLink(self,movieStreamItem):
+        return  self.getMovieLink(movieStreamItem);
+         
+    def getDocumentaryLink(self,movieStreamItem):
+        return  self.getMovieLink(movieStreamItem);
+             
     def getHundredElementsList(self, type, listeType, limit=0, resultList=[]):
         """
             Method to get a list of hundred element
@@ -993,7 +993,8 @@ class DPStream(Source):
                 # ___ Try to get the seaon and the episode
                 season=''
                 episode=''
-                patternTvShow = re.compile('(.*)( S)(\d.*)( E)(\d.*)( .*)')
+                
+                patternTvShow = re.compile('(.*)( S)(\d.*)(E)(\d.*)( .*)')
                 match = patternTvShow.match(title)
                 if match is not None:  
                     season = match.group(3) 
@@ -1121,67 +1122,32 @@ class DPStream(Source):
             Method to get all last movie
             @return a list of StreamItem
         """
-        elementList = []
-        nextLimit = 10
         if streamItem and streamItem.getPage() is not None and len(streamItem.getPage()) > 0:
-            elementList = self.getHundredElementsList(StreamItem.TYPE_MOVIE, DPStream.LIST_TYPE_LAST,limit=int(streamItem.getPage()))
-            nextLimit = int(streamItem.getPage())+10
+            return self.getHundredElementsList(StreamItem.TYPE_MOVIE, DPStream.LIST_TYPE_LAST,limit=int(streamItem.getPage()))
         else:
-            elementList = self.getHundredElementsList(StreamItem.TYPE_MOVIE, DPStream.LIST_TYPE_LAST)
-            
-        while len(elementList) < 10:
-            del elementList[-1]
-            addList = self.getHundredElementsList(StreamItem.TYPE_MOVIE, DPStream.LIST_TYPE_LAST,limit=nextLimit)
-            for el in addList:
-                elementList.append(el)
-            elementList = self.removeDuplicatesInList(elementList)                
-            nextLimit = nextLimit + 10
-        
-        return elementList
+            return self.getHundredElementsList(StreamItem.TYPE_MOVIE, DPStream.LIST_TYPE_LAST)
     
     def getLastTvShow(self,streamItem=False):
         """
             Method to get all last tv show
             @return a list of StreamItem
         """
-        elementList = []        
-        nextLimit = 10
+        
         if streamItem and streamItem.getPage() is not None and len(streamItem.getPage()) > 0:
-            elementList = self.getHundredElementsList(StreamItem.TYPE_TVSHOW, DPStream.LIST_TYPE_LAST,limit=int(streamItem.getPage()))
-            nextLimit = int(streamItem.getPage())+10
+            return self.getHundredElementsList(StreamItem.TYPE_TVSHOW, DPStream.LIST_TYPE_LAST,limit=int(streamItem.getPage()))
         else:
-            elementList = self.getHundredElementsList(StreamItem.TYPE_TVSHOW, DPStream.LIST_TYPE_LAST)
-            
-        while len(elementList) < 10:
-            del elementList[-1]
-            addList = self.getHundredElementsList(StreamItem.TYPE_TVSHOW, DPStream.LIST_TYPE_LAST,limit=nextLimit)
-            for el in addList:
-                elementList.append(el)
-            elementList = self.removeDuplicatesInList(elementList)                
-            nextLimit = nextLimit + 10
-        return elementList
+            return self.getHundredElementsList(StreamItem.TYPE_TVSHOW, DPStream.LIST_TYPE_LAST)
+        
     
     def getLastAnime(self,streamItem=False):
         """
             Method to get all last anime
             @return a list of StreamItem
         """        
-        elementList = []
-        nextLimit = 10
         if streamItem and streamItem.getPage() is not None and len(streamItem.getPage()) > 0:
-            elementList = self.getHundredElementsList(StreamItem.TYPE_ANIME, DPStream.LIST_TYPE_LAST,limit=int(streamItem.getPage()))
-            nextLimit = int(streamItem.getPage())+10
+            return self.getHundredElementsList(StreamItem.TYPE_ANIME, DPStream.LIST_TYPE_LAST,limit=int(streamItem.getPage()))
         else:
-            elementList = self.getHundredElementsList(StreamItem.TYPE_ANIME, DPStream.LIST_TYPE_LAST)
-            
-        while len(elementList) < 10:
-            del elementList[-1]
-            addList = self.getHundredElementsList(StreamItem.TYPE_ANIME, DPStream.LIST_TYPE_LAST,limit=nextLimit)
-            for el in addList:
-                elementList.append(el)
-            elementList = self.removeDuplicatesInList(elementList)                
-            nextLimit = nextLimit + 10
-        return elementList
+            return self.getHundredElementsList(StreamItem.TYPE_ANIME, DPStream.LIST_TYPE_LAST)  
     
     def getTopMovie(self,streamItem=False):
         """
@@ -1530,6 +1496,7 @@ class DPStream(Source):
                 if page.has_key("class") == False and page.text.encode('UTF-8') != ">" and page.text.encode('UTF-8') != ">>" and page.text.encode('UTF-8') != "<" and page.text.encode('UTF-8') != "<<":
                     
                     element = streamItem.copy()
+                    element.setType(StreamItem.TYPE_PAGE)
                     element.setPage(page.text.encode('UTF-8'))
                     element.setTitle('Page '+element.getPage())                  
                     elementList.append(element)
@@ -1577,6 +1544,7 @@ class DPStream(Source):
                 if page.has_key("class") == False and page.text.encode('UTF-8') != ">" and page.text.encode('UTF-8') != ">>" and page.text.encode('UTF-8') != "<" and page.text.encode('UTF-8') != "<<":
                     
                     element = streamItem.copy()
+                    element.setType(StreamItem.TYPE_PAGE)
                     element.setPage(page.text.encode('UTF-8'))
                     element.setTitle('Page '+element.getPage())                  
                     elementList.append(element)

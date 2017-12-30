@@ -15,6 +15,7 @@ import re
 import constant
 import icons
 import strUtil
+import webUtil
 import json
 from BeautifulSoup import BeautifulSoup
 from src_mod.sourceTemplate import streamingSourceTemplate as Source
@@ -36,7 +37,7 @@ class Streamay(Source):
     NAME = 'Streamay'
     
     # WEB PAGE BASE
-    WEB_PAGE_BASE = "https://streamay.bz/"
+    WEB_PAGE_BASE = "http://streamay.ws/"
     
     # LOGGER    
     __LOGGER__ = Logger('UltraStream','Streamay')
@@ -160,6 +161,9 @@ class Streamay(Source):
         """
         post_href = 'search'
         data = {'k':title}
+        headers=webUtil.HEADER_CFG
+        headers['Referer'] = self.WEB_PAGE_BASE
+        headers['Host'] = 'streamay.ws'
         response = self.postPage(post_href,data)
         elementList = []
         
@@ -255,7 +259,7 @@ class Streamay(Source):
             Method to get the seasons list of an anime
             @return a list of StreamItem
         """
-        self.getAnimeEpisodes(tvShowStreamItem)
+        return self.getAnimeEpisodes(tvShowStreamItem)
     
     def getTvShowEpisodes(self, episodeStreamItem):
         """
@@ -320,18 +324,18 @@ class Streamay(Source):
             episodes = jsonR['episodes']
                                 
             for episode in episodes:
+                
                 # __ Create the element                       
                 element = episodeStreamItem.copy()
                 element.setAction(StreamItem.ACTION_DISPLAY_LINKS)
                 element.setType(StreamItem.TYPE_ANIME_EPISODE)
                 element.setEpisode(episode['episodeNumber'])
                 element.setHref('/read/mepisode/'+episodeStreamItem.getId()+'/'+episode['episodeNumber'])
-                #element.setId(episode['id'])
+                element.setId(episode['id'])
                 element.determineEpisodeTitle()
                 
                 elementList.append(element)  
     
-            
                 
         return elementList
     
@@ -344,25 +348,32 @@ class Streamay(Source):
         # ___ Initialize the list to return
         elementList = []
         
-        # ___ Get the soup
+        # ___ Get the content
+        response = self.openPage(movieStreamItem.getHref(),buildHref=False)
         
-        soupI = self._initOpenPage(movieStreamItem)
-        streamers = soupI.findAll('a', attrs = {'data-streamer' : True})
-        
-        for streamer in streamers:
-            response = self.openPage('streamer/'+movieStreamItem.getId()+'/'+streamer['data-streamer'])
+        if response and response.getcode() == 200 :
+            # ___ Read the source
+            content = response.read()
+
+            # ___ Initialize BeautifulSoup       
+            soupI = BeautifulSoup(content)                
+            # ___ Close the connection
+            response.close() 
             
-            if response is not None and response.getcode()==200:
-                content = response.read()
-                jsonR = json.loads(content)
-                # __ Create the element                       
-                element = movieStreamItem.copy()
-                element.setAction(StreamItem.ACTION_PLAY)
-                element.setType(StreamItem.TYPE_STREAMING_LINK)
-                element.setHref(jsonR['code'])           
-                element.regenerateKodiTitle()
-            
-                self.appendLinkInList(element, elementList)
+            streamers = soupI.findAll('a', attrs = {'data-streamer' : True})
+            for streamer in streamers:
+                response = self.openPage('streamer/'+movieStreamItem.getId()+'/'+streamer['data-streamer'])
+                if response is not None and response.getcode()==200:
+                    content = response.read()
+                    jsonR = json.loads(content)
+                    # __ Create the element                       
+                    element = movieStreamItem.copy()
+                    element.setAction(StreamItem.ACTION_PLAY)
+                    element.setType(StreamItem.TYPE_STREAMING_LINK)
+                    element.setHref(jsonR['code'])           
+                    element.regenerateKodiTitle()
+                
+                    self.appendLinkInList(element, elementList)
                    
                                   
                           
@@ -382,7 +393,7 @@ class Streamay(Source):
         streamers = soupI.findAll('a', attrs = {'data-streamer' : True})
         
         for streamer in streamers:
-            response = self.openPage('streamerSerie/'+episodeStreamItem.getId()+'/'+streamer['data-streamer'])
+            response = self.openPage('streamerSerie/'+streamer['data-id']+'/'+streamer['data-streamer'])
             if response is not None and response.getcode()==200:
                 content = response.read()
                 jsonR = json.loads(content)
@@ -408,47 +419,32 @@ class Streamay(Source):
         """
         # ___ Initialize the list to return
         elementList = []
-        
-        # ___ Get the soup
         response = self.openPage(episodeStreamItem.getHref())
-        if response is not None and response.getcode() == 200:
-            jsonR = json.loads(response.read())
-            episodeLinks = jsonR['episode']
-            for key in episodeLinks:
-                if key+'_vostfr' in episodeLinks:
-                    if episodeLinks[key] is not None:
-                        response2 = self.openPage('/streamerMEpisode/'+str(episodeStreamItem.getEpisode())+'/'+str(episodeStreamItem.getId())+'/'+key)
-                        if response2 is not None and response2.getcode() == 200:
-                            
-                            jsonLink = json.loads(response2.read())
-                            if 'code' in jsonLink:
-                                # __ Create the element                       
-                                element = episodeStreamItem.copy()
-                                element.setAction(StreamItem.ACTION_PLAY)
-                                element.setType(StreamItem.TYPE_STREAMING_LINK)
-                                element.setHref(jsonLink['code'])           
-                                element.setLang('FR')
-                                element.regenerateKodiTitle()
-                                self.appendLinkInList(element, elementList)
-                    
-                    if episodeLinks[key+'_vostfr'] is not None:
+        if response is not None and response.getcode()==200:
+            content = response.read()
+            jsonR = json.loads(content)
+            for key in jsonR['episode'].keys():
+                if key != 'id' and key != 'manga_id' and key != 'episodeNumber' and key != 'views' and key !='published' and key != 'created_at' and key !='updated_at':
+                    if jsonR['episode'][key] is not None :
                         
-                        response2 = self.openPage('/streamerMEpisode/'+str(episodeStreamItem.getEpisode())+'/'+str(episodeStreamItem.getId())+'/'+key+'_vostfr')
-                        if response2 is not None and response2.getcode() == 200:
-                            
-                            print response2.read()
-                            jsonLink = json.loads(response2.read())
-                            if 'code' in jsonLink:
-                                # __ Create the element                       
-                                element2 = episodeStreamItem.copy()
-                                element2.setAction(StreamItem.ACTION_PLAY)
-                                element2.setType(StreamItem.TYPE_STREAMING_LINK)
-                                element2.setHref(jsonLink['code'])           
-                                element2.setLang('VO')
-                                element2.setSubTitle('FR')
-                                element.regenerateKodiTitle()
-                                self.appendLinkInList(element2, elementList)
-        
+                        response2 = self.openPage('streamerMEpisode/'+jsonR['episode']['episodeNumber']+'/'+jsonR['episode']['manga_id']+'/'+key)
+                        if response2 is not None and response2.getcode()==200:
+                            content2 = response2.read()
+                            jsonR2 = json.loads(content2)
+                            # __ Create the element                       
+                            element = episodeStreamItem.copy()
+                            element.setAction(StreamItem.ACTION_PLAY)
+                            element.setType(StreamItem.TYPE_STREAMING_LINK)
+                            element.setHref(jsonR2['code'])           
+                            element.setLang(strUtil.getLangFromTitle(key.replace('_',' ')))
+                            element.setSubTitle(strUtil.getSubtitleFromTitle(key.replace('_',' ')))
+                            element.regenerateKodiTitle()
+                        
+                            self.appendLinkInList(element, elementList)
+                            response2.close()
+                   
+            response.close()                     
+                          
         return elementList  
     
     def getMoviesFromContent(self,content):
@@ -786,7 +782,7 @@ class Streamay(Source):
                 element.setType(StreamItem.TYPE_MOVIE)
                 element.setSourceId(self.ID)  
                 element.setIconImage(self.buildHref(movie.find('img')['src']))
-                idPattern = re.compile('(https://streamay.bz/)(\d{1,6}?)(-.*)(\.html)')
+                idPattern = re.compile('(http://streamay.ws/)(\d{1,6}?)(-.*)(\.html)')
                 match = idPattern.match(href)
                 if match is not None:
                     element.setId(match.group(2))               
