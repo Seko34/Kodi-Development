@@ -2,7 +2,7 @@
 <addon id="script.module.core.ultrastream" name="UltraStream Core Library" version="0.2.9" provider-name="Seko">
   <requires>
     <import addon="xbmc.python" version="2.6.0" />    
-  	<import addon="script.module.seko.common" version="0.1.7"/>
+  	<import addon="script.module.seko.common" version="0.1.8"/>
   	<import addon="script.module.seko.downloader" version="0.0.10"/>
   	<import addon="script.module.seko.scraper" version="0.0.6"/>
     <import addon="script.module.beautifulsoup" version="3.2.1"/> 
