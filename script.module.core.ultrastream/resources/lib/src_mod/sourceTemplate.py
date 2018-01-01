@@ -20,6 +20,7 @@ import kodiUtil
 import re
 import icons
 import constant as constant
+import favoriteUtil
 from item import StreamItem
 from logger import Logger
 from BeautifulSoup import BeautifulSoup
@@ -184,6 +185,8 @@ class streamingSourceTemplate(object):
                      MENU_DOCUMENTARY_TOPRATE,
                      MENU_DOCUMENTARY_CATEGORY_ALPHA,
                      MENU_DOCUMENTARY_CATEGORY_GENRE]
+    
+    MENU_FAVORITE                   = 100
     """
         Template class for streaming source
     """
@@ -938,6 +941,13 @@ class streamingSourceTemplate(object):
             genreCat.setSubType(StreamItem.SUBTYPE_GENRE)
             genreCat.addListItemToDirectory()
            
+        if favoriteUtil.favUtil.hasFavorites(StreamItem.TYPE_MOVIE):
+            fav = StreamItem(constant.__addon__.getLocalizedString(40042))
+            fav.setIconImage(icons.getIcon('movie',True))
+            fav.setType(StreamItem.TYPE_MOVIE)
+            fav.setAction(StreamItem.ACTION_DISPLAY_FAVORITES)
+            fav.addListItemToDirectory()
+        
         kodiUtil.endOfDirectory()
         
     def build_movie_hd_menu(self):
@@ -1034,6 +1044,13 @@ class streamingSourceTemplate(object):
             genreCat.setSubType(StreamItem.SUBTYPE_GENRE)
             genreCat.addListItemToDirectory()
            
+        if favoriteUtil.favUtil.hasFavorites(StreamItem.TYPE_MOVIE):
+            fav = StreamItem(constant.__addon__.getLocalizedString(40042))
+            fav.setIconImage(icons.getIcon('movie',True))
+            fav.setType(StreamItem.TYPE_MOVIE)
+            fav.setAction(StreamItem.ACTION_DISPLAY_FAVORITES)
+            fav.addListItemToDirectory()
+           
         kodiUtil.endOfDirectory()
         
     def build_anime_menu(self):
@@ -1112,6 +1129,13 @@ class streamingSourceTemplate(object):
             alphaCat.setSubType(StreamItem.SUBTYPE_ALPHABETICS)
             alphaCat.addListItemToDirectory()
            
+        if favoriteUtil.favUtil.hasFavorites(StreamItem.TYPE_ANIME):
+            fav = StreamItem(constant.__addon__.getLocalizedString(40042))
+            fav.setIconImage(icons.getIcon('animes',True))
+            fav.setType(StreamItem.TYPE_ANIME)
+            fav.setAction(StreamItem.ACTION_DISPLAY_FAVORITES)
+            fav.addListItemToDirectory()
+           
         kodiUtil.endOfDirectory()        
     
     def build_tv_show_menu(self):
@@ -1189,6 +1213,13 @@ class streamingSourceTemplate(object):
             alphaCat.setAction(StreamItem.ACTION_DISPLAY_CATEGORIE_MENU)
             alphaCat.setSubType(StreamItem.SUBTYPE_ALPHABETICS)
             alphaCat.addListItemToDirectory()
+           
+        if favoriteUtil.favUtil.hasFavorites(StreamItem.TYPE_TVSHOW):
+            fav = StreamItem(constant.__addon__.getLocalizedString(40042))
+            fav.setIconImage(icons.getIcon('tvshow',True))
+            fav.setType(StreamItem.TYPE_TVSHOW)
+            fav.setAction(StreamItem.ACTION_DISPLAY_FAVORITES)
+            fav.addListItemToDirectory()
            
         kodiUtil.endOfDirectory()
        

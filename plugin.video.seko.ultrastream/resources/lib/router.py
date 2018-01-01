@@ -508,6 +508,59 @@ def router(params):
             sources.changeSrcDialog()
             xbmc.executebuiltin('Container.Update(plugin://plugin.video.seko.ultrastream/)')
             
+        # ___ Favorite menu
+        elif int(params['action']) == StreamItem.ACTION_DISPLAY_FAVORITES:
+            import favoriteUtil
+            jsonResults = favoriteUtil.favUtil.getFavorites(int(params['type']))
+            listItems = []
+            for jsonR in jsonResults:
+                sItem = StreamItem(params=jsonR)
+                sItem.setFavoriteItem(True)
+                listItems.append(sItem)
+            deleteAllFav = StreamItem(constant.__addon__.getLocalizedString(40045))
+            deleteAllFav.setType(int(params['type']))
+            deleteAllFav.setAction(StreamItem.ACTION_REMOVE_ALL_FAVORITE)
+            listItems.append(deleteAllFav)
+            
+        
+        # ___ Add to favorite      
+        elif int(params['action']) == StreamItem.ACTION_ADD_TO_FAVORITE:
+            import favoriteUtil
+            params['action'] = params['actionItem']
+            favoriteUtil.favUtil.createFavorite(params['type'], params)    
+        
+        # ___ Remove from favorite      
+        elif int(params['action']) == StreamItem.ACTION_REMOVE_FROM_FAVORITE:
+            import favoriteUtil
+            params['action'] = params['actionItem']
+            favoriteUtil.favUtil.deleteHistory(params)
+            
+            jsonResults = favoriteUtil.favUtil.getFavorites(int(params['type']))
+            listItems = []
+            for jsonR in jsonResults:
+                sItem = StreamItem(params=jsonR)
+                sItem.setFavoriteItem(True)
+                listItems.append(sItem)
+            deleteAllFav = StreamItem(constant.__addon__.getLocalizedString(40045))
+            deleteAllFav.setType(int(params['type']))
+            deleteAllFav.setAction(StreamItem.ACTION_REMOVE_ALL_FAVORITE)
+            listItems.append(deleteAllFav)
+        
+        # ___ Remove all favorite      
+        elif int(params['action']) == StreamItem.ACTION_REMOVE_ALL_FAVORITE:
+            import favoriteUtil            
+            favoriteUtil.favUtil.deleteAll()
+            jsonResults = favoriteUtil.favUtil.getFavorites(int(params['type']))
+            listItems = []
+            for jsonR in jsonResults:
+                sItem = StreamItem(params=jsonR)
+                sItem.setFavoriteItem(True)
+                listItems.append(sItem)
+            deleteAllFav = StreamItem(constant.__addon__.getLocalizedString(40045))
+            deleteAllFav.setType(int(params['type']))
+            deleteAllFav.setAction(StreamItem.ACTION_REMOVE_ALL_FAVORITE)
+            listItems.append(deleteAllFav)
+            
         # ___ TEST ACTION
         elif int(params['action']) == StreamItem.ACTION_TEST:
             """

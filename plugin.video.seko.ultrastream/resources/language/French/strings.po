@@ -71,6 +71,22 @@ msgctxt "#40041"
 msgid "UltraStream Settings"
 msgstr "Parametres UltraStream"
 
+msgctxt "#40042"
+msgid "Favorite"
+msgstr "Favoris"
+
+msgctxt "#40043"
+msgid "Add to UltraStream favorite"
+msgstr "Ajouter aux favoris UltraStream"
+
+msgctxt "#40044"
+msgid "Remove from UltraStream favorite"
+msgstr "Supprimer des favoris UltraStream"
+
+msgctxt "#40045"
+msgid "Remove all UltraStream favorites"
+msgstr "Supprimer tous les favoris"
+
 
 
 

@@ -21,6 +21,7 @@ import webUtil
 import traceback
 import constant
 import icons
+import urllib
 from logger import Logger
 from difflib import SequenceMatcher as SM
     
@@ -86,7 +87,11 @@ class StreamItem:
     ACTION_DISPLAY_METAHANDLER_SETTINGS = 52
     ACTION_DISPLAY_SETTINGS             = 53
     
-    ACTION_DISPLAY_DOWNLOAD_MANAGER     = 60    
+    ACTION_DISPLAY_DOWNLOAD_MANAGER     = 60  
+    ACTION_DISPLAY_FAVORITES            = 61 
+    ACTION_ADD_TO_FAVORITE              = 62 
+    ACTION_REMOVE_FROM_FAVORITE         = 63 
+    ACTION_REMOVE_ALL_FAVORITE          = 64 
     
     ACTION_TEST = 100
     
@@ -136,7 +141,8 @@ class StreamItem:
             'id':'',
             'sourceId':'',
             'strm':'0',
-            'linkStatus':''
+            'linkStatus':'',
+            'isFavorite':False
             }
     
         if title:
@@ -200,6 +206,8 @@ class StreamItem:
                 self.setSourceId(params['sourceId'])                
             if 'strm' in params:
                 self.Item['strm']=params['strm']
+            if 'isFavorite' in params:
+                self.Item['isFavorite'] = params['isFavorite']
             
     def getJsonItem(self):
         """
@@ -207,6 +215,27 @@ class StreamItem:
             @return the JSON item
         """
         return self.Item
+    
+    def getFavJson(self):
+        jsonFav = {'title':self.getDbTitle(),
+            'tvShow':self.getDbTvShowName(),
+            'season':self.getSeason(),
+            'episode':self.Item['episode'],
+            'href':self.getHref(),
+            'id':self.getId(),
+            'sourceId':self.getSourceId(),
+            'actionItem':self.getAction(),
+            'type':self.getType(),
+            'subtype':self.getSubType(),
+            'subtype_value':self.getSubTypeValue(),
+            'lang': self.getLang(),
+            'subtitle': self.getSubTitle(),
+            'quality':self.getQuality(),
+            'year':self.Item['year']
+            }
+        
+        return jsonFav
+        
     
     def getListItem(self):
         """
@@ -287,7 +316,22 @@ class StreamItem:
                                     (constant.__addon__.getLocalizedString(70015).title(), 'RunPlugin(plugin://plugin.video.seko.ultrastream/?action=27)')
                                    ])
         
-             
+        # Add to Favorite
+        if  not self.isFavorite() and \
+            ( ((self.getType() == self.TYPE_ANIME  or self.getType() == self.TYPE_TVSHOW) and \
+             (self.getAction() == self.ACTION_DISPLAY_SEASONS or self.getAction() == self.ACTION_DISPLAY_EPISODES or self.getAction() == self.ACTION_DISPLAY_LINKS)) or \
+            (self.getType() == self.TYPE_MOVIE and self.getAction()==self.ACTION_DISPLAY_LINKS) or \
+            (self.getType() == self.TYPE_MOVIE_HD and self.getAction()==self.ACTION_DISPLAY_LINKS) ):
+            li.addContextMenuItems([ 
+                        (constant.__addon__.getLocalizedString(40043).title(), 'RunPlugin(plugin://plugin.video.seko.ultrastream/?action='+str(self.ACTION_ADD_TO_FAVORITE)+'&'+urllib.urlencode(self.getFavJson())+')')
+                       ])
+        
+        # Remove to Favorite
+        if  self.isFavorite():
+            li.addContextMenuItems([ 
+                        (constant.__addon__.getLocalizedString(40044).title(), 'Container.Update(plugin://plugin.video.seko.ultrastream/?action='+str(self.ACTION_REMOVE_FROM_FAVORITE)+'&'+urllib.urlencode(self.getFavJson())+')')
+                       ])
+                    
         # ___ If the item is a page, we set the page thumbnail and page icon.
         if self.isPage():
             li.setThumbnailImage(icons.getIcon('nextpage'))
@@ -715,6 +759,7 @@ class StreamItem:
             self.Item['action'] == self.ACTION_DISPLAY_DOWNLOAD_MANAGER or \
             self.Item['action'] == self.ACTION_SEARCH_WATAMOVIE or \
             (self.Item['action'] == self.ACTION_DISPLAY_LINKS and constant.__addon__.getSetting('links_in_dialog') == 'true') or \
+            self.Item['action'] == self.ACTION_REMOVE_ALL_FAVORITE or \
             self.Item['action'] == self.ACTION_TEST :
             return False
         
@@ -896,6 +941,18 @@ class StreamItem:
             self.Item['metadata'] = {}
         self.Item['metadata']['playcount']=value
         
+    def setFavoriteItem(self,isFavorite):
+        """
+            Method to set an item as an favorite Item
+            @param isFavorite: boolean, true if it is a favorite item
+        """
+        self.Item['isFavorite'] = isFavorite
+        print 'la'
+        print self.isFavorite()
+        
+    def isFavorite(self):
+        return self.Item['isFavorite']
+        
     def writeStrmFile(self,filePath):
         """
             Method to write a .strm file
@@ -1062,6 +1119,7 @@ class StreamItem:
         """ 
             Method __str__ 
         """        
-        return json.dumps(self.getJsonItem(), indent=4, sort_keys=True)
+        #print json.dumps(self.getJsonItem(), indent=1, sort_keys=True)
+        return json.dumps(self.getJsonItem(), indent=1, sort_keys=True)
     
 
