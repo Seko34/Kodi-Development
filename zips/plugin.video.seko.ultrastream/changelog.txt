@@ -1,3 +1,5 @@
+Version 0.3.9:
+-Update urlresolver
 V 0.3.0:
 -Add manga and tvshow for streamay
 V0.2.8/0.2.9:

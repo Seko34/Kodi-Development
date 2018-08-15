@@ -1,3 +1,5 @@
+Version 0.3.0:
+-Update urlresolver
 Version 0.2.7:
 -Fix UrlResolver problem
 -Fix titan skin thumbnail copy

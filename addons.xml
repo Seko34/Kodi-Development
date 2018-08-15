@@ -14,16 +14,16 @@
 			<platform>all</platform>
 		</extension>
 	</addon>
-	<addon id="plugin.video.seko.ultrastream" name="UltraStream" version="0.3.8" provider-name="Seko">
+	<addon id="plugin.video.seko.ultrastream" name="UltraStream" version="0.3.9" provider-name="Seko">
 	  <requires>
 		<import addon="xbmc.python" version="2.7.0"/>
-		<import addon="script.module.core.ultrastream" version="0.2.9"/>
+		<import addon="script.module.core.ultrastream" version="0.3.0"/>
 		<import addon="script.service.seko.ultrastream" version="0.2.2"/>
 		<import addon="script.module.seko.common" version="0.1.8"/>
 		<import addon="script.module.seko.downloader" version="0.1.2"/>
 		<import addon="script.module.pyxbmct" version="1.2" /> 
 		<import addon="script.module.beautifulsoup" version="3.2.1"/> 
-		<import addon="script.module.urlresolver" version="4.0.16"/> 
+		<import addon="script.module.urlresolver" version="5.0.21"/> 
 	  </requires>
 	  <extension point="xbmc.python.pluginsource" library="ultrastream_addon.py">
 		<provides>video</provides>
@@ -65,33 +65,35 @@
 			<website>http://www.crummy.com/software/BeautifulSoup/</website>
 		</extension>
 	</addon>	
-	<addon id="script.module.urlresolver" name="URLResolver" version="4.0.16" provider-name="Eldorado, tknorris, tvaddons">
+	<addon id="script.module.urlresolver" name="URLResolver" version="5.0.21" provider-name="tvaddons">
 		<requires>
 			<import addon="xbmc.python" version="2.1.0" />
 			<import addon="plugin.video.youtube" optional="true" />
 			<import addon="script.module.python.twitch" optional="true" />
 			<import addon="script.module.cryptopy" version="1.2.6" optional="true" />
+			<import addon="plugin.video.gdrive" optional="true" />
 		</requires>
 		<extension point="xbmc.python.module" library="lib" />
 		<extension point="xbmc.python.pluginsource" library="lib/default.py" />
 		<extension point="xbmc.addon.metadata">
 			<platform>all</platform>
 			<summary lang="en">Resolve common video host URL's to be playable in XBMC/Kodi.</summary>
+			<summary lang="es">Resolver enlaces a videos de sitios populares para poder reproducirlos en XBMC/Kodi.</summary>
 			<summary lang="hr">Prilagodi najčešće URL-ove video izvora kako bi radili u XBMC/Kodiju.</summary>
 			<description lang="en">Resolve common video host URL's to be playable in XBMC/Kodi, simplify addon development of video plugins requiring multi video hosts.</description>
 			<description lang="hr">Prilagodi najčešće URL-ove video izvora kako bi radili u XBMC/Kodiju, pojednostavnjuje razvoj priključaka za video dodatke koji zahtjevaju višestruke video izvore.</description>
-		<forum>https://www.tvaddons.co/forums</forum>
-		<website>https://www.tvaddons.co</website>
+			<forum>https://www.tvaddons.co/forums</forum>
+			<website>https://www.tvaddons.co</website>
 		</extension>
-	</addon>	
-	<addon id="script.module.core.ultrastream" name="UltraStream Core Library" version="0.2.9" provider-name="Seko">
+	</addon>
+	<addon id="script.module.core.ultrastream" name="UltraStream Core Library" version="0.3.0" provider-name="Seko">
 	  <requires>
 		<import addon="xbmc.python" version="2.6.0" />    
 		<import addon="script.module.seko.common" version="0.1.8"/>
 		<import addon="script.module.seko.downloader" version="0.0.10"/>
 		<import addon="script.module.seko.scraper" version="0.0.6"/>
 		<import addon="script.module.beautifulsoup" version="3.2.1"/> 
-		<import addon="script.module.urlresolver" version="4.0.16"/> 
+		<import addon="script.module.urlresolver" version="5.0.21"/> 
 	  </requires>
 	  <extension point="xbmc.python.module" library="resources/lib" />
 	  <extension point="xbmc.python.library" library="default.py" />
@@ -104,7 +106,7 @@
 	<addon id="script.service.seko.ultrastream" name="Seko Ultrastream Service" version="0.2.2" provider-name="Seko">
 	  <requires>
 		<import addon="xbmc.python" version="2.6.0" />
-		<import addon="script.module.core.ultrastream" version="0.2.9"/>
+		<import addon="script.module.core.ultrastream" version="0.3.0"/>
 	  </requires>
 	  <extension point="xbmc.python.module" library="lib" />
 	  <extension point="xbmc.service"  library="default.py" />
